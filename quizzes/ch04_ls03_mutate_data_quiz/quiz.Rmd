@@ -1,0 +1,172 @@
+---
+title: '\ '
+output: blogdown::html_page
+params:
+  seed: 1
+---
+
+```{r, echo = F, message = F, warning = F}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(
+  # necessary for all quizzes runs
+  tidyverse, 
+  here,
+  knitr,
+  googledrive,
+  rio,
+  # specific to this quiz             
+  cowplot, 
+  xfun,
+  #required for it to run:
+  blogdown,
+  shiny,
+  readxl,
+  janitor)
+
+knitr::opts_chunk$set(warning = F, message = F)
+
+source(here("global/functions/misc_functions.R"))
+
+# Setup for uploading images and datasets
+if (!drive_has_token()) drive_auth(email = "trainingteam@thegraphnetwork.org")
+options(gargle_oauth_email = "trainingteam@thegraphnetwork.org")
+knitr::opts_knit$set(upload.fun = gdrive_upload) # pulled by knitr to upload image
+
+# Set seed
+set.seed(params$seed)
+```
+
+```{r echo = F}
+diab_china_dat_raw <- 
+  read_excel(here("ch04_data_wrangling/data/diabetes_china_chen.xlsx")) %>%
+  select(-`BMI(kg/m2)`) %>% 
+  # Sample data
+  slice_sample(n = 200) %>%
+  clean_names()
+```
+
+Here you will analyze a dataset sample of a population-based cohort in China: clinical information about adults at baseline was used to predict whether they developed diabetes after some years of followup.
+
+The overall goal of this quiz will be to assess if you are capable of wrangling the data any number of ways, in anticipation of an "imaginary" subsequent data analysis. 
+
+```{r echo = F, results = "asis"}
+upload_and_link(diab_china_dat_raw, filename = "diab_china_dat_raw", format =  "csv")
+```
+
+Here are the top 6 rows of `diab_china_dat_raw` after import:
+
+```{r}
+head(diab_china_dat_raw)
+```
+
+------------------------------------------------------------------------ 
+
+# Part A : Creating a variable from scratch
+
+**1 FPG levels are important for diabetes: create a rank variable for this variable**
+
+We want a rank where rank 1 corresponds to the person with the highest FPG levels. Remember to consider if this means an ascending or descending ranking. 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(fpg_rank= {rank}({desc}(fpg_mmol_l), ties.method = {"min"}))
+```
+
+**2 Based on this rank variable, give the IDs of the 20 first patients with the highest FPG levels**
+
+The idea of such a manipulation would be to target as a priority these 100 patients to inform them of their health condition.
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(fpg_rank= {rank}({desc}(fpg_mmol_l), ties.method = {"min"})) %>%
+  filter(fpg_rank{<20}) %>%
+  select({id})
+```
+
+------------------------------------------------------------------------ 
+
+# Part B : Transforming in-place variables 
+
+**3 From the BUN (mmol/L) (blood urea nitrogen) column, please create a new column called BUN(mol/L) where the units change from mmol/L to mol/L. (Reminder: 1000 mmol = 1 mole)**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(bun_mol_l = {[bun_mmol_l*10^-3][10^-3*bun_mmol_l]})
+```
+
+**4 Now also convert the height in centimeters to the height in meters.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(height_m = {[height_cm*10^-2][10^-2*height_cm]})
+```
+
+**5 Like in the lesson examples and using the previous question, create a BMI variable using the weight(kg) and height(cm) columns of the dataset. (Careful: the height variable is in centimeters not meters)**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(height_m = {[height_cm*10^-2][10^-2*height_cm]}) %>%
+  mutate(BMI = {weight_kg/(height_m^2)})
+```
+
+------------------------------------------------------------------------
+
+# Part C : Changing the type of variables 
+
+**6 Set as a factor the family history variable of the dataset.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(family_histroy_of_diabetes_1_yes_0_no = {as.factor}(family_histroy_of_diabetes_1_yes_0_no))
+
+```
+
+**7 Ensure that the age variable and the site variable are numerical.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(age_y={as.numeric}(age_y),
+         site={as.numeric(site)}))
+```
+
+------------------------------------------------------------------------
+
+# Part D : Creating a boolean variable 
+
+**8 Create a new `is_adult` variable from the age variable (Hint: an adult is someone older than 18).**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(is_adult = {[age_y>18][18<age_y]})
+```
+
+**9 How many children are there in the dataset ? {`r nrow(diab_china_dat_raw %>% mutate(is_adult = age_y>18) %>% filter(is_adult==TRUE))`}**
+
+```{r echo = F}
+conditions_drop_hint <- collapsible('Think to set a condition on your new variable `is_adult`')
+```
+
+`r conditions_drop_hint`
+
+**10 Let's create an at-risk variable based on the FPG levels. **
+
+If FPG levels are between 5.5 and 7 mmol/L (approximate values), then patients are advised to monitor regularly their glycemia. (the lower bound comparison is inclusive, the higher bound comparison is exclusive.)
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  mutate(at_risk = fpg_of_final_visit_mmol_l{<7} & fpg_of_final_visit_mmol_l{>=}5.5)
+
+```
+
+**11 Using the at_risk variable, what percentage of people in our population are at risk ? {`r nrow(diab_china_dat_raw %>% mutate(at_risk = fpg_of_final_visit_mmol_l<7 & fpg_of_final_visit_mmol_l>=5.5) %>% filter(at_risk==TRUE))*100/nrow(diab_china_dat_raw)`}**
+
+

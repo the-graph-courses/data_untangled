@@ -1,0 +1,804 @@
+---
+title: '\ '
+output:
+  # word_document:
+  #   toc: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+    css: !expr here::here("global/style/style.css")
+    highlight: kate
+    pandoc_args: --shift-heading-level-by=-1
+editor_options:
+  markdown:
+    wrap: 100
+  chunk_output_type: inline
+always_allow_html: yes
+---
+
+```{r, echo = F, message = F, warning = F}
+library(tidyverse)
+library(knitr)
+
+## functions
+source(here::here("global/functions/misc_functions.R"))
+
+## default render
+registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
+knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
+
+## autograders
+# suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls05_across_autograder.R")))
+```
+
+## Learning objectives
+
+1.  You can use `across()` with the `mutate()` and `summarize()` verbs to apply operations over multiple columns.
+
+2.  You can use the `.names` argument within `mutate(across())` to create new columns.
+
+3.  You can write anonymous (lambda) functions within `across()`
+
+## Packages
+
+This lesson will require the packages loaded below:
+
+```{r}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(here, tidyverse)
+```
+
+## Datasets
+
+-   The COVID-19 serological survey from Yaounde, Cameroon.
+
+```{r, message = F}
+yaounde <- read_csv(here("ch04_data_wrangling/data/yaounde_data.csv"))
+
+yaounde <- yaounde %>% rename(age_years = age)
+
+yaounde
+```
+
+-   A hospital [study](https://zenodo.org/record/4541793) made of clinical data from patients with febrile (fever-causing) diseases, from in Burkina Faso
+
+```{r, message = F}
+febrile_diseases <- read_csv(here("ch04_data_wrangling/data/febrile_diseases_burkina_faso.csv"))
+febrile_diseases
+```
+
+-   A dietary diversity [survey](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NRNCX0) where women were asked to recall the foods and drinks they consumed the previous day, from Vietnam
+
+```{r, message = F}
+diet <- read_csv(here("ch04_data_wrangling/data/vietnam_diet_diversity.csv"))
+diet <- diet %>% rename(household_id = hhid)
+
+diet
+```
+
+## Using `across()` with `mutate()`
+
+-   The `mutate()` = easy way to create new variables or modify in place
+
+-   a LARGE number of columns to operate on = onerous + error prone
+
+-   `across()` is our solution !
+
+-   simplify and shorten your code.
+
+Let's see an example. Consider the symptoms columns in the `yaounde` data frame:
+
+```{r}
+yao_symptoms <- 
+  yaounde %>% 
+  # we select some variables and the symptoms from symp_fever to symp_stomach_ache
+  select(age_years, sex, date_surveyed, symp_fever:symp_stomach_ache)
+
+yao_symptoms 
+```
+
+-   **13 columns** between `symp_fever` and `symp_stomach_ache`
+
+-   How to convert ALL these columns to upper case?
+
+-   "Yes" to "YES" and "No" to "NO"
+
+Without `across()`, mutate the columns one by one:
+
+```{r}
+yao_symptoms %>% 
+  mutate(symp_fever = toupper(symp_fever),
+         symp_headache = toupper(symp_headache),
+         symp_cough = toupper(symp_cough), 
+         symp_rhinitis = toupper(symp_rhinitis), 
+         symp_sneezing = toupper(symp_sneezing),
+         symp_fatigue = toupper(symp_fatigue),
+         symp_muscle_pain = toupper(symp_muscle_pain)
+         #... And on and on and on and on and on
+         )
+```
+
+-   NOT time-efficient.
+
+-   Bad coding: does not obey the **DRY ("Don't Repeat Yourself") principle of programming**.
+
+WITH the `across()` function, we do the same in **two lines**:
+
+```{r}
+yao_symptoms %>% 
+  # make uppercase with toupper
+  # from symp_fever to symp_stomach_ache
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = toupper))
+  
+```
+
+Amazing! Now, let's break down the code above:
+
+-   `across()` is **inside** of `mutate()`.
+
+-   `.cols` defined the *columns* to be modified.
+
+-   `.fns` defined the *functions* to apply on the selected columns.
+
+And that's the basic gist of `across()`!
+
+### The `.cols` argument
+
+-   The `.cols` argument **selects** the columns to be modified.
+
+-   Most the different methods for selecting columns can be used here.
+
+-   One difference: to list column names, you must wrap them in `c()`
+
+```{r eval = F}
+yao_symptoms %>% 
+  # let's perform toupper on symp_fever, symp_headache, symp_cough
+  mutate(across(.cols = c(symp_fever, symp_headache, symp_cough),
+                .fns = toupper))
+```
+
+vs. NOT wrapped in `c()`:
+
+```{r eval = F}
+yao_symptoms %>% 
+  mutate(across(.cols = symp_fever, symp_headache, symp_cough, # Don't do this
+                .fns = toupper))
+```
+
+-   We can select using **numeric ranges:**
+
+```{r}
+yao_symptoms %>% 
+  # let's select columns 4 to 16
+  mutate(across(.cols = 4:16,
+                .fns = toupper))
+```
+
+-   We can select with **helper verbs** :
+
+```{r}
+yao_symptoms %>% 
+  # let's select any column that starts_with "symp_"
+  mutate(across(.cols = starts_with("symp_"),
+                .fns = toupper))
+```
+
+-   We can select with the `where()` function:
+
+```{r}
+yao_symptoms %>% 
+  # let's select all column where the type is character
+  mutate(across(.cols = where(is.character),
+                .fns = toupper))
+```
+
+-   We can catch **everything** :
+
+```{r}
+yao_symptoms %>% 
+  # let's select all with everything()
+  mutate(across(.cols = everything(),
+                .fns = toupper))
+```
+
+Note that `everything()` is the default value for the .`cols` :
+
+```{r}
+yao_symptoms %>% 
+  # same as above !
+  mutate(across(.fns = toupper))
+```
+
+::: practice
+In the `febrile_diseases` dataset, the columns from `abd_pain` to `splenomegaly` indicate whether a patient had a specified symptom, recorded as "yes" or "no".
+
+```{r}
+febrile_diseases %>% 
+  select(abd_pain:splenomegaly)
+```
+
+Use `mutate()` and `across()` to convert the variable levels to uppercase. (That is, "yes" to "YES" and "no" to "NO")
+
+```{r, eval = FALSE}
+Q_febrile_disease_symptoms <- 
+  febrile_diseases %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_febrile_disease_symptoms()
+.HINT_Q_febrile_disease_symptoms()
+```
+:::
+
+### The `.fns` argument
+
+-   `.fns` takes in the function to be applied across columns.
+
+-   You can provide any valid function here.
+
+We had previously used `toupper()`:
+
+```{r}
+yao_symptoms %>% 
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = toupper))
+```
+
+-   We can also use `tolower()`:
+
+```{r}
+yao_symptoms %>% 
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = tolower))
+```
+
+-   The function needs to be **type-appropriate**:
+
+```{r eval = FALSE}
+yao_symptoms %>% 
+  # let's try to apply log to our symptoms columns
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = log))
+```
+
+::: practice
+In the `febrile_diseases` dataset, ensure that all the columns from `abd_pain` to `splenomegaly`, indicating symptoms of patients, are in lower case. Apply `tolower()` across all these variables using `mutate()` and `across()`.
+
+```{r, eval = FALSE}
+Q_febrile_disease_symptoms_to_lower <- 
+  febrile_diseases %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_febrile_disease_symptoms_to_lower()
+.HINT_Q_febrile_disease_symptoms_to_lower()
+```
+:::
+
+### Custom ("anonymous") functions
+
+-   We can also apply a custom function
+
+-   Called a "lambda function" or "anonymous function".
+
+-   The idea = **write your own operation** which will be applied across your selected variables.
+
+The `toupper` example we saw above can be rewritten with this syntax:
+
+```{r}
+yao_symptoms %>% 
+  # let's rewrite toupper as a lambda function
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ toupper(.x)))
+```
+
+-   Break down the code: `.fns = ~ toupper(.x)`
+
+-   the tilda, `~`, introduces the lambda function
+
+-   the `.x` references each of the columns
+
+-   `.x` takes the columns one by one and "calls" the function on each one.
+
+------------------------------------------------------------------------
+
+-   Another example:
+
+```{r}
+yao_symptoms %>% 
+  # let's write tolower as a lambda function
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ tolower(.x)))
+```
+
+------------------------------------------------------------------------
+
+-   Lambda functions can take in **multiple arguments**.
+
+Let's explicit our "Yes" and "No" data entries:
+
+```{r}
+yao_symptoms %>% 
+  # let's paste "symptoms" in each data entry across our columns
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ paste0(.x, " symptoms")))
+```
+
+-   Let's transform our "Yes" and "No" into a **1 letter encoding**:
+
+```{r}
+yao_symptoms %>% 
+  # let's use str_sub starting at 1 and ending at 1 
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ str_sub(.x, start=1, end=1)))
+```
+
+-   Let's **recode** the "Yes" and "No" entries in a different manner:
+
+```{r}
+yao_symptoms %>% 
+  # instead of yes and no, let's use if_else 
+  # to recode with has symptoms and does not have symptoms
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ if_else(.x=="Yes", "Has symptoms", "Does not have symptoms")))
+```
+
+-   Let's encode the "Yes" and "No" to **numeric values**:
+
+```{r}
+yao_symptoms %>% 
+  # let's use if else to encode Yes as 1 and No as 2
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ if_else(.x == "Yes", 1, 2)))
+```
+
+-   We can chain several `mutate() + across()` calls together:
+
+```{r}
+yao_symptoms %>% 
+  # first mutate converts into numeric 1 for Yes and 2 for No, using if_else
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ if_else(.x == "Yes", 1, 2))) %>% 
+  # second mutate recodes the numbers, using case_when, 1 stays 1 and 2 becomes 0
+  mutate(across(.cols = symp_fever:symp_stomach_ache,
+                .fns = ~ case_when(.x==1 ~ 1,
+                                   .x==2 ~ 0)))
+```
+
+-   We use `case_when()` to define which numerical value should be switched to 1 (TRUE, has symptoms) and which numerical value should be switched to 0 (FALSE, does not have symptoms).
+
+::: practice
+The columns from `abd_pain` to `splenomegaly` in the `febrile_diseases` dataset contain information on whether a patient had a specified symptom, recorded as "yes" or "no".
+
+Use `mutate()`, `across()` and an anonymous function to convert the variable levels to numbers, with "yes" as 1 and "no" as 0.
+
+```{r, eval = FALSE}
+Q_febrile_disease_symptoms_to_numeric <- 
+  febrile_diseases %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_febrile_disease_symptoms_to_numeric()
+.HINT_Q_febrile_disease_symptoms_to_numeric()
+```
+:::
+
+::: practice
+In the `diet` dataset, the columns from `retinol` to `zinc` give the number of milligrams of each nutrient consumed by the surveyed women in a day.
+
+```{r}
+diet %>%
+  select(retinol:zinc)
+```
+
+Use `mutate()`, `across()` and an anonymous function to convert these values to grams (divide by 1000).
+
+```{r, eval = FALSE}
+Q_diet_to_grams <- 
+  diet %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_diet_to_grams()
+.HINT_Q_diet_to_grams()
+```
+:::
+
+### Creating new columns with the `.names` argument
+
+-   So far: we replaced existing columns.
+
+-   But how to create **new** columns ?
+
+Let's first create a smaller subset of `yao_symptoms`:
+
+```{r}
+yao_symptoms_mini <- 
+  yao_symptoms %>% 
+  # we select only symp_fever, symp_headache, symp_cough
+  select(symp_fever, symp_headache, symp_cough)
+
+yao_symptoms_mini
+```
+
+-   Now, to convert **in-place** all columns to uppercase:
+
+```{r}
+yao_symptoms_mini %>% 
+  # we apply toupper
+  mutate(across(.fns = toupper))
+```
+
+-   To make *new* columns that are uppercase, we can use the `.names` argument:
+
+```{r}
+yao_symptoms_mini %>% 
+  # function is still toupper and the names will be the column name with "_uppercase"
+  mutate(across(.fns = toupper,
+                .names = "{.col}_uppercase"))
+```
+
+-   `{.col}` represents each of the old column names.
+
+-   "\_uppercase" is pasted together with the old column names.
+
+-   We can input **any arbitrary string**:
+
+```{r}
+yao_symptoms_mini %>% 
+  # instead of "_uppercase", let's add "_BIG_LETTERS" as a naming
+  mutate(across(.fns = toupper, 
+                .names = "{.col}_BIG_LETTERS"))
+```
+
+-   We can put `{.col}` wherever in the naming:
+
+```{r}
+yao_symptoms_mini %>% 
+  # let's name the column uppercase_ followed by column name
+  mutate(across(.fns = toupper, 
+                .names = "uppercase_{.col}"))
+```
+
+------------------------------------------------------------------------
+
+-   Naming allows to explicit the change we are making to the data :
+
+```{r}
+yao_symptoms_mini %>% 
+  # let's convert to numeric (0 or 1) using if else
+  # then let's name the new column with "numeric_" followed by column name
+  mutate(across(.fns = ~ if_else(.x=="Yes", 1, 0), 
+                .names = "numeric_{.col}"))
+```
+
+::: practice
+Now you will convert again the columns from `abd_pain` to `splenomegaly` in the `febrile_diseases` dataset, on patient symptoms, into numerical values. But, you will create new columns named `numeric_abd_pain` to `numeric_splenomegaly` using the `.names` argument within `across()`.
+
+```{r, eval = FALSE}
+Q_febrile_disease_symptoms_to_numeric_new_variables <- 
+  febrile_diseases %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_febrile_disease_symptoms_to_numeric_new_variables()
+.HINT_Q_febrile_disease_symptoms_to_numeric_new_variables()
+```
+:::
+
+## Using `across()` with `summarize()`
+
+-   Why? To get summary statistics over multiple variables
+
+Looking at the `diet` dataset :
+
+```{r}
+diet %>% 
+  select(retinol:zinc)
+```
+
+-   How to find the average amount of each nutrient consumed ?
+
+Without `across()` :
+
+```{r}
+diet %>% 
+  summarize(mean_retinol = mean(retinol), 
+            mean_alpha_catorene = mean(alpha_catorene), 
+            mean_beta_catorene = mean(beta_catorene), 
+            mean_vitamin_c = mean(vitamin_c), 
+            mean_vitamin_b2 = mean(vitamin_b2)
+            # And on and on and on for 15 columns
+            )
+```
+
+-   NOT efficient and BAD coding.
+
+With `across()` = 2 lines of code !
+
+```{r}
+diet %>% 
+  # we take all the column from retinol to zinc and apply the mean function
+  summarize(across(.cols = retinol:zinc,
+                   .fns = mean))
+```
+
+-   One of the primary benefits of `summarize()` = facilitates grouped summaries.
+
+-   Also valid with `across()` :
+
+```{r}
+diet %>% 
+  # let's group by age group
+  group_by(age_group) %>% 
+  # let's summarize for the mean across retinol to zinc
+  summarize(across(.cols = retinol:zinc,
+                   .fns = mean))
+```
+
+------------------------------------------------------------------------
+
+-   Let's see another example.
+
+-   `is_drug_parac` to `is_drug_other` indicate, as 1 or 0, whether or not a survey respondent was treated with the named drug:
+
+```{r}
+yao_drugs <- 
+  yaounde %>% 
+  # let's select some variables and the drugs from is_drug_parac to is_drug_other
+  select(age_years, sex, date_surveyed, is_drug_parac:is_drug_other)
+
+yao_drugs
+```
+
+-   How could we count the number of respondents who took each drug?
+
+-   We select the columns intelligently
+
+-   Then take the sum of each column
+
+```{r}
+yao_drugs %>% 
+  # intelligent select is with starts_with and the string "is_drug"
+  # then we sum
+  summarize(across(.cols = starts_with("is_drug"), 
+                   .fns = sum))
+```
+
+-   Oh no! we get all NAs!
+
+-   `sum()` has `na.rm` set to `FALSE` **by default**.
+
+-   `na.rm` should be set to TRUE.
+
+-   **Best** way to do this = lambda function !
+
+```{r}
+yao_drugs %>% 
+  # now we write the sum function with na.rm set to TRUE
+  summarize(across(.cols = starts_with("is_drug"), 
+                   .fns = ~ sum(.x, na.rm=TRUE)))
+```
+
+-   We could again create a **grouped summary**:
+
+-   Let's count the number of individuals, per sex, who have received each drug.
+
+```{r}
+yao_drugs %>% 
+  # let's group by sex
+  group_by(sex) %>% 
+  summarize(across(.cols = starts_with("is_drug"), 
+                   .fns = ~ sum(.x, na.rm = TRUE)))
+```
+
+------------------------------------------------------------------------
+
+-   A final example
+
+-   Back to the 13 symptoms columns :
+
+```{r}
+yao_symptoms
+```
+
+-   How would we count the number of people with each symptom ?
+
+-   Option 1: We could first `mutate()` the "Yes" and "No" to numeric values:
+
+```{r}
+yao_symptoms %>% 
+  # let's select symptom columns from symp_fever to symp_stomach_ache
+  # let's encode to numeric values where Yes is 1 and No is 0, using if_else
+  mutate(across(.cols = symp_fever:symp_stomach_ache, 
+                .fns = ~if_else(.x=="Yes", 1,0)))
+```
+
+-   And then use `sum()` within `summarize()`:
+
+```{r}
+yao_symptoms %>% 
+  mutate(across(.cols = symp_fever:symp_stomach_ache, 
+                .fns = ~ if_else(.x == "Yes", 1, 0))) %>% 
+  # we select the same column, then call sum, the predefined function
+  summarize(across(.cols = symp_fever:symp_stomach_ache, 
+                   .fns = ~ sum(.x, na.rm=TRUE)))
+```
+
+-   Option 2: directly use `summarize()`, by **summing with a condition**:
+
+```{r}
+yao_symptoms %>% 
+  # let's sum only where equal to "Yes"
+  summarize(across(.cols = symp_fever:symp_stomach_ache, 
+                   .fns = ~ sum(.x == "Yes")))
+```
+
+::: practice
+In the `diet` data set, the variables `fao_fgw1` to `fao_fgw21` record the number of calories consumed from different FAO food groups. (FAO stands for "Food and Agricultural Organization"; the food groups are shown in Appendix 1.).
+
+Use `summarize()` and `across()` to calculate the mean amount of calories obtained from each good group.
+
+```{r, eval = FALSE}
+Q_diet_FAO_mean <- 
+  diet %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_diet_FAO_mean()
+.HINT_Q_diet_FAO_mean()
+```
+:::
+
+::: practice
+In the `febrile_diseases` data set, the columns from `abd_pain` to `splenomegaly` in the `febrile_diseases` dataset contain information on whether a patient had a specified symptom, recorded as "yes" or "no". Use `summarize()`, `across()` to count the number of people with each symptom.
+
+```{r, eval = FALSE}
+Q_febrile_disease_symptoms_count <- 
+  febrile_diseases %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_febrile_disease_symptoms_count()
+.HINT_Q_febrile_disease_symptoms_count()
+```
+:::
+
+::: practice
+In the `yaounde` data set, calculate the median for the age, height, weight, number of bedridden days and numer of days off from work (i.e. from the variable `age_years` to the variable `n_bedridden_days`)
+
+Use `summarize()` and `across()`, giving the `.fns` argument a lambda function to calculate the median. Careful ! A lambda function with the right arguments is indispensable, else you will have an `NA` median for some of the variables.
+
+```{r, eval = FALSE}
+Q_yaounde_median <- 
+  yaounde %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_yaounde_median()
+.HINT_Q_yaounde_median()
+```
+:::
+
+### Multiple summary statistics
+
+-   With `summarize()` = possible to calculate multiple summary statistics at the same time.
+
+-   This is also possible within `across()`.
+
+With the diet data survey, we could calculate both the mean and the median across all nutrients recorded:
+
+```{r}
+diet %>%
+  # we select retinol to zinc variables
+  # we apply a list of functions: mean and median
+  summarise(across(.cols = retinol:zinc,
+                   .fns = list(mean=mean, median=median)))
+```
+
+-   Let's see how you could control the naming :
+
+```{r}
+diet %>%
+  # now in the list we change the name of the mean to average
+  # and use the .names argument to make the variable name function + column 
+  summarise(across(.cols = retinol:zinc, 
+                   .fns = list(average = mean, median = median),
+                   .names = "{.fn}_{.col}"))
+```
+
+-   Reference the name of the function using `{.fn}`
+
+-   Reference the name of the column with `{.col}`.
+
+-   **Both abbreviations are singular**!
+
+As we are discussing mean, median, standard deviation calculations, we have to **anticipate for** `NA` values:
+
+```{r}
+diet %>%
+  # let's write the mean and median functions as lambda functions with na.rm set to TRUE
+  summarise(across(.cols = retinol:zinc, 
+                   .fns = list(mean = ~ mean(.x, na.rm=TRUE),
+                               med = ~ median(.x, na.rm=TRUE)),
+                   .names = "{.fn}_{.col}"))
+```
+
+::: practice
+In the `diet` data set, calculate the mean and the standard deviation for kilocalories, water, carbohydrates, fat, and protein consumed (i.e. from the variable `kilocalories_consumed` to the variable `carbs_consumed_grams`)
+
+Use `summarize()` and `across()`, giving the `.fns` argument a list of the desired summary statistics. Make sure your means are named `COLUMN_NAME_mean` and your standard deviations are named `COLUMN_NAME_sd`.
+
+```{r, eval = FALSE}
+Q_diet_food_composition_mean_sd <- 
+  diet %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_diet_food_composition_mean_sd()
+.HINT_Q_diet_food_composition_mean_sd()
+```
+:::
+
+::: practice
+In the `febrile_diseases` data set, calculate the mean and the standard deviation for white blood cells,and all other blood analysis measurements (i.e. from the variable `wbc` to the variable `relymp_a`, seeing Appendix 2 for the detailed names of the variable name abbreviations)
+
+Use `summarize()` and `across()`, giving the `.fns` argument a list of the desired summary statistics. Careful ! You need to give a list of lambda functions to calculate the mean and standard deviation, paying attention to the `na.rm` arguments, else your summary statistics will be set to `NA`.
+
+Make sure your means are named `COLUMN_NAME_mean` and your standard deviations are named `COLUMN_NAME_sd`.
+
+```{r, eval = FALSE}
+Q_febrile_diseases_mean_blood_composition <- 
+  febrile_diseases %>%
+  ____________________________
+```
+
+```{r, include = FALSE}
+.CHECK_Q_febrile_diseases_mean_blood_composition()
+.HINT_Q_febrile_diseases_mean_blood_composition()
+```
+:::
+
+## Recap !
+
+`across()` can be used inside many different {dplyr} verbs:
+
+-   `mutate(across(multiple_columns, function(s) to apply))`
+
+-   `summarize(across(multiple_columns, function(s) to apply))`
+
+The statement defining multiple columns can be:
+
+-   a list of names e.g. `c(symp_fever, symp_headache, symp_cough)`
+
+-   a range of names e.g. `retinol:zinc`
+
+-   a condition: `!sex` OR `where(is.numeric)`
+
+The function(s) to apply across all columns can be:
+
+-   an existing function of R (such as `as.factor`, `mean` etc.)
+
+-   a custom (lambda/anonymous) function
+
+-   a list of existing functions (such as `list(mean = mean, sd = sd)`)
+
+-   a list of custom (lambda/anonymous) functions
+
+## Learning objectives
+
+1.  You can use `across()` with the `mutate()` and `summarize()` verbs to apply operations over multiple columns.
+
+2.  You can use the `.names` argument within `mutate(across())` to create new columns.
+
+3.  You can write anonymous (lambda) functions within `across()`

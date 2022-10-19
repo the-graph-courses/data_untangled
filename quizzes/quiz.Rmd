@@ -1,0 +1,350 @@
+---
+title: '\ '
+output: blogdown::html_page
+params:
+  seed: 1
+---
+
+```{r, echo = F, message = F, warning = F}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(
+  # necessary for all quizzes runs
+  tidyverse, 
+  here,
+  knitr,
+  googledrive,
+  rio,
+  # specific to this quiz             
+  cowplot, 
+  xfun,
+  #required for it to run:
+  blogdown,
+  shiny,
+  readxl)
+
+knitr::opts_chunk$set(warning = F, message = F)
+
+source(here("global/functions/misc_functions.R"))
+
+# Setup for uploading images and datasets
+if (!drive_has_token()) drive_auth(email = "trainingteam@thegraphnetwork.org")
+options(gargle_oauth_email = "trainingteam@thegraphnetwork.org")
+knitr::opts_knit$set(upload.fun = gdrive_upload) # pulled by knitr to upload image
+
+# Set seed
+set.seed(params$seed)
+```
+
+```{r echo = F}
+diab_china_dat_raw <- 
+  read_excel(here("ch04_data_wrangling/data/diabetes_china_chen.xlsx")) %>%
+  select(-`BMI(kg/m2)`) %>% 
+  # Sample data
+  slice_sample(n = 200)
+```
+
+Here you will analyze a dataset sample of a population-based cohort in China: clinical information about adults at baseline was used to predict whether they developed diabetes after some years of followup.
+
+The overall goal of this quizz will be to assess if you are capable of wrangling the data any number of ways, in anticipation of an "imaginary" subsequent data analysis. 
+
+```{r echo = F, results = "asis"}
+upload_and_link(diab_china_dat_raw, filename = "diab_china_dat_raw", format =  "csv")
+```
+
+Here are the top 6 rows of `diab_china_dat_raw` after import:
+
+```{r}
+head(diab_china_dat_raw)
+```
+
+------------------------------------------------------------------------
+
+# Part A : Select
+
+**1. Complete the code to select all the columns from SBP(mmHg) to CCR(umol/L).**
+
+We would like to select only the physiological data collected for each adult: select the range from SBP(mmHg) to CCR(umol/L).
+
+```{r echo = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  select(`SBP(mmHg)`:`CCR(umol/L)`)
+```
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  select({`SBP(mmHg)`:`CCR(umol/L)`})
+```
+
+```{r echo = F}
+column_name_drop_hint <- collapsible('Recall that for column names with special characters you have to write them in between backticks: `COLUMN(NAME)#WITH/SPECIAL+CHARACTERS` ')
+```
+
+`r column_name_drop_hint`
+
+**2. How many columns are we selecting with this range? {`r ncol(diab_china_dat)`}**
+
+------------------------------------------------------------------------
+
+**3. How do you drop the family history column?**
+
+How can you drop a column that is not of interest? 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  select({[-`family histroy of diabetes(1,Yes;0,No)`][!`family histroy of diabetes(1,Yes;0,No)`]})
+```
+
+------------------------------------------------------------------------
+
+**4. How do you select columns containing "status"?**
+
+How do you select columns based on their naming? 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  select({contains("status")})
+```
+
+**5. How many columns reflect a status of a patient ? {`r ncol(diab_china_dat_raw %>% select(contains("status")))`}**
+
+**6. Using a similar procedure, how many columns are in mmol/L (millimoles per liter: a molecular unit) ? {`r ncol(diab_china_dat_raw %>% select(contains("mmol/L")))`} **
+
+**7. How many columns are in umol/L (micromoles per liter: a molecular unit) ? {`r ncol(diab_china_dat_raw %>% select(contains("umol/L")))`} **
+------------------------------------------------------------------------
+
+**8. How can you reorder the columns to have the FPG (fasting plasma glucose) of the final visit as the first column of the dataset ? **
+
+# might be more theory
+
+This is an important column in the dataset because the fasting plasma glucose (FPG) test is one type of test that checks blood glucose levels in the body. It can be used to screen for diabetes and prediabetes (FPG levels are determined by taking a blood sample from participants who have fasted for at least 8 hours).  
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  select({`FPG of final visit(mmol/L)`,everything()})
+```
+
+```{r echo = F}
+everything_drop_hint <- collapsible('Recall the usefulness of the `everything()` function for selecting columns.')
+```
+
+`r everything_drop_hint`
+
+------------------------------------------------------------------------
+
+**9. How do you rename a the column "year of follow up" to "time of follow up (years)"? **
+# might be more theory
+How do you rename a column because you find its name unclear ? 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  rename({`time to follow up`=`year of followup`})
+```
+
+------------------------------------------------------------------------
+
+# Part B : Filter
+
+**10. How do you filter for adults with a FINAL fasting plasma glucose (FPG) level higher than 7 mmol/L ? **
+
+If the fasting plasma glucose (FPG) level is HIGHER OR EQUAL to 7 mmol/L then you can diagnose the adult as having diabetes.
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter({`FPG of final visit(mmol/L)` >= 7})
+```
+
+**11. How many patients can be diagnosed as diabetic? {`r nrow(diab_china_dat_raw %>%filter(`FPG of final visit(mmol/L)` > 7))`} **
+
+If FPG levels are between 5.5 and 7 mmol/L (approximate values), then patients are advised to monitor regularly their glycemia.
+
+```{r echo = F}
+conditions_drop_hint <- collapsible('You want to have a "strict" comparison with the upperbound value (7mmol/L) and an "inclusive" comparison with the lowerbound value (5mmol/L).')
+```
+
+`r conditions_drop_hint`
+
+**12. How many patients should monitor on a regular basis their glycemia? {`r nrow(diab_china_dat_raw %>%filter(`FPG of final visit(mmol/L)` < 7 & `FPG of final visit(mmol/L)`  >= 5.5))`}** 
+
+
+**13. How many patients are neither diabetic nor at risk? {`r nrow(diab_china_dat_raw %>%filter(`FPG of final visit(mmol/L)` < 5.5))`}**
+
+------------------------------------------------------------------------ 
+
+**14. How many patients are aged above 50 and have a normal cholesterol (inferior to 5 mmol/L)? {`r nrow(diab_china_dat_raw %>%filter(`Cholesterol(mmol/L)` < 5 & `Age (y)` > 50))`}**
+
+------------------------------------------------------------------------ 
+
+**15. How many patients are men, have a normal HDL-c level (superior to 1.6 mmol/L) and a normal LDL level (less than 2.6 mmol/L)? {`r nrow(diab_china_dat_raw %>%filter(`Gender(1, male; 2, female)`==1 & `HDL-c(mmol/L)` > 1.6 & `LDL(mmol/L)` < 2.6 ))`}**
+
+------------------------------------------------------------------------ 
+
+**16. How many patients have a known smoker status ? (i.e. how many patients have a smoker status that is not NA?)**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  filter({!is.na}(`smoking status(1,current smoker;2, ever smoker;3,never smoker)`))
+```
+
+**17. How many patients have a known drinking status ? (i.e. how many patients have a drinking status that is not NA?) {`r nrow(diab_china_dat_raw %>%filter(!is.na(`drinking status(1,current drinker;2, ever drinker;3,never drinker)`)))`}**
+
+------------------------------------------------------------------------ 
+
+Part C : Mutate and Across
+
+**18. From the BUN (mmol/L) (blood urea nitrogen) column, please create a new column called BUN(mol/L) where the units change from mmol/L to mol/L. (Reminder: 1000 mmol = 1 mole)**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(`BUN(mol/L)` = {`BUN(mmol/L)`*10^-3})
+```
+
+**19. Like in the lesson examples, create a BMI variable using the weight(kg) and height(cm) columns of the dataset. (Careful: the height variable is in centimeters not meters)**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(BMI = {`weight(kg)`/(`height(cm)`*10^-2)^2})
+```
+
+------------------------------------------------------------------------
+
+**20. Set as a factor the family history variable of the dataset.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(`family histroy of diabetes(1,Yes;0,No)` = {as.factor}(`family histroy of diabetes(1,Yes;0,No)`))
+```
+
+------------------------------------------------------------------------
+
+**21. Create a new `is_adult` variable from the age variable (Hint: an adult is someone older than 18).**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(is_adult = {`Age (y)`>18})
+```
+
+**22. Using a similar manipulation, how many patients are above 30? `r nrow(diab_china_dat_raw %>% mutate(is_adult = `Age (y)`>30) %>% filter(is_adult==TRUE))`**
+
+------------------------------------------------------------------------
+
+**23. Using `mutate()`, create a new variable reflecting smoking history (recategorizing people as smokers or non smokers). **
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(smoking_history = {case_when}(
+    {`smoking status(1,current smoker;2, ever smoker;3,never smoker)` == 1 | `smoking status(1,current smoker;2, ever smoker;3,never smoker)` == 2} ~ "smoker",
+    {`smoking status(1,current smoker;2, ever smoker;3,never smoker)` == 3} ~ "non smoker",
+    {is.na(`smoking status(1,current smoker;2, ever smoker;3,never smoker)`)} ~ "unknown"
+  ))
+```
+
+**24. How many have a smoking history? `r nrow(diab_china_dat %>% filter(smoking_history=="smoker"))**
+
+**25. With a similar procedure for drinking history (naming anyone with drinking history in a `drinking_history` column as a "drinker" and "non drinker"), how many patients have a drinking history? `r nrow(diab_china_dat_raw %>% mutate(drinking_history = case_when(`drinking status(1,current drinker;2, ever drinker;3,never drinker)` == 1 | `drinking status(1,current drinker;2, ever drinker;3,never drinker)` == 2 ~ "drinker",`drinking status(1,current drinker;2, ever drinker;3,never drinker)` == 3 ~ "non drinker", {is.na(`drinking status(1,current drinker;2, ever drinker;3,never drinker)`)} ~ "unknown")) %>% filter(drinking_history =="drinker"))`**
+
+------------------------------------------------------------------------
+
+**26. Create a new variable to look at the age of participants differently: make an `age_group` variable. **
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate(age_groups = {case_when}(
+    {`Age (y)` <= 20 } ~ "0-20",
+    {`Age (y)` > 20 | `Age (y)` <= 40} ~ "20-40",
+    {`Age (y)` > 40 | `Age (y)` <= 60} ~ "40-60",
+    {`Age (y)` > 0 | `Age (y)` <= 80} ~ "60-80",
+    {`Age (y)` > 80 } ~ "80+"
+  ))
+```
+
+**27. How many patients are in the 20-40 age group? `r nrow(diab_china_dat %>% filter(age_groups=="20-40"))**
+
+------------------------------------------------------------------------
+
+**28. Across all columns containing "mmol/L": convert the columns in mol/L.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  mutate({across}({contains}("mmol/L"), 
+                ~{.x}*10^-3))
+```
+
+------------------------------------------------------------------------ 
+
+Part D : Summarize and Group by
+
+**30. Write up code to get the average of cholesterol over entire study.**
+
+```{r eval = F}
+mean_cholesterol_result <- 
+  diab_china_dat_raw %>%
+  {summarize}(mean_cholesterol = {mean}(`Cholesterol(mmol/L)`, na.rm={TRUE}))
+```
+
+**31. What is the value of the mean cholesterol level (give the resulting number with one decimal)? {`r round(mean_cholesterol_result$mean_cholesterol, 1)`}**
+
+**32. Following a similar method, give the median trigyceride level over all patients: {`r  round(diab_china_dat_raw %>% summarize(median_triglyceride = median(`Triglyceride(mmol/L)`, na.rm=TRUE)) %>% pull(), 1)`}**
+
+**33. One last task: give the average age of this cohort: {`r round(diab_china_dat_raw %>% summarize(median_age = median(`Age (y)`, na.rm=TRUE)) %>% pull(), 0)`}**
+
+------------------------------------------------------------------------
+
+**34. Across all columns in mmHg, calculate the mean and the standard deviation.**
+
+```{r eval = F}
+variables_mmol_per_liter <- 
+  diab_china_dat_raw %>%
+  summarise(across({contains}("mmHg"), 
+                   {list}(mean = {mean}, sd = {sd})
+                   ))
+```
+
+**35. What is the standard deviation of all the measurements of SBP (rounded to 2 decimals)? {`r round(diab_china_dat_raw %>%summarise(across(contains("mmHg"), list(mean = mean, sd = sd))) %>% select(`SBP(mmHg)_sd`) %>%pull(), 2)`}**
+
+**36. Following a similar approach, give the minimal value of DBP (rounded to 2 decimals): {`r round(diab_china_dat_raw %>%summarise(across(contains("mmHg"), list(max = max, min = min))) %>% select(`DBP(mmHg)_min`) %>%pull(), 2)`}**
+
+------------------------------------------------------------------------
+
+**37. By gender, calculate the average HDL-c level over all patients.** 
+
+```{r eval = F}
+average_HDL_by_gender <- 
+  diab_china_dat_raw %>%
+  group_by(`Gender(1, male; 2, female)`) %>%
+  summarize(average_HDL = mean(`HDL-c(mmol/L)`, na.rm=TRUE))
+```
+
+**38. What is the average HDL-c level for men (round to 2 decimals)? {`r round(diab_china_dat_raw %>%group_by(`Gender(1, male; 2, female)`) %>%summarize(average_HDL = mean(`HDL-c(mmol/L)`, na.rm=TRUE)) %>%filter(`Gender(1, male; 2, female)`==1) %>%pull(),2)`}**
+
+**39. What is the average LDL level for a non-smoker and non-drinker (round to 2 decimals)? {`r round(diab_china_dat_raw %>%group_by(`smoking status(1,current smoker;2, ever smoker;3,never smoker)`,`drinking status(1,current drinker;2, ever drinker;3,never drinker)`) %>%summarize(average_LDL = mean(`LDL(mmol/L)`, na.rm=TRUE)) %>%filter(`smoking status(1,current smoker;2, ever smoker;3,never smoker)`==3,`drinking status(1,current drinker;2, ever drinker;3,never drinker)`==3)%>%pull(),2)`}**
+
+------------------------------------------------------------------------
+
+**40. Investigate how many people have family history, and how many do not.**
+
+```{r eval = F}
+counts_family_history <-  
+  diab_china_dat_raw %>%
+  {count}(`family histroy of diabetes(1,Yes;0,No)`)
+```
+**41. How many patients have family history? {`r round(diab_china_dat_raw %>% count(`family histroy of diabetes(1,Yes;0,No)`)%>%filter(`family histroy of diabetes(1,Yes;0,No)`==1)%>%pull(),2)`}**
+
+**42. In a similar manner, how many patients are women in this cohort? {`r round(diab_china_dat_raw %>% count(`Gender(1, male; 2, female)`)%>%filter(`Gender(1, male; 2, female)`==2)%>%pull(),2)`}**
+
+
+

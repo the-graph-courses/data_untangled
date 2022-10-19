@@ -1,0 +1,188 @@
+---
+title: '\ '
+output: blogdown::html_page
+params:
+  seed: 1
+---
+
+```{r, echo = F, message = F, warning = F}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(
+  # necessary for all quizzes runs
+  tidyverse, 
+  here,
+  knitr,
+  googledrive,
+  rio,
+  # specific to this quiz             
+  cowplot, 
+  xfun,
+  #required for it to run:
+  blogdown,
+  shiny,
+  readxl,
+  janitor)
+
+knitr::opts_chunk$set(warning = F, message = F)
+
+source(here("global/functions/misc_functions.R"))
+
+# Setup for uploading images and datasets
+if (!drive_has_token()) drive_auth(email = "trainingteam@thegraphnetwork.org")
+options(gargle_oauth_email = "trainingteam@thegraphnetwork.org")
+knitr::opts_knit$set(upload.fun = gdrive_upload) # pulled by knitr to upload image
+
+# Set seed
+set.seed(params$seed)
+```
+
+```{r echo = F}
+diab_china_dat_raw <- 
+  read_excel(here("ch04_data_wrangling/data/diabetes_china_chen.xlsx")) %>%
+  select(-`BMI(kg/m2)`) %>% 
+  # Sample data
+  slice_sample(n = 200) %>%
+  clean_names()
+```
+
+Here you will analyze a dataset sample of a population-based cohort in China: clinical information about adults at baseline was used to predict whether they developed diabetes after some years of followup.
+
+The overall goal of this quizz will be to assess if you are capable of wrangling the data any number of ways, in anticipation of an "imaginary" subsequent data analysis. 
+
+```{r echo = F, results = "asis"}
+upload_and_link(diab_china_dat_raw, filename = "diab_china_dat_raw", format =  "csv")
+```
+
+Here are the top 6 rows of `diab_china_dat_raw` after import:
+
+```{r}
+head(diab_china_dat_raw)
+```
+
+------------------------------------------------------------------------ 
+
+# Part A : Filtering with relational operators
+
+**1. How do you filter for adults with a FINAL fasting plasma glucose (FPG) level higher than 7 mmol/L ? **
+
+If the fasting plasma glucose (FPG) level is HIGHER OR EQUAL to 7 mmol/L then you can diagnose the adult as having diabetes.
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter({fpg_of_final_visit_mmol_l>=7})
+```
+
+**2 How many patients can be diagnosed as diabetic? {`r nrow(diab_china_dat_raw %>%filter(fpg_of_final_visit_mmol_l>=7))`} **
+
+
+**3 How many patients are neither diabetic nor at risk? {`r nrow(diab_china_dat_raw %>%filter(fpg_of_final_visit_mmol_l<5.5))`}**
+
+If the fasting plasma glucose (FPG) level is LOWER than 5.5 mmol/L then the patient does not have, nor is at risk of, diabetes.
+
+
+------------------------------------------------------------------------ 
+
+# Part B : Filtering using multiple conditions
+
+**4A Select patients who should be monitoring their glycemia?**
+
+If FPG levels are between 5.5 and 7 mmol/L (approximate values), then patients are advised to monitor regularly their glycemia. 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter({fpg_of_final_visit_mmol_l<7} {&} {fpg_of_final_visit_mmol_l>=5.5})
+```
+
+```{r echo = F}
+conditions_drop_hint <- collapsible('Based on previous questions, you want to have a "strict" comparison with the upperbound value (7mmol/L) and an "inclusive" comparison with the lowerbound value (5mmol/L).')
+```
+
+`r conditions_drop_hint`
+
+**4B How many patients should monitor on a regular basis their glycemia? {`r nrow(diab_china_dat_raw%>%filter(fpg_of_final_visit_mmol_l<7 & fpg_of_final_visit_mmol_l >= 5.5))`}**
+
+**5 How many patients are aged above 50 and have a normal cholesterol (inferior to 5 mmol/L)? {`r nrow(diab_china_dat_raw%>%filter(cholesterol_mmol_l<5 & age_y>50))`}**
+
+**6 How many patients are men, have a normal HDL-c level (superior to 1.6 mmol/L) and a normal LDL level (less than 2.6 mmol/L)? {`r nrow(diab_china_dat_raw %>%filter(gender_1_male_2_female==1 & hdl_c_mmol_l>1.6 & ldl_mmol_l<2.6))`}**
+
+**7 How many people in the dataset neither smoke nor drink ? {`r nrow(diab_china_dat_raw %>% filter((smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker==3) & (drinking_status_1_current_drinker_2_ever_drinker_3_never_drinker==3)))`}**
+
+**8 Keep only patients older than 80 or all patients younger than 30**
+
+We will consider people stricly older than 80 and strictly younger than 30. 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter(age_y{>}80 {|} {age_y<30})
+```
+
+**9 Keep only patients from site 5 OR from site 10 **
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter({site==5} {|} site{==}10)
+```
+
+------------------------------------------------------------------------ 
+
+# Part C : Dropping rows
+
+**10 Drop all the men from the dataset.**
+
+Men are encoded with a number, you should use this number and a negating condition to drop all of them from the dataset. 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter({!}(gender_1_male_2_female{==2}))
+```
+
+**11 Drop all non-smokers from the dataset**
+
+There are smokers, past smokers and non-smokers. We will drop the non-smokers.
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter({!}(smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker{==3})))
+```
+
+**12 How many people in the dataset are or have been either smokers OR drinkers ? {`r nrow(diab_china_dat_raw %>% filter((smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker!=3) | (drinking_status_1_current_drinker_2_ever_drinker_3_never_drinker!=3)))`}**
+
+Write your code below with the two conditions and their operators
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  filter((smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker{!=3}) {|} (drinking_status_1_current_drinker_2_ever_drinker_3_never_drinker{!=3}))
+```
+
+------------------------------------------------------------------------ 
+
+# Part D : Filtering with `NA`
+
+**13 Select patients who have a known smoker status. (i.e. how many patients have a smoker status that is not NA?)**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  filter({!is.na}(smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker))
+```
+
+**14 Keep all the the people who have complete records for LDL and HDL-c measures.**
+
+Let's imagine we are specifically interested in these two variables and want to keep only complete records for these two measurements. Drop all data entries which have them as NA. 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>%
+  filter({!is.na}(ldl_mmol_l) {&} {!is.na(hdl_c_mmol_l)})
+```
+
+**15 How many patients have a known drinking status ? (i.e. how many patients have a drinking status that is not NA?) {`r nrow(diab_china_dat_raw %>%filter(!is.na(drinking_status_1_current_drinker_2_ever_drinker_3_never_drinker)))`}**
+
+
+

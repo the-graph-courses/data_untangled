@@ -1,0 +1,262 @@
+---
+title: '\ '
+output: blogdown::html_page
+params:
+  seed: 1
+---
+
+```{r, echo = F, message = F, warning = F}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(
+  # necessary for all quizzes runs
+  tidyverse, 
+  here,
+  knitr,
+  googledrive,
+  rio,
+  # specific to this quiz             
+  cowplot, 
+  xfun,
+  #required for it to run:
+  blogdown,
+  shiny,
+  readxl)
+
+knitr::opts_chunk$set(warning = F, message = F)
+
+source(here("global/functions/misc_functions.R"))
+
+# Setup for uploading images and datasets
+if (!drive_has_token()) drive_auth(email = "trainingteam@thegraphnetwork.org")
+options(gargle_oauth_email = "trainingteam@thegraphnetwork.org")
+knitr::opts_knit$set(upload.fun = gdrive_upload) # pulled by knitr to upload image
+
+# Set seed
+set.seed(params$seed)
+```
+
+The overall goal of this quiz will be test your knowledge of group_by's influence on other dplyr verbs.  
+
+------------------------------------------------------------------------
+
+First, you will analyze a dataset sample of a population-based cohort in China: clinical information about adults at baseline was used to predict whether they developed diabetes after some years of followup.
+
+```{r echo = F}
+diab_china_dat_raw <- 
+  read_excel(here("ch04_data_wrangling/data/diabetes_china_chen.xlsx")) %>%
+    # Sample data
+  slice_sample(n = 200) %>%
+  select(-`BMI(kg/m2)`) %>% 
+  mutate(`smoking status(1,current smoker;2, ever smoker;3,never smoker)` = as.factor(`smoking status(1,current smoker;2, ever smoker;3,never smoker)`),
+         `drinking status(1,current drinker;2, ever drinker;3,never drinker)` = as.factor(`drinking status(1,current drinker;2, ever drinker;3,never drinker)`)) %>%
+  clean_names()
+```
+
+```{r echo = F, results = "asis"}
+upload_and_link(diab_china_dat_raw, filename = "diab_china_dat_raw", format =  "csv")
+```
+
+Here are the top 6 rows of `diab_china_dat_raw` after import:
+
+```{r}
+head(diab_china_dat_raw)
+```
+
+------------------------------------------------------------------------
+
+Second, you will be working with an interesting survey data. HIV-positive people were surveyed about socio-demographics and their feelings of depression, with the eye to understanding the causes of depression.
+
+```{r echo = F}
+hiv_depression_india_raw <- 
+  read_excel(here("ch04_data_wrangling/data/hiv_depression_india_rabeya.xlsx")) %>%
+  # Sample data
+  slice_sample(n = 200) %>%
+  mutate(Religion = if_else(Religion==1, "islam", "hindu"),
+         Sex = case_when(Sex==1 ~"male", 
+                         Sex==2 ~"female",
+                         Sex==3 ~ "transgender"),
+         Marital_Status = case_when(
+           Marital_Status ==0 ~ "married",
+           Marital_Status==1 ~ "unmarried",
+           Marital_Status==2 ~ "divorced or separated"),
+         Suicidal_Thoughts_or_Wishes = case_when(
+           Suicidal_Thoughts_or_Wishes==0 ~ "none",
+           Suicidal_Thoughts_or_Wishes==1 ~ "some",
+           Suicidal_Thoughts_or_Wishes==2 ~ "often",
+           Suicidal_Thoughts_or_Wishes==3 ~ "omnipresent"),
+         Sadness = case_when(
+           Sadness ==0 ~ "none",
+           Sadness==1 ~ "some",
+           Sadness==2 ~ "often",
+           Sadness==3 ~ "unbearable"),
+         Pesimism = case_when(
+           Pesimism ==0 ~ "none",
+           Pesimism==1 ~ "discouraged",
+           Pesimism==2 ~ "hopeless",
+           Pesimism==3 ~ "hopeless and doomed")
+         ) %>%
+  select(Age, Sex, Religion, Marital_Status, Suicidal_Thoughts_or_Wishes, Sadness, Pesimism) %>%
+  clean_names()
+```
+
+```{r echo = F, results = "asis"}
+upload_and_link(hiv_depression_india_raw, filename = "hiv_depression_india_raw", format =  "csv")
+```
+
+Here are the top 6 rows of `hiv_depression_india_raw` after import:
+
+```{r}
+head(hiv_depression_india_raw)
+```
+
+------------------------------------------------------------------------
+
+# Part A : Arrange and Group_by
+
+**1 In the diabetes dataset, per gender, arrange the cholesterol measurement, in an ascending order.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by({gender_1_male_2_female}) %>% 
+  arrange({cholesterol_mmol_l}, {.by_group} = TRUE)
+```
+
+**2 Using the diabetes dataset, per smoking status, arrange the triglyceride measurement, in an ascending order.**
+
+Let's do a similar arrangement as the previous question, BUT without using group_by(). 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  arrange({smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker}, {triglyceride_mmol_l})
+```
+
+**3 Using the diabetes dataset, per gender, arrange the FPG measurement for the last visit, in a DESCENDING order.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  arrange({gender_1_male_2_female}, {desc}(fpg_of_final_visit_mmol_l))
+```
+  
+**4 Using the diabetes dataset, per gender and per smoking status, arrange the FPG measurement for the last visit, in a DESCENDING order.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by({[gender_1_male_2_female,
+           smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker][smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker, gender_1_male_2_female]}) %>%
+  arrange({desc(fpg_of_final_visit_mmol_l)}, {.by_group=TRUE})
+```
+
+**5 Using the HIV dataset, arrange age, per levels of suicidal thoughts.**
+
+```{r eval = F}
+hiv_depression_india <- 
+  hiv_depression_india_raw %>% 
+  {arrange}({suicidal_thoughts_or_wishes}, {age})
+```
+  
+**6 Using the HIV dataset, arrange age (in a DESCENDING order), per marital status and per levels of sadness feelings.**
+
+```{r eval = F}
+hiv_depression_india <- 
+  hiv_depression_india_raw %>% 
+  {group_by}({[marital_status,sadness][sadness,marital_status]}) %>%
+  {arrange}({desc(age)}, {.by_group=TRUE})
+```
+
+------------------------------------------------------------------------
+
+# Part B : Filter and Group_by
+
+**7 Using the diabetes dataset, extract the maximal measurement over all patients of FPG at the final visit, per gender.**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by({gender_1_male_2_female}) %>% 
+  filter({fpg_of_final_visit_mmol_l} == {max(fpg_of_final_visit_mmol_l)})
+```
+
+**8 Using the diabetes dataset, per gender, extract all patient whose LDL levels are strictly superior to the mean LDL level calculated over all patients.**
+
+Careful of NA values !
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  {group_by}({gender_1_male_2_female}) %>% 
+  filter(ldl_mmol_l {>} mean({ldl_mmol_l}, {na.rm=TRUE}))
+```
+
+**9 Using the diabetes dataset, per smoking status and per drinking status, extract the oldest patients. **
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  {group_by}(drinking_status_1_current_drinker_2_ever_drinker_3_never_drinker, smoking_status_1_current_smoker_2_ever_smoker_3_never_smoker) %>% 
+  {filter}({age_y=max(age_y)}) 
+```
+
+### YOU ARE HERE 
+
+**10 HIV the heaviest man and heaviest woman per age group **
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by(sex, age_category) %>% 
+  filter(weight_kg == max(weight_kg)) 
+```
+
+**11 HIV the heaviest man and heaviest woman per age group **
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by(sex, age_category) %>% 
+  filter(weight_kg == max(weight_kg)) 
+```
+
+------------------------------------------------------------------------
+
+# Part C : Mutate and Group_by
+
+**12 DIAB**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by(sex) %>%
+  mutate(weight_rank = rank(weight_kg)) 
+```
+
+**13 DIAB**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by(sex) %>%
+  mutate(weight_rank = rank(desc(weight_kg)))
+```
+
+**14 DIAB**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by(sex, age_category) %>% 
+  mutate(weight_rank = rank(desc(weight_kg)))
+```
+
+**15 HIV**
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  group_by(sex, age_category) %>% 
+  mutate(weight_rank = rank(desc(weight_kg)))
+```
+

@@ -1,0 +1,425 @@
+---
+title: "Multiple-choice quiz | Groupby Summarize"
+---
+
+```{r setup, include=FALSE}
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, knitr, here)
+knitr::opts_knit$set(upload.fun = imgur_upload)
+```
+
+# Intro
+
+We are continuing our quizzes on different {dplyr} verbs ! This quiz will check your understanding of the summarize and the group_by verbs.
+
+------------------------------------------------------------------------
+
+# Q: 1
+
+Which of the following defines a summary statistic?
+
+## A 
+
+`a summary statistic describes a value with a sequence of values`
+
+## B
+
+`a summary statistic describes a sequence of values with a mean`
+
+## C
+
+`a summary statistic describes a sequence of values with a single value`
+
+## Answer
+
+C
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 2
+
+Which of the following is not a summary statistic? 
+
+## A 
+
+`the mean`
+
+## B
+
+`the division`
+
+## C
+
+`the inter-quartile ratio`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 3
+
+Is the following statement true or false?
+
+*summarize() is the only way to get the mean of a variable.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 4
+
+How do you write a summarize statement to get the mean of the age variable ?
+
+## A 
+
+`summarize(mean_age = mean(age))`
+
+## B
+
+`summarize(mean(age))`
+
+## C
+
+`summarize(mean_age = mean(mean_age$age))`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 5
+
+Is the following statement true or false?
+
+*With summarize, you need to calculate one summary statistic at a time.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 6
+
+Is the following statement true or false?
+
+*The sum(), mean(), and other summary functions, automatically exclude NA values from their calculations.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 7
+
+Is the following statement true or false?
+
+*In group_by, the operations are split according to these groups.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 8
+
+What does grouping by both age and sex imply  ?  
+
+## A 
+
+`we group by age, then we group by sex`
+
+## B
+
+`we generate all the unique combinations from both variables`
+
+## C
+
+`we create groups only for the respondents who have a recorded age or sex`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 9
+
+The .drop argument of group_by() is important because...  ?
+
+## A 
+
+`It serves to show all combinations of variables, even those not accounted for in the data`
+
+## B
+
+`It discards the variables used to make the groupings and only keeps the groups`
+
+## C
+
+`It drops the groups with NA values`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 10
+
+Fill in the blank
+
+*After you group, using group_by(), and transforming your data according to the groups, you need to remember to ...*
+
+## A 
+
+`ungroup()`
+
+## B 
+
+`no_group()`
+
+## C
+
+`undo_group()`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 11
+
+Is the following statement true or false?
+
+*When you group_by() then summarize(), you summarize by group.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 12
+
+Is the following statement true or false?
+
+*When you group_by() then summarize(), you get a different summary statistic for each group.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 13
+
+Fill in the blank
+
+*Grouping by age, sex, and education, all at the same time, is called ... grouping.*
+
+
+## A 
+
+`complex`
+
+## B 
+
+`embedded`
+
+## C
+
+`nested`
+
+## Answer
+
+C
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 14
+
+Is the following statement true or false?
+
+*When grouping by more than one variable, the order of the variables matters because, for example, a different order will generate different summary statistics.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 15
+
+Is the following statement true or false?
+
+*Using n() inside of summarize() is the same as using count()*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------

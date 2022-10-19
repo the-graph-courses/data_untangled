@@ -1,0 +1,241 @@
+Number,Age,Age group,Sex,Socioeconomic class,Marital status,Height,weight,body mass index,walk test,gait speed meters per second,Gripstrength,Gripstrength categories,appendicular skeletal mass,skeletal muscle index,skeletal muscle index category,Sarcopenia status
+7,60,less or equal to 75 years,female,above poverty line,married,157,58,23.5,11,less than 0.8 per second,8.3,low strength,16.02,6.5,normal,no sarcopenia
+8,72,less or equal to 75 years,male,above poverty line,married,165,72,26.4,11,less than 0.8 per second,13.1,low strength,25.48,9.36,normal,no sarcopenia
+9,62,less or equal to 75 years,female,above poverty line,married,159,64,25.3,8,less than 0.8 per second,8.9,low strength,17.44,6.9,normal,no sarcopenia
+12,72,less or equal to 75 years,female,above poverty line,widow,147.3,54.5,25.1,7,less than 0.8 per second,12.3,low strength,13.23,6.1,normal,no sarcopenia
+13,60,less or equal to 75 years,female,above poverty line,married,155,47,19.6,7,less than 0.8 per second,14.6,low strength,13.18,5.49,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+19,60,less or equal to 75 years,female,above poverty line,married,142.2,64,31.7,9,less than 0.8 per second,8.7,low strength,16.33,8.07,normal,no sarcopenia
+45,60,less or equal to 75 years,male,above poverty line,widower,168,60,21.3,8,less than 0.8 per second,18.2,low strength,23.96,8.49,normal,no sarcopenia
+46,60,less or equal to 75 years,female,above poverty line,married,180,64.6,19.9,7,less than 0.8 per second,30.7,normal strength,19.42,5.99,normal,no sarcopenia
+51,63,less or equal to 75 years,female,above poverty line,married,160,57.8,22.6,9,less than 0.8 per second,8.1,low strength,15.91,6.21,normal,no sarcopenia
+56,60,less or equal to 75 years,female,above poverty line,married,160,71.8,28,7,less than 0.8 per second,14.7,low strength,19.62,7.66,normal,no sarcopenia
+65,70,less or equal to 75 years,male,above poverty line,married,182.9,57,17,7,less than 0.8 per second,6.9,low strength,23.41,7,normal,no sarcopenia
+82,65,less or equal to 75 years,male,above poverty line,married,152.4,64,27.6,7,less than 0.8 per second,11.8,low strength,23.23,10,normal,no sarcopenia
+92,69,less or equal to 75 years,male,above poverty line,widower,170,69,23.9,9,less than 0.8 per second,26.3,low strength,25.43,8.8,normal,no sarcopenia
+95,70,less or equal to 75 years,female,above poverty line,widow,162,60,22.9,10,less than 0.8 per second,4.8,low strength,15.92,6.06,normal,no sarcopenia
+96,72,less or equal to 75 years,female,above poverty line,married,162,60,22.9,7,less than 0.8 per second,14.9,low strength,15.72,5.99,normal,no sarcopenia
+107,68,less or equal to 75 years,female,above poverty line,married,161,70,27,9,less than 0.8 per second,20,normal strength,18.47,7.13,normal,no sarcopenia
+113,63,less or equal to 75 years,male,above poverty line,married,164,58,21.6,9,less than 0.8 per second,24,low strength,22.87,8.5,normal,no sarcopenia
+114,74,less or equal to 75 years,female,above poverty line,widow,158,60,24,13,less than 0.8 per second,10,low strength,15.21,6.09,normal,no sarcopenia
+116,62,less or equal to 75 years,male,above poverty line,married,165,55,20.2,13,less than 0.8 per second,13,low strength,22.31,8.2,normal,no sarcopenia
+121,67,less or equal to 75 years,female,above poverty line,widow,164,50,18.6,10,less than 0.8 per second,10,low strength,13.93,5.18,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+122,74,less or equal to 75 years,female,above poverty line,married,160,55,21.5,9,less than 0.8 per second,10,low strength,14.15,5.53,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+123,60,less or equal to 75 years,female,above poverty line,married,162,62,23.6,7,less than 0.8 per second,13,low strength,17.38,6.62,normal,no sarcopenia
+125,63,less or equal to 75 years,male,above poverty line,unmarried,172,80,27,12,less than 0.8 per second,32,normal strength,28.86,9.76,normal,no sarcopenia
+126,60,less or equal to 75 years,male,above poverty line,unmarried,170,78,27,8,less than 0.8 per second,24,low strength,28.51,9.87,normal,no sarcopenia
+134,69,less or equal to 75 years,male,above poverty line,married,170,65,22.5,7,less than 0.8 per second,25,low strength,24.46,8.46,normal,no sarcopenia
+137,60,less or equal to 75 years,female,above poverty line,married,158,60,24,10,less than 0.8 per second,12,low strength,16.58,6.64,normal,no sarcopenia
+139,68,less or equal to 75 years,female,above poverty line,widow,160,55,21.5,8,less than 0.8 per second,10,low strength,14.74,5.76,normal,no sarcopenia
+142,65,less or equal to 75 years,male,above poverty line,widower,168,50,17.7,7,less than 0.8 per second,30,normal strength,21.03,7.45,normal,no sarcopenia
+143,60,less or equal to 75 years,male,above poverty line,married,170,60,20.8,9,less than 0.8 per second,35,normal strength,24.12,8.35,normal,no sarcopenia
+149,60,less or equal to 75 years,male,above poverty line,married,175,65,21.2,7,less than 0.8 per second,40,normal strength,25.73,8.4,normal,no sarcopenia
+160,60,less or equal to 75 years,male,above poverty line,married,164,95,35.3,9,less than 0.8 per second,23.9,low strength,32.19,11.97,normal,no sarcopenia
+170,60,less or equal to 75 years,female,above poverty line,married,160,52,20.3,11,less than 0.8 per second,13.2,low strength,14.79,5.78,normal,no sarcopenia
+172,72,less or equal to 75 years,female,above poverty line,married,165,70,25.7,9,less than 0.8 per second,12.7,low strength,18.39,6.76,normal,no sarcopenia
+185,61,less or equal to 75 years,female,above poverty line,married,150,65,28.9,10,less than 0.8 per second,17.2,low strength,17.08,7.59,normal,no sarcopenia
+190,64,less or equal to 75 years,male,above poverty line,married,172,82,27.7,7,less than 0.8 per second,36.4,normal strength,29.25,9.89,normal,no sarcopenia
+191,70,less or equal to 75 years,male,above poverty line,married,178,65,20.5,8,less than 0.8 per second,18,low strength,24.98,7.89,normal,no sarcopenia
+196,60,less or equal to 75 years,male,above poverty line,married,165.1,72,26.4,9,less than 0.8 per second,28.8,low strength,26.67,9.78,normal,no sarcopenia
+199,60,less or equal to 75 years,male,above poverty line,married,162.5,57,21.6,10,less than 0.8 per second,17.6,low strength,22.8,8.64,normal,no sarcopenia
+200,70,less or equal to 75 years,male,above poverty line,married,167.8,74.6,26.5,8,less than 0.8 per second,34.1,normal strength,26.53,9.42,normal,no sarcopenia
+201,67,less or equal to 75 years,male,above poverty line,married,170.2,70,24.2,7,less than 0.8 per second,30.6,normal strength,25.89,8.94,normal,no sarcopenia
+203,65,less or equal to 75 years,female,above poverty line,married,161.7,60,22.9,7,less than 0.8 per second,17.3,low strength,16.38,6.27,normal,no sarcopenia
+204,64,less or equal to 75 years,female,above poverty line,widow,163,72,27.1,7,less than 0.8 per second,22.5,normal strength,19.51,7.34,normal,no sarcopenia
+207,71,less or equal to 75 years,male,above poverty line,widower,162,59,22.5,7,less than 0.8 per second,14.1,low strength,22.17,8.45,normal,no sarcopenia
+208,67,less or equal to 75 years,female,above poverty line,married,148,68,31,8,less than 0.8 per second,10.2,low strength,17.07,7.79,normal,no sarcopenia
+213,67,less or equal to 75 years,male,above poverty line,married,169,60,21,7,less than 0.8 per second,17.5,low strength,23.36,8.18,normal,no sarcopenia
+239,62,less or equal to 75 years,female,above poverty line,married,158,58,23.2,11,less than 0.8 per second,12.6,low strength,15.9,6.37,normal,no sarcopenia
+240,65,less or equal to 75 years,female,above poverty line,widow,150,52,23.1,15,less than 0.8 per second,13.8,low strength,13.52,6.01,normal,no sarcopenia
+6,84,More than 75 years,female,above poverty line,widow,155,54,22.5,15,less than 0.8 per second,1.3,low strength,12.53,5.22,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+26,85,More than 75 years,female,above poverty line,widow,144.7,68,32.5,7,less than 0.8 per second,13.8,low strength,15.05,7.19,normal,no sarcopenia
+52,80,More than 75 years,female,above poverty line,married,152.4,37,15.9,11,less than 0.8 per second,6.4,low strength,8.58,3.69,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+57,80,More than 75 years,female,above poverty line,married,160,60,23.4,7,less than 0.8 per second,15,low strength,14.78,5.77,normal,no sarcopenia
+77,80,More than 75 years,female,above poverty line,married,169,60,21,10,less than 0.8 per second,15,low strength,15.48,5.42,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+85,78,More than 75 years,male,above poverty line,married,164,75,27.9,9,less than 0.8 per second,18.2,low strength,25.55,9.5,normal,no sarcopenia
+89,83,More than 75 years,male,above poverty line,widower,165,69,25.3,9,less than 0.8 per second,23.1,low strength,23.67,8.69,normal,no sarcopenia
+91,80,More than 75 years,male,above poverty line,widower,172,65,22,9,less than 0.8 per second,19.1,low strength,23.54,7.96,normal,no sarcopenia
+101,79,More than 75 years,female,above poverty line,widow,160,67,26.2,9,less than 0.8 per second,9.8,low strength,16.59,6.48,normal,no sarcopenia
+147,80,More than 75 years,male,above poverty line,married,172,52.2,17.6,7,less than 0.8 per second,39,normal strength,20.41,6.9,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+182,77,More than 75 years,male,above poverty line,married,154,60,25.3,7,less than 0.8 per second,26,low strength,21.21,8.94,normal,no sarcopenia
+183,76,More than 75 years,female,above poverty line,widow,153.7,42,17.8,10,less than 0.8 per second,5.7,low strength,10.29,4.36,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+3,72,less or equal to 75 years,male,below poverty line,married,162.5,73,27.6,10,less than 0.8 per second,8.2,low strength,25.53,9.67,normal,no sarcopenia
+4,62,less or equal to 75 years,female,below poverty line,married,160,64,25,9,less than 0.8 per second,10,low strength,17.52,6.84,normal,no sarcopenia
+5,60,less or equal to 75 years,female,below poverty line,married,155,67,27.9,8,less than 0.8 per second,3.9,low strength,18.06,7.52,normal,no sarcopenia
+11,65,less or equal to 75 years,female,below poverty line,widow,147,74,34.2,8,less than 0.8 per second,9.6,low strength,18.65,8.63,normal,no sarcopenia
+16,63,less or equal to 75 years,female,below poverty line,married,157.4,73,29.5,9,less than 0.8 per second,16,low strength,19.42,7.84,normal,no sarcopenia
+18,63,less or equal to 75 years,female,below poverty line,married,171,50,17.1,8,less than 0.8 per second,11.3,low strength,14.86,5.08,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+20,65,less or equal to 75 years,male,below poverty line,married,165,55,20.2,12,less than 0.8 per second,15.5,low strength,22.02,8.09,normal,no sarcopenia
+30,60,less or equal to 75 years,female,below poverty line,married,152,52,22.5,7,less than 0.8 per second,11.3,low strength,14.16,6.13,normal,no sarcopenia
+31,63,less or equal to 75 years,male,below poverty line,married,167,44.5,16,11,less than 0.8 per second,13.6,low strength,19.81,7.1,normal,no sarcopenia
+33,61,less or equal to 75 years,female,below poverty line,married,160,50.3,19.6,7,less than 0.8 per second,9.6,low strength,14.28,5.58,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+35,60,less or equal to 75 years,female,below poverty line,married,158.3,38,15.2,7,less than 0.8 per second,7.1,low strength,11.24,4.49,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+36,65,less or equal to 75 years,female,below poverty line,married,156,38,15.6,9,less than 0.8 per second,2.9,low strength,10.57,4.34,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+37,67,less or equal to 75 years,female,below poverty line,married,157,61,24.7,7,less than 0.8 per second,20.6,normal strength,16.06,6.52,normal,no sarcopenia
+39,75,less or equal to 75 years,male,below poverty line,widower,169,62,21.7,9,less than 0.8 per second,15.4,low strength,23.06,8.07,normal,no sarcopenia
+40,60,less or equal to 75 years,female,below poverty line,married,152,67,29,8,less than 0.8 per second,15.2,low strength,17.82,7.71,normal,no sarcopenia
+43,67,less or equal to 75 years,female,below poverty line,widow,157.5,55,22.2,8,less than 0.8 per second,8.7,low strength,14.64,5.9,normal,no sarcopenia
+55,63,less or equal to 75 years,male,below poverty line,married,170,54,18.7,11,less than 0.8 per second,13.3,low strength,22.36,7.74,normal,no sarcopenia
+68,72,less or equal to 75 years,male,below poverty line,married,166,64,23.2,7,less than 0.8 per second,8.5,low strength,23.61,8.57,normal,no sarcopenia
+69,63,less or equal to 75 years,male,below poverty line,married,160,64,25,7,less than 0.8 per second,38.4,normal strength,24.02,9.38,normal,no sarcopenia
+70,69,less or equal to 75 years,female,below poverty line,married,154,42,17.7,10,less than 0.8 per second,8.5,low strength,11,4.64,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+71,65,less or equal to 75 years,female,below poverty line,widow,162,72,27.4,10,less than 0.8 per second,7.9,low strength,19.33,7.37,normal,no sarcopenia
+76,75,less or equal to 75 years,female,below poverty line,widow,164,61,22.7,7,less than 0.8 per second,15.2,low strength,15.83,5.88,normal,no sarcopenia
+78,68,less or equal to 75 years,male,below poverty line,married,170.2,75,25.9,7,less than 0.8 per second,19.6,low strength,27.01,9.33,normal,no sarcopenia
+81,73,less or equal to 75 years,male,below poverty line,married,162.6,50,18.9,7,less than 0.8 per second,8.9,low strength,19.83,7.5,normal,no sarcopenia
+93,72,less or equal to 75 years,male,below poverty line,married,157.5,45,18.1,7,less than 0.8 per second,11.1,low strength,18.31,7.38,normal,no sarcopenia
+98,60,less or equal to 75 years,female,below poverty line,married,160,45,17.6,7,less than 0.8 per second,15.8,low strength,13.08,5.11,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+99,61,less or equal to 75 years,male,below poverty line,married,161,69,26.6,10,less than 0.8 per second,9.2,low strength,25.52,9.84,normal,no sarcopenia
+103,71,less or equal to 75 years,male,below poverty line,widower,172,69,23.3,8,less than 0.8 per second,19.1,low strength,25.39,8.58,normal,no sarcopenia
+117,67,less or equal to 75 years,male,below poverty line,widower,160,55,21.5,10,less than 0.8 per second,15,low strength,21.43,8.37,normal,no sarcopenia
+118,60,less or equal to 75 years,male,below poverty line,married,164,52,19.3,11,less than 0.8 per second,12,low strength,21.7,8.07,normal,no sarcopenia
+119,62,less or equal to 75 years,male,below poverty line,married,170,65,22.5,11,less than 0.8 per second,20,low strength,25.14,8.7,normal,no sarcopenia
+120,67,less or equal to 75 years,female,below poverty line,married,162,55,21,9,less than 0.8 per second,12,low strength,14.99,5.71,normal,no sarcopenia
+128,62,less or equal to 75 years,male,below poverty line,married,172,70,23.7,7,less than 0.8 per second,29,low strength,26.52,8.96,normal,no sarcopenia
+130,62,less or equal to 75 years,female,below poverty line,married,164,50,18.6,7,less than 0.8 per second,24,normal strength,14.42,5.36,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+131,70,less or equal to 75 years,male,below poverty line,married,160,42,16.4,10,less than 0.8 per second,22,low strength,17.97,7.02,normal,no sarcopenia
+135,65,less or equal to 75 years,male,below poverty line,widower,168,60,21.3,7,less than 0.8 per second,32,normal strength,23.47,8.32,normal,no sarcopenia
+138,60,less or equal to 75 years,male,below poverty line,married,165,60,22,9,less than 0.8 per second,19,low strength,23.73,8.72,normal,no sarcopenia
+141,60,less or equal to 75 years,female,below poverty line,married,150,50,22.2,11,less than 0.8 per second,13,low strength,13.52,6.01,normal,no sarcopenia
+151,75,less or equal to 75 years,female,below poverty line,widow,177.8,62,19.6,8,less than 0.8 per second,2.4,low strength,17.15,5.42,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+152,64,less or equal to 75 years,female,below poverty line,widow,150,52,23.1,7,less than 0.8 per second,13.3,low strength,13.62,6.05,normal,no sarcopenia
+154,72,less or equal to 75 years,male,below poverty line,married,152.4,62,26.7,8,less than 0.8 per second,8.1,low strength,22.06,9.5,normal,no sarcopenia
+156,75,less or equal to 75 years,female,below poverty line,widow,150,65,28.9,12,less than 0.8 per second,5.6,low strength,15.71,6.98,normal,no sarcopenia
+159,62,less or equal to 75 years,male,below poverty line,married,154.8,42,17.5,7,less than 0.8 per second,2.1,low strength,18.35,7.66,normal,no sarcopenia
+161,64,less or equal to 75 years,female,below poverty line,widow,154,45,19,9,less than 0.8 per second,5.4,low strength,12.22,5.15,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+162,70,less or equal to 75 years,female,below poverty line,married,158,67,26.8,10,less than 0.8 per second,9.3,low strength,17.31,6.93,normal,no sarcopenia
+164,72,less or equal to 75 years,male,below poverty line,married,169,62,21.7,7,less than 0.8 per second,12.7,low strength,23.35,8.18,normal,no sarcopenia
+168,71,less or equal to 75 years,male,below poverty line,married,172,90,30.4,9,less than 0.8 per second,20.1,low strength,30.52,10.32,normal,no sarcopenia
+171,62,less or equal to 75 years,female,below poverty line,married,152.4,56,24.1,9,less than 0.8 per second,5.3,low strength,14.98,6.45,normal,no sarcopenia
+174,61,less or equal to 75 years,male,below poverty line,married,165,55,20.2,9,less than 0.8 per second,24.2,low strength,22.41,8.23,normal,no sarcopenia
+176,66,less or equal to 75 years,male,below poverty line,married,158,90,36.1,10,less than 0.8 per second,25.5,low strength,29.92,11.98,normal,no sarcopenia
+177,65,less or equal to 75 years,male,below poverty line,married,162,74,28.2,10,less than 0.8 per second,29.4,low strength,26.42,10.07,normal,no sarcopenia
+184,60,less or equal to 75 years,female,below poverty line,married,157.8,57,22.9,10,less than 0.8 per second,8,low strength,15.84,6.36,normal,no sarcopenia
+186,62,less or equal to 75 years,male,below poverty line,married,172,69,23.3,9,less than 0.8 per second,28.3,low strength,26.28,8.88,normal,no sarcopenia
+188,70,less or equal to 75 years,female,below poverty line,married,165,58,21.3,10,less than 0.8 per second,12.8,low strength,15.66,5.75,normal,no sarcopenia
+189,62,less or equal to 75 years,male,below poverty line,married,172,85,28.7,9,less than 0.8 per second,37.8,normal strength,30.18,10.2,normal,no sarcopenia
+198,60,less or equal to 75 years,female,below poverty line,married,167,59,21.2,7,less than 0.8 per second,7.9,low strength,17.04,6.11,normal,no sarcopenia
+206,75,less or equal to 75 years,male,below poverty line,married,175,82,26.8,8,less than 0.8 per second,19.2,low strength,28.41,9.28,normal,no sarcopenia
+215,65,less or equal to 75 years,male,below poverty line,married,177,89,28.4,11,less than 0.8 per second,27.8,low strength,31.25,9.98,normal,no sarcopenia
+220,70,less or equal to 75 years,male,below poverty line,widower,172,60,20.3,8,less than 0.8 per second,19.2,low strength,23.3,7.87,normal,no sarcopenia
+225,60,less or equal to 75 years,female,below poverty line,unmarried,151,68,29.8,9,less than 0.8 per second,21.2,normal strength,17.99,7.89,normal,no sarcopenia
+226,61,less or equal to 75 years,female,below poverty line,married,160,51,19.9,7,less than 0.8 per second,12.2,low strength,14.45,5.64,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+235,65,less or equal to 75 years,female,below poverty line,married,158,50,20,8,less than 0.8 per second,16,low strength,13.65,5.47,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+236,62,less or equal to 75 years,female,below poverty line,widow,155,52,21.6,10,less than 0.8 per second,15.2,low strength,14.2,5.91,normal,no sarcopenia
+237,67,less or equal to 75 years,female,below poverty line,married,152,48,20.8,8,less than 0.8 per second,19.8,low strength,12.5,5.41,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+1,76,More than 75 years,female,below poverty line,married,147.5,64,29.4,15,less than 0.8 per second,8.3,low strength,15.17,6.97,normal,no sarcopenia
+2,80,More than 75 years,female,below poverty line,widow,142.5,61,30,13,less than 0.8 per second,5,low strength,13.66,6.73,normal,no sarcopenia
+27,84,More than 75 years,female,below poverty line,widow,170,51,17.6,12,less than 0.8 per second,4.3,low strength,12.97,4.49,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+34,85,More than 75 years,male,below poverty line,married,167.6,55,19.6,7,less than 0.8 per second,15.2,low strength,20.26,7.21,normal,no sarcopenia
+80,76,More than 75 years,male,below poverty line,widower,152,67,29,10,less than 0.8 per second,12.5,low strength,22.86,9.89,normal,no sarcopenia
+86,83,More than 75 years,female,below poverty line,married,180,80,24.7,9,less than 0.8 per second,11.2,low strength,20.93,6.46,normal,no sarcopenia
+153,83,More than 75 years,male,below poverty line,married,162,55,21,8,less than 0.8 per second,14.8,low strength,20.02,7.63,normal,no sarcopenia
+158,79,More than 75 years,female,below poverty line,married,154,55,23.2,9,less than 0.8 per second,18.7,low strength,13.19,5.56,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+10,60,less or equal to 75 years,female,above poverty line,married,148,42,19.2,6,more than 0.8 per second,4.8,low strength,11.41,5.21,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+14,63,less or equal to 75 years,female,above poverty line,married,154.9,68,28.3,6,more than 0.8 per second,18.9,low strength,18,7.5,normal,no sarcopenia
+15,66,less or equal to 75 years,male,above poverty line,married,169,78,27.3,5,more than 0.8 per second,23,low strength,27.85,9.75,normal,no sarcopenia
+24,67,less or equal to 75 years,male,above poverty line,married,162.6,57,21.6,5,more than 0.8 per second,26.5,low strength,22.12,8.37,normal,no sarcopenia
+42,60,less or equal to 75 years,male,above poverty line,unmarried,182,78,23.5,4,more than 0.8 per second,25,low strength,29.45,8.89,normal,no sarcopenia
+47,68,less or equal to 75 years,female,above poverty line,married,152,55,23.8,4,more than 0.8 per second,18.3,low strength,14.11,6.11,normal,no sarcopenia
+48,71,less or equal to 75 years,female,above poverty line,married,144.7,62,29.6,6,more than 0.8 per second,5.7,low strength,14.96,7.14,normal,no sarcopenia
+49,67,less or equal to 75 years,male,above poverty line,married,175.3,75,24.4,4,more than 0.8 per second,21.2,low strength,27.5,8.95,normal,no sarcopenia
+50,64,less or equal to 75 years,female,above poverty line,married,154.9,71.4,29.7,5,more than 0.8 per second,11.4,low strength,18.73,7.8,normal,no sarcopenia
+61,60,less or equal to 75 years,female,above poverty line,widow,160,64,25,4,more than 0.8 per second,21.1,normal strength,17.72,6.92,normal,no sarcopenia
+64,60,less or equal to 75 years,female,above poverty line,widow,157.5,51.9,20.9,5,more than 0.8 per second,11.3,low strength,14.57,5.87,normal,no sarcopenia
+66,66,less or equal to 75 years,female,above poverty line,married,137,50,26.6,6,more than 0.8 per second,12.1,low strength,11.92,6.35,normal,no sarcopenia
+83,63,less or equal to 75 years,male,above poverty line,widower,154.9,62,25.8,6,more than 0.8 per second,9.6,low strength,23.14,9.64,normal,no sarcopenia
+84,68,less or equal to 75 years,female,above poverty line,married,157.5,55.5,22.4,5,more than 0.8 per second,5.3,low strength,14.66,5.91,normal,no sarcopenia
+87,65,less or equal to 75 years,female,above poverty line,married,152,45,19.5,5,more than 0.8 per second,12.6,low strength,11.97,5.18,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+97,66,less or equal to 75 years,male,above poverty line,married,157.5,75.4,30.4,5,more than 0.8 per second,29.4,low strength,26.31,10.61,normal,no sarcopenia
+106,62,less or equal to 75 years,female,above poverty line,widow,160,75,29.3,6,more than 0.8 per second,22,normal strength,20.2,7.89,normal,no sarcopenia
+108,63,less or equal to 75 years,male,above poverty line,married,172,85,28.7,5,more than 0.8 per second,37,normal strength,30.08,10.17,normal,no sarcopenia
+109,75,less or equal to 75 years,female,above poverty line,widow,166,65,23.6,6,more than 0.8 per second,19,low strength,16.96,6.15,normal,no sarcopenia
+110,60,less or equal to 75 years,female,above poverty line,married,156,60,24.7,5,more than 0.8 per second,19,low strength,16.43,6.75,normal,no sarcopenia
+112,68,less or equal to 75 years,female,above poverty line,married,168,65,23,6,more than 0.8 per second,12,low strength,17.8,6.31,normal,no sarcopenia
+127,60,less or equal to 75 years,male,above poverty line,married,170,80,27.7,6,more than 0.8 per second,35,normal strength,29,10.03,normal,no sarcopenia
+129,60,less or equal to 75 years,female,above poverty line,married,162,60,22.9,6,more than 0.8 per second,20,normal strength,16.9,6.44,normal,no sarcopenia
+133,66,less or equal to 75 years,female,above poverty line,married,154,45,19,6,more than 0.8 per second,9,low strength,12.02,5.07,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+144,60,less or equal to 75 years,male,above poverty line,married,168,70,24.8,5,more than 0.8 per second,35,normal strength,26.4,9.36,normal,no sarcopenia
+146,70,less or equal to 75 years,male,above poverty line,widower,165,55,20.2,5,more than 0.8 per second,29,low strength,21.53,7.91,normal,no sarcopenia
+148,69,less or equal to 75 years,male,above poverty line,married,160,45,17.6,6,more than 0.8 per second,15,low strength,18.8,7.34,normal,no sarcopenia
+150,75,less or equal to 75 years,male,above poverty line,married,180,79,24.4,6,more than 0.8 per second,10.3,low strength,28.07,8.66,normal,no sarcopenia
+165,60,less or equal to 75 years,female,above poverty line,married,163,56,21.1,5,more than 0.8 per second,19.5,low strength,16,6.02,normal,no sarcopenia
+167,60,less or equal to 75 years,male,above poverty line,married,160,57,22.3,5,more than 0.8 per second,15.4,low strength,22.61,8.83,normal,no sarcopenia
+169,60,less or equal to 75 years,male,above poverty line,married,182.9,65,19.4,6,more than 0.8 per second,23.3,low strength,26.34,7.88,normal,no sarcopenia
+179,60,less or equal to 75 years,male,above poverty line,married,143,60,29.3,6,more than 0.8 per second,26.3,low strength,22.01,10.77,normal,no sarcopenia
+181,63,less or equal to 75 years,male,above poverty line,married,169,98,34.3,6,more than 0.8 per second,35.9,normal strength,33.02,11.56,normal,no sarcopenia
+192,60,less or equal to 75 years,female,above poverty line,married,166,82,29.8,6,more than 0.8 per second,15,low strength,22.58,8.19,normal,no sarcopenia
+194,65,less or equal to 75 years,female,above poverty line,married,162.5,50,18.9,5,more than 0.8 per second,21.2,normal strength,14,5.3,<7.0kg/m2 in men and 5.7 in women,no sarcopenia
+195,70,less or equal to 75 years,female,above poverty line,married,157.4,63,25.4,6,more than 0.8 per second,27,normal strength,16.29,6.57,normal,no sarcopenia
+197,68,less or equal to 75 years,male,above poverty line,married,165.1,60,22,6,more than 0.8 per second,17.8,low strength,22.95,8.42,normal,no sarcopenia
+214,64,less or equal to 75 years,male,above poverty line,married,173,73,24.4,6,more than 0.8 per second,18.9,low strength,27.13,9.07,normal,no sarcopenia
+217,68,less or equal to 75 years,male,above poverty line,married,168,68,24.1,6,more than 0.8 per second,22.3,low strength,25.13,8.9,normal,no sarcopenia
+219,62,less or equal to 75 years,male,above poverty line,married,165,63,23.1,6,more than 0.8 per second,19.4,low strength,24.27,8.91,normal,no sarcopenia
+221,61,less or equal to 75 years,female,above poverty line,married,144,65,31.3,4,more than 0.8 per second,17.2,low strength,16.61,8.01,normal,no sarcopenia
+222,63,less or equal to 75 years,male,above poverty line,married,162,69,26.3,4,more than 0.8 per second,19.5,low strength,25.4,9.68,normal,no sarcopenia
+223,67,less or equal to 75 years,female,above poverty line,married,162,62,23.6,5,more than 0.8 per second,12.2,low strength,16.7,6.36,normal,no sarcopenia
+224,66,less or equal to 75 years,female,above poverty line,married,161,65,25.1,5,more than 0.8 per second,22.4,normal strength,17.45,6.73,normal,no sarcopenia
+233,62,less or equal to 75 years,male,above poverty line,married,169,72,25.2,5,more than 0.8 per second,26.8,low strength,26.77,9.37,normal,no sarcopenia
+79,82,More than 75 years,male,above poverty line,widower,180,72,22.2,6,more than 0.8 per second,19,low strength,25.67,7.92,normal,no sarcopenia
+115,80,More than 75 years,female,above poverty line,married,172,80,27,6,more than 0.8 per second,20,normal strength,20.6,6.96,normal,no sarcopenia
+124,87,More than 75 years,female,above poverty line,widow,150,52,23.1,6,more than 0.8 per second,22,normal strength,11.36,5.05,<7.0kg/m2 in men and 5.7 in women,no sarcopenia
+193,78,More than 75 years,male,above poverty line,married,170,58,20.1,6,more than 0.8 per second,31.8,normal strength,21.87,7.57,normal,no sarcopenia
+218,76,More than 75 years,male,above poverty line,married,181,82,25,6,more than 0.8 per second,25.7,low strength,28.78,8.78,normal,no sarcopenia
+17,65,less or equal to 75 years,male,below poverty line,married,160,65,25.4,5,more than 0.8 per second,8.1,low strength,24.07,9.4,normal,no sarcopenia
+21,66,less or equal to 75 years,female,below poverty line,unmarried,157.5,65,26.2,6,more than 0.8 per second,15.4,low strength,17.18,6.93,normal,no sarcopenia
+22,66,less or equal to 75 years,male,below poverty line,married,172.3,42,14.1,4,more than 0.8 per second,10.5,low strength,19.32,6.51,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+23,60,less or equal to 75 years,female,below poverty line,married,142.2,32,15.8,5,more than 0.8 per second,15.1,low strength,8.52,4.21,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+25,62,less or equal to 75 years,female,below poverty line,married,156,50,20.5,6,more than 0.8 per second,9.6,low strength,13.79,5.67,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+28,64,less or equal to 75 years,male,below poverty line,married,164.3,68.6,25.4,5,more than 0.8 per second,25.9,low strength,25.38,9.4,normal,no sarcopenia
+29,60,less or equal to 75 years,female,below poverty line,married,152.4,42,18.1,6,more than 0.8 per second,10.4,low strength,11.76,5.06,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+32,65,less or equal to 75 years,male,below poverty line,married,168,44.5,15.8,5,more than 0.8 per second,16.2,low strength,19.69,6.98,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+38,60,less or equal to 75 years,female,below poverty line,widow,154,49,20.7,6,more than 0.8 per second,13.2,low strength,13.59,5.73,normal,no sarcopenia
+41,63,less or equal to 75 years,female,below poverty line,widow,162,62,23.6,6,more than 0.8 per second,11.2,low strength,17.09,6.51,normal,no sarcopenia
+44,70,less or equal to 75 years,male,below poverty line,married,168,65,23,6,more than 0.8 per second,26.2,low strength,24.2,8.58,normal,no sarcopenia
+53,63,less or equal to 75 years,female,below poverty line,married,154.9,57,23.7,4,more than 0.8 per second,8.4,low strength,15.32,6.38,normal,no sarcopenia
+54,60,less or equal to 75 years,female,below poverty line,married,152.9,52.4,22.4,6,more than 0.8 per second,11.2,low strength,14.33,6.13,normal,no sarcopenia
+58,72,less or equal to 75 years,male,below poverty line,widower,165,43,15.8,6,more than 0.8 per second,16.2,low strength,18.41,6.76,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+59,62,less or equal to 75 years,male,below poverty line,married,152.3,52,22.4,4,more than 0.8 per second,9,low strength,20.59,8.88,normal,no sarcopenia
+60,63,less or equal to 75 years,female,below poverty line,married,160,42.5,16.6,4,more than 0.8 per second,12.6,low strength,12.18,4.76,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+62,63,less or equal to 75 years,female,below poverty line,married,163,63,23.7,4,more than 0.8 per second,18.3,low strength,17.41,6.55,normal,no sarcopenia
+63,69,less or equal to 75 years,female,below poverty line,widow,61,61.3,23.9,6,more than 0.8 per second,18.9,low strength,16.18,6.32,normal,no sarcopenia
+67,75,less or equal to 75 years,male,below poverty line,married,168,65,23,6,more than 0.8 per second,24,low strength,23.71,8.4,normal,no sarcopenia
+72,60,less or equal to 75 years,male,below poverty line,married,173,56,18.7,6,more than 0.8 per second,36.5,normal strength,23.38,7.81,normal,no sarcopenia
+74,60,less or equal to 75 years,male,below poverty line,married,167.2,53,19,6,more than 0.8 per second,22.9,low strength,22.19,7.94,normal,no sarcopenia
+75,71,less or equal to 75 years,male,below poverty line,married,162.7,49.3,18.6,6,more than 0.8 per second,18.8,low strength,19.86,7.5,normal,no sarcopenia
+88,74,less or equal to 75 years,female,below poverty line,married,172,52,17.6,4,more than 0.8 per second,34.3,normal strength,14.35,4.85,<7.0kg/m2 in men and 5.7 in women,no sarcopenia
+90,64,less or equal to 75 years,female,below poverty line,married,163.5,68,25.4,4,more than 0.8 per second,30,normal strength,18.57,6.95,normal,no sarcopenia
+94,60,less or equal to 75 years,female,below poverty line,married,156,42,17.3,6,more than 0.8 per second,4.5,low strength,12.04,4.95,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+100,60,less or equal to 75 years,female,below poverty line,married,150,38.6,17.2,6,more than 0.8 per second,11,low strength,10.74,4.77,<7.0kg/m2 in men and 5.7 in women,sarcopenia
+102,72,less or equal to 75 years,male,below poverty line,married,172.7,59.5,19.9,5,more than 0.8 per second,30.2,normal strength,23.03,7.72,normal,no sarcopenia
+104,62,less or equal to 75 years,female,below poverty line,married,157.5,79,31.9,6,more than 0.8 per second,12.4,low strength,20.98,8.46,normal,no sarcopenia
+105,72,less or equal to 75 years,male,below poverty line,married,170,75,26,6,more than 0.8 per second,27.1,low strength,26.6,9.21,normal,no sarcopenia
+111,65,less or equal to 75 years,male,below poverty line,married,165,70,25.7,6,more than 0.8 per second,37,normal strength,25.68,9.43,normal,no sarcopenia
+132,65,less or equal to 75 years,male,below poverty line,married,168,68,24.1,5,more than 0.8 per second,27,low strength,25.43,9.01,normal,no sarcopenia
+140,72,less or equal to 75 years,male,below poverty line,married,168,60,21.3,6,more than 0.8 per second,24,low strength,22.79,8.07,normal,no sarcopenia
+145,65,less or equal to 75 years,male,below poverty line,widower,170,65,22.5,6,more than 0.8 per second,30,normal strength,24.85,8.6,normal,no sarcopenia
+155,60,less or equal to 75 years,male,below poverty line,married,152.4,45,19.4,5,more than 0.8 per second,17.9,low strength,19.09,8.22,normal,no sarcopenia
+157,60,less or equal to 75 years,female,below poverty line,widow,144.7,46,22,6,more than 0.8 per second,4.9,low strength,12.13,5.79,normal,no sarcopenia
+163,60,less or equal to 75 years,female,below poverty line,married,152.4,50,21.5,5,more than 0.8 per second,4.2,low strength,13.71,5.9,normal,no sarcopenia
+166,68,less or equal to 75 years,female,below poverty line,widow,160,45,17.6,5,more than 0.8 per second,24.3,normal strength,12.3,4.8,<7.0kg/m2 in men and 5.7 in women,no sarcopenia
+173,62,less or equal to 75 years,male,below poverty line,married,152,69,29.9,6,more than 0.8 per second,32.5,normal strength,24.72,10.7,normal,no sarcopenia
+175,69,less or equal to 75 years,female,below poverty line,married,149,57,25.7,6,more than 0.8 per second,22.5,normal strength,14.27,6.43,normal,no sarcopenia
+178,63,less or equal to 75 years,male,below poverty line,married,158,72,28.8,6,more than 0.8 per second,26.3,low strength,25.82,10.34,normal,no sarcopenia
+180,73,less or equal to 75 years,female,below poverty line,married,176,72,23.2,5,more than 0.8 per second,19.6,low strength,19.64,6.34,normal,no sarcopenia
+187,65,less or equal to 75 years,female,below poverty line,married,162,60,22.9,6,more than 0.8 per second,16.9,low strength,16.41,6.25,normal,no sarcopenia
+202,63,less or equal to 75 years,female,below poverty line,married,167.4,70,25,5,more than 0.8 per second,15.8,low strength,19.46,6.95,normal,no sarcopenia
+205,63,less or equal to 75 years,female,below poverty line,married,152.5,78,33.5,6,more than 0.8 per second,20,normal strength,20.25,8.71,normal,no sarcopenia
+209,63,less or equal to 75 years,male,below poverty line,married,169,52,18.2,6,more than 0.8 per second,29.1,low strength,21.8,7.63,normal,no sarcopenia
+211,60,less or equal to 75 years,male,below poverty line,married,174,72,23.8,6,more than 0.8 per second,20.5,low strength,27.36,9.04,normal,no sarcopenia
+212,63,less or equal to 75 years,male,below poverty line,married,168,60,21.3,6,more than 0.8 per second,16.3,low strength,23.67,8.39,normal,no sarcopenia
+216,61,less or equal to 75 years,male,below poverty line,married,176,75,24.2,6,more than 0.8 per second,21.7,low strength,28.15,9.09,normal,no sarcopenia
+227,65,less or equal to 75 years,female,below poverty line,widow,158,68,27.2,4,more than 0.8 per second,30,normal strength,18.05,7.23,normal,no sarcopenia
+228,61,less or equal to 75 years,male,below poverty line,married,159,57,22.5,5,more than 0.8 per second,19.3,low strength,22.43,8.87,normal,no sarcopenia
+229,65,less or equal to 75 years,male,below poverty line,married,158,60,24,5,more than 0.8 per second,20.2,low strength,22.69,9.09,normal,no sarcopenia
+230,68,less or equal to 75 years,female,below poverty line,married,161,65,25.1,5,more than 0.8 per second,22.4,normal strength,17.25,6.66,normal,no sarcopenia
+231,63,less or equal to 75 years,male,below poverty line,married,168,70,24.8,5,more than 0.8 per second,24.6,low strength,26.11,9.25,normal,no sarcopenia
+232,61,less or equal to 75 years,male,below poverty line,married,171,71,24.3,5,more than 0.8 per second,25.2,low strength,26.78,9.16,normal,no sarcopenia
+234,63,less or equal to 75 years,male,below poverty line,married,168,66,23.4,6,more than 0.8 per second,16.8,low strength,25.13,8.91,normal,no sarcopenia
+238,65,less or equal to 75 years,female,below poverty line,married,150,52,23.1,6,more than 0.8 per second,19.8,low strength,13.52,6.01,normal,no sarcopenia
+73,85,More than 75 years,male,below poverty line,widower,175.6,77,25,6,more than 0.8 per second,22.3,low strength,26.25,8.51,normal,no sarcopenia
+136,79,More than 75 years,male,below poverty line,married,165,60,22,6,more than 0.8 per second,26,low strength,21.87,8.03,normal,no sarcopenia
+210,81,More than 75 years,male,below poverty line,widower,180,83,25.6,6,more than 0.8 per second,20.2,low strength,28.45,8.78,normal,no sarcopenia

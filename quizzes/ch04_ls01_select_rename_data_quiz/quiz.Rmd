@@ -1,0 +1,155 @@
+---
+title: '\ '
+output: blogdown::html_page
+params:
+  seed: 1
+---
+
+```{r, echo = F, message = F, warning = F}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(
+  # necessary for all quizzes runs
+  tidyverse, 
+  here,
+  knitr,
+  googledrive,
+  rio,
+  # specific to this quiz             
+  cowplot, 
+  xfun,
+  #required for it to run:
+  blogdown,
+  shiny,
+  readxl, 
+  janitor)
+
+knitr::opts_chunk$set(warning = F, message = F)
+
+source(here("global/functions/misc_functions.R"))
+
+# Setup for uploading images and datasets
+if (!drive_has_token()) drive_auth(email = "trainingteam@thegraphnetwork.org")
+options(gargle_oauth_email = "trainingteam@thegraphnetwork.org")
+knitr::opts_knit$set(upload.fun = gdrive_upload) # pulled by knitr to upload image
+
+# Set seed
+set.seed(params$seed)
+```
+
+```{r echo = F}
+diab_china_dat_raw <- 
+  read_excel(here("ch04_data_wrangling/data/diabetes_china_chen.xlsx")) %>%
+  select(-`BMI(kg/m2)`) %>% 
+  # Sample data
+  slice_sample(n = 200) %>%
+  clean_names()
+```
+
+With this quiz, you will be able to assess how much you master the select verb.
+
+Here you will analyze a dataset sample of a population-based cohort in China: clinical information about adults at baseline was used to predict whether they developed diabetes after some years of followup.
+
+```{r echo = F, results = "asis"}
+upload_and_link(diab_china_dat_raw, filename = "diab_china_dat_raw", format =  "csv")
+```
+
+Here are the top 6 rows of `diab_china_dat_raw` after import:
+
+```{r}
+head(diab_china_dat_raw)
+```
+
+# Part A : Selecting in different ways
+
+**1. Select the weight and height columns from the dataset**
+
+Here we'll focus on some demographic information, so please select the weight and height columns from the dataset. 
+
+```{r eval = F}
+diab_china_dat <- 
+  diab_china_dat_raw %>% 
+  select({[height_cm,weight_kg][weight_kg,height_cm]})
+```
+
+
+**2A. Complete the code to select all the columns from SBP(mmHg) to CCR(umol/L).**
+
+We would like to select only the physiological data collected for each adult: select the range from SBP(mmHg) to CCR(umol/L).
+
+```{r eval = F}
+diab_china_dat <-
+  diab_china_dat_raw %>%
+  select({sbp_mm_hg:ccr_umol_l})
+```
+
+**2B. How many columns are we selecting with this range? {`r ncol(diab_china_dat_raw %>%select(sbp_mm_hg:ccr_umol_l))`}**
+
+------------------------------------------------------------------------
+
+# Part B : Dropping columns
+
+**3. How do you drop the family history column?**
+
+How can you drop a column that is not of interest?
+
+```{r eval = F}
+diab_china_dat <-
+  diab_china_dat_raw %>%
+  select({[-family_histroy_of_diabetes_1_yes_0_no][!family_histroy_of_diabetes_1_yes_0_no]})
+```
+
+------------------------------------------------------------------------
+
+# Part C : Selecting columns using helper verbs
+
+**4. How do you select columns containing "status"?**
+
+How do you select columns based on their naming?
+
+```{r eval = F}
+diab_china_dat <-
+  diab_china_dat_raw %>%
+  select({contains("status")})
+```
+
+**5. How many columns reflect a status of a patient ? {`r ncol(diab_china_dat_raw %>% select(contains("status")))`}**
+
+**6. Using a similar procedure, how many columns are in mmol/L (millimoles per liter: a molecular unit) ? {`r ncol(diab_china_dat_raw %>% select(contains("mmol_l")))`}**
+
+**7. How many columns are in umol/L (micromoles per liter: a molecular unit) ? {`r ncol(diab_china_dat_raw %>% select(contains("umol_l")))`}**
+
+------------------------------------------------------------------------
+
+# Part C : Reordering columns using select
+
+**8. How can you reorder the columns to have the FPG (fasting plasma glucose) of the final visit as the first column of the dataset ?**
+
+This is an important column in the dataset because the fasting plasma glucose (FPG) test is one type of test that checks blood glucose levels in the body. It can be used to screen for diabetes and prediabetes (FPG levels are determined by taking a blood sample from participants who have fasted for at least 8 hours).
+
+```{r eval = F}
+diab_china_dat <-
+  diab_china_dat_raw %>%
+  select({fpg_of_final_visit_mmol_l,everything()})
+```
+
+```{r echo = F}
+everything_drop_hint <- collapsible('Recall the usefulness of the `everything()` function for selecting columns.')
+```
+
+`r everything_drop_hint`
+
+------------------------------------------------------------------------
+
+# Part D : Renaming
+
+**9. How do you rename the column year_of_follow_up to time_to_followup_years ?**
+
+How do you rename a column because you find its name unclear ?
+
+```{r eval = F}
+diab_china_dat <-
+  diab_china_dat_raw %>%
+  rename({time_to_followup_years=year_of_follow_up})
+```
+
+------------------------------------------------------------------------

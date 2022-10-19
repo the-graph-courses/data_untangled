@@ -1,0 +1,372 @@
+---
+title: '\ '
+output:
+  # word_document:
+  #   toc: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+    css: !expr here::here("global/style/style.css")
+    highlight: kate
+    pandoc_args: --shift-heading-level-by=-1
+editor_options:
+  markdown:
+    wrap: 100
+always_allow_html: yes
+---
+
+```{r, echo = F, message = F, warning = F}
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(rlang, tidyverse, knitr, here)
+
+## functions
+source(here::here("global/functions/misc_functions.R"))
+
+## default render
+registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
+knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
+
+## autograders
+suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls02_filter_autograder.R")))
+```
+
+## Intro
+
+You know basic pivoting operations from long format datasets to wide format datasets and vice versa. However, as is often the case, basic manipulations are sometimes not enough for the wrangling you need to do. Let's now see the next level. Let's go !
+
+## Learning Objectives
+
+1.  Master complex pivoting from wide to long and long to wide
+
+2.  Know how to use separators as a pivoting tool
+
+## Packages
+
+```{r warning = F, message = F}
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, outbreaks, janitor, rio, here, knitr)
+```
+
+## Datasets
+
+We will introduce these datasets as we go along but here is an overview:
+
+-   Survey data from India on how much money patients spent on tuberculosis treatment
+
+-   Biomarker data from an enteropathogen study in Zambia
+
+-   A diet survey from Vietnam
+
+## More complex pivoting : wide to long
+
+### Concept Explanation on Artificial Data
+
+Sometimes you have multiple kinds of wide data in the same table. Consider this artificial example of heights and weights for children over time:
+
+```{r}
+child_stats <- 
+  tibble::tribble(
+           ~child, ~`height_year1`, ~`height_year2`, ~`weight_year1`, ~`weight_year2`,
+              "A",          "80cm",          "85cm",           "5kg",          "10kg",
+              "B",          "85cm",          "90cm",           "7kg",          "12kg",
+              "C",          "90cm",         "100cm",           "6kg",          "14kg"
+           )
+
+child_stats
+```
+
+If you pivot all the measurement columns, you'll get overly long data:
+
+```{r}
+child_stats %>% 
+  pivot_longer(2:5)
+```
+
+This is not really what you (usually) want. Because it has two different kinds of data in the same column.
+
+To get the right shape, you could use the `names_sep` argument and the ".value" identifier:
+
+```{r}
+child_stats %>% 
+  pivot_longer(2:5, 
+               names_to = c(".value", "year"),
+               names_sep = "_")
+```
+
+::: practice
+Consider this other artificial data set:
+
+```{r}
+adult_stats <- 
+  tibble::tribble(
+           ~adult,    ~`BMI_year1`, ~`BMI_year2`, ~`HIV_year1`, ~`HIV_year2`,
+              "A",          "25",          "30",           "Positive",          "Positive",
+              "B",          "34",          "28",           "Negative",          "Positive",
+              "C",          "19",         "17",           "Negative",          "Negative"
+           )
+
+adult_stats
+```
+
+Pivot the data into long format to get the following structure:
+
+| adult | year | BMI | HIV |
+|-------|------|-----|-----|
+|       |      |     |     |
+|       |      |     |     |
+|       |      |     |     |
+
+```{r, eval = FALSE}
+# Q_adult_long <- 
+#   adult_stats %>%
+#   pivot_longer(_________)
+```
+
+```{r, include = FALSE}
+# .CHECK_Q_adult_long()
+# .HINT_Q_adult_long()
+```
+:::
+
+### Pivoting example on real world data
+
+Let's see another example of pivoting with [a data set from Zambia](https://zenodo.org/record/4571669) about enteropathogens and their biomarkers.
+
+Here:
+
+-   LPS: lipopolysaccharide, measured by Pyrochrome LAL, in EU/mL
+
+-   LBP: LPS binding protein, in pg/mL
+
+-   IFABP: intestinal-type fatty acid binding protein, in pg/mL
+
+```{r}
+enteropathogens_zambia_wide<- read_csv(here("ch04_data_wrangling/data/enteropathogens_zambia_wide.csv"))
+
+enteropathogens_zambia_wide
+```
+
+In this example, we can once again use a neat separator `"_"` to do our pivoting:
+
+```{r}
+enteropathogens_zambia_long <- 
+  enteropathogens_zambia_wide %>% 
+  pivot_longer(!ID, 
+               names_to = c(".value", "sample_count"), 
+               names_sep = "_")
+
+enteropathogens_zambia_long
+```
+
+### What to do when you don't have a neat separator ?
+
+Sometimes you do not have a neat separator. In such a case, you'll need special "regex" (string manipulation) which you might not know yet!
+
+So we recommend you manually rename your columns to insert a separator, then use the `names_sep` argument.
+
+Consider this [survey data from India](https://zenodo.org/record/5014153) that looked at how much money patients spent on tuberculosis treatment:
+
+```{r}
+tb_visits <- read_csv(here("ch04_data_wrangling/data/india_tb_pathways_and_costs_data.csv")) %>% 
+  clean_names() %>% 
+  select(id, first_visit_location, first_visit_cost, second_visit_location, second_visit_cost, third_visit_location, third_visit_cost)
+
+tb_visits
+```
+
+It does not have a neat separator between the time indicators (first, second, third) and the value type (cost, location).
+
+So best to create one, "\_\_":
+
+```{r}
+tb_visits_renamed <- 
+  tb_visits %>% 
+  rename(first__visit_location = first_visit_location, 
+         first__visit_cost = first_visit_cost, 
+         second__visit_location = second_visit_location, 
+         second__visit_cost= second_visit_cost, 
+         third__visit_location = third_visit_location, 
+         third__visit_cost = third_visit_cost)
+
+tb_visits_renamed
+```
+
+Now we can try the pivot:
+
+```{r}
+tb_visits_long <-
+  tb_visits_renamed %>% 
+  pivot_longer(2:7, 
+               names_to = c("visit_count", ".value"), 
+               names_sep = "__")
+tb_visits_long
+```
+
+Now let's polish the data frame:
+
+```{r}
+tb_visits_long %>% 
+  # remove nonexistent entries
+  filter(!visit_location == "") %>% 
+  # give significant naming to the visit_count values
+  mutate(visit_count = case_when(visit_count == "first" ~ 1, 
+                                 visit_count == "second" ~ 2, 
+                                 visit_count == "third" ~ 3)) %>% 
+  # ensure visit_cost is numerical
+  mutate(visit_cost = as.numeric(visit_cost))
+```
+
+We first remove the entries where we do not have the visit location information (i.e. we filter out the rwos where the visit location variable is set to `""` ). We then convert to numeric values the visit count variable, where the strings `"first"` to `"third"` are converted to numerical entries `1` to `3`. Finally, we ensure the variable of visit cost is numeric using `mutate()` and the helper function `as.numeric()`.
+
+::: practice
+We will use [a survey data about diet from Vietnam](https://www.wur.nl/en/project/Retail-Diversity-for-Dietary-Diversity-RD4DD.htm). Women in Hanoi were interviewed about their food shopping, and this was used to create nutrition profiles for each women. Here we will use a subset of this data for 61 households who came for 2 visits, recording:
+
+-   `enerc_kcal_w_1`: the consumed energy from ingredient/food (Kcal) during the first visit (with `_2` for the second visit)
+
+-   `dry_w_1`: the consumed dry from ingredient/food (g) during the first visit (with `_2` for the second visit)
+
+-   `water_w_1`: the consumed water from ingredient/food (g) during the first visit (with `_2` for the second visit)
+
+-   `fat_w_1`: the consumed Lipid from ingredient/food (g) during the first visit (with `_2` for the second visit)
+
+```{r}
+diet_diversity_vietnam_wide <- read_csv(here("ch04_data_wrangling/data/diet_diversity_vietnam_wide.csv"))
+
+diet_diversity_vietnam_wide
+```
+
+You should first distinguish if we have a neat operator or not. Based on this, rename your columns if necessary. Then bring the different visit records (1 and 2) into a sole column for energy, fat weight, water weight and dry weight. In other words, pivot the dataset into long format.
+
+```{r, eval = FALSE}
+# Q_diet_diversity_vietnam_long <- 
+#   diet_diversity_vietnam_wide %>%
+#   pivot_long(_________)
+```
+
+```{r, include = FALSE}
+# .CHECK_Q_diet_diversity_vietnam_long()
+# .HINT_Q_diet_diversity_vietnam_long()
+```
+:::
+
+## More complex pivots: long to wide
+
+We just saw how to do some complex operations wide to long, which we saw in the previous lesson is essential for plotting and wrangling. Let's see the opposite transformation.
+
+It could be useful to put long to wide to do different transformations, filters, and processing NAs. In this format, your measurements / collected data become the columns of the data set.
+
+### Example 1: filtering NAs
+
+Let's take the Zambia enteropathogen data, and this time, let's take the original ! Indeed, what you were handling before was a dataset **prepared for you**, in a wide format. **The original dataset is long** and we will now see the data preparation I did beforehand, behind the scenes. You're almost becoming the teacher of this lesson ;)
+
+```{r}
+enteropathogens_zambia_long <- read_csv(here("ch04_data_wrangling/data/enteropathogens_zambia_long.csv"))
+
+enteropathogens_zambia_long
+```
+
+This is how we convert it from long to wide:
+
+```{r}
+enteropathogens_zambia_wide <-
+  enteropathogens_zambia_long %>%
+  pivot_wider(
+    names_from = group,
+    values_from = c(LPS, LBP, IFABP)
+  )
+
+enteropathogens_zambia_wide
+```
+
+You can see that the values of the variable `group` (1 or 2) are added to the values' names (LPS, LBP, IFABP) to create the new columns representing different group data: for example, `LPS_1` and `LPS_2`.
+
+The argument of `pivot_wider()` crucial to this pivoting are `names_from` and `values_from` where values from are given as a vector. This is advanced pivoting because we are pivoting wider several variables at the same time.
+
+This format is practical to keep only patients who have non-NA entries for both LPS measures:
+
+```{r}
+enteropathogens_zambia_wide %>%
+  filter(!is.na(LPS_1) & !is.na(LPS_2))
+```
+
+You have 103 patients with both measures.
+
+How would you do this on the long format? Let's see the first step:
+
+```{r}
+enteropathogens_zambia_long %>%
+  filter(!is.na(LPS)) 
+```
+
+And then with some more manipulations you should wrangle to check that the ID has the 2 groups. Quite complicated ! Processing the wide format is much easier.
+
+### Example 2: transforming variables
+
+We can do the same for the diet survey from Vietnam that you manipulated in the practice question previously.
+
+```{r}
+diet_diversity_vietnam_long <- read_csv(here("ch04_data_wrangling/data/diet_diversity_vietnam_long.csv"))
+
+diet_diversity_vietnam_long
+```
+
+Here we will use the `visit_number` variable to create new variable for energy, water, fat and dry content of foods recorded at different visits:
+
+```{r}
+diet_diversity_vietnam_wide <-
+  diet_diversity_vietnam_long %>%
+  pivot_wider(
+    names_from = visit_number, 
+    values_from = c(enerc_kcal_w, dry_w, water_w, fat_w)
+  )
+
+diet_diversity_vietnam_wide
+```
+
+You can see that the values of the variable `visit_number` (1 or 2) are added to the values' names (`energy_kcal_w`, `dry_w`, `fat_w`, `water_w`) to create the new columns representing different group data: for example, `water_w_1` and `water_w_2`. We have pivoted to wide format all of these variables at the same time. Now each weight measure per visit is represented as a single variable (i.e. column) in the dataset.
+
+With this format, it is easy to sum together the energy intake per household for example:
+
+```{r}
+diet_diversity_vietnam_wide %>%
+  select(household_id, enerc_kcal_w_1, enerc_kcal_w_2) %>%
+  mutate(total_energy_kcal = enerc_kcal_w_1 + enerc_kcal_w_2) %>%
+  arrange(household_id)
+```
+
+However, you could get something similar in the long format:
+
+```{r}
+diet_diversity_vietnam_long %>%
+  group_by(household_id) %>%
+  summarize(total_energy = sum(enerc_kcal_w)) 
+```
+
+::: practice
+Take `tb_visits_renamed` dataset that we manipulated above and pivot it back to its wide format.
+
+```{r, eval = FALSE}
+# Q_tb_visit_wide <- 
+#   tb_visits_renamed %>%
+#   pivot_wider(_________)
+```
+
+```{r, include = FALSE}
+# .CHECK_Q_tb_visit_wide()
+# .HINT_Q_tb_visit_wide()
+```
+:::
+
+## Wrap Up ! {.unnumbered}
+
+You data wrangling skills have just been enhanced with advanced pivoting. This skill will often prove essential when handling real world data. I have no doubt you will soon put it into practice. It is also essential, as we have seen, for plotting. So I hope pivoting will be of use not only for your wrangling, but also for your plotting tasks.
+
+## Contributors {.unlisted .unnumbered}
+
+The following team members contributed to this lesson:
+
+`r tgc_contributors_list(ids = c("kendavidn", "lolovanco"))`
+
+## References {.unlisted .unnumbered}

@@ -1,0 +1,44 @@
+---
+title: 'Test document'
+output:
+  word_document:
+    toc: yes
+    reference_docx: "working-template.docx"
+---
+
+
+# Introduction
+
+Lorem ipsum dolor sit amet.
+
+# Methods
+
+Lorem ipsum dolor sit amet.
+
+## Methods A
+
+Lorem ipsum dolor sit amet.
+
+## Methods B
+
+Lorem ipsum dolor sit amet.
+
+## Methods C
+
+Lorem ipsum dolor sit amet.
+
+# Discussion
+
+Lorem ipsum dolor sit amet.
+
+## Discussion A
+
+Lorem ipsum dolor sit amet.
+
+## Discussion B
+
+Lorem ipsum dolor sit amet.
+
+## Discussion C
+
+Lorem ipsum dolor sit amet.

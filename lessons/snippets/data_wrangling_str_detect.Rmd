@@ -1,0 +1,95 @@
+---
+title: '\ '
+output:
+  # word_document:
+  #   toc: yes
+  html_document:
+    number_sections: yes
+    toc: yes
+    css: !expr here::here("global/style/style.css")
+    highlight: kate
+    pandoc_args: --shift-heading-level-by=-1
+editor_options:
+  markdown:
+    wrap: 100
+always_allow_html: yes
+---
+
+```{r, echo = F, message = F, warning = F}
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(rlang, tidyverse, knitr, here)
+
+## functions
+source(here::here("global/functions/misc_functions.R"))
+
+## default render
+registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
+knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
+
+## autograders
+suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls02_filter_autograder.R")))
+```
+
+## The Yaounde COVID-19 dataset
+
+In this lesson, we will again use the data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
+
+```{r, message = F}
+yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+## a smaller subset of variables
+yao <- yaounde %>% 
+  select(age, sex, weight_kg, highest_education, neighborhood, 
+         occupation, is_smoker, is_pregnant, 
+         igg_result, igm_result)
+yao
+```
+
+
+## `stringr::str_detect()`
+
+The `yaounde` dataset has a number of multiple response variables.
+
+The `occupation` variable, for example, lists multiple responses separated by "\--":
+
+```{r}
+## the fifth respondent is a trader and a farmer
+yao %>% select(occupation) 
+```
+
+Such variables require special handling.
+
+If we want to subset the data to farmers, we should not write `filter(occupation == "Farmer")`, as that would drop anyone who has a second or third occupation (e.g. "Trader--Farmer").
+
+The `str_detect()` function is useful here. This function checks a given string (first argument) for a provided pattern (second argument).
+
+```{r, render = normal_print}
+test_string <- "Trader--Farmer"
+## returns TRUE since the test string contains "Farmer"
+str_detect(string = test_string, pattern = "Farmer")
+
+## returns FALSE since the test string does not contain "Student"
+str_detect(test_string, "Student")
+```
+
+We can use this within `filter()`:
+
+```{r}
+yao %>% 
+  select(occupation) %>% 
+  ## keep farmers
+  filter(str_detect(occupation, "Farmer"))
+```
+
+::: practice
+From `yao`, keep respondents who are students.
+
+Please submit the entire dataframe (unlike the example above showing only the occupation column).
+
+```{r, eval = F, echo = FALSE}
+q11 <- "YOUR_ANSWER_HERE" 
+.check_q11()
+.hint_q11()
+
+```
+:::

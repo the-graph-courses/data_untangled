@@ -1,0 +1,396 @@
+---
+title: "Multiple-choice quiz | Conditional Mutate"
+---
+
+```{r setup, include=FALSE}
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, knitr, here)
+knitr::opts_knit$set(upload.fun = imgur_upload)
+```
+
+# Intro
+
+We are continuing our quizzes on different {dplyr} verbs ! This quiz will check your understanding of the case_when helper function, used inside of the mutate verb.
+
+------------------------------------------------------------------------
+
+# Q: 1
+
+Which of the following explains what case_when() does?
+
+## A 
+
+`It allows to do other operations like select, filter inside of mutate`
+
+## B
+
+`It allows global transformation/creation of a variable`
+
+## C
+
+`It allows conditional transformation/creation of a variable`
+
+## Answer
+
+C
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 2
+
+Is the following statement true or false?
+
+*case_when() can be used outside mutate () or in other {dplyr} verbs.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 3
+
+Which of the following statements is correct about the TRUE default argument?
+
+## A 
+
+`It only applies to boolean variables`
+
+## B
+
+`It matches any row not yet matched`
+
+## C
+
+`It overrides all other previous conditions`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 4
+
+Is the following statement true or false?
+
+*The order of the conditions in case_when() does not matter.*
+
+## A 
+
+`It only applies to boolean variables`
+
+## B
+
+`It matches any row not yet matched`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 5
+
+Is the following statement true or false? 
+
+*The TRUE default argument should always be defined first in the case_when statement.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 6
+
+Is the following statement true or false? 
+
+*The TRUE default argument is the best way to handle NA values in a case_when statement.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 7
+
+Is the following statement true or false? 
+
+*The TRUE default argument can be used to keep the default values of a variable.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 8
+
+What does the following pseudo-code do? 
+
+`mutate(variable = case_when(condition1 ~ transformation1,`
+                            `condition2 ~ transformation2,`
+                            `TRUE ~ variable))`
+                          
+## A 
+
+`It creates a new variable if the conditions are true`
+
+## B
+
+`It keeps the default values of the variable if the conditions are not matched`
+
+## C
+
+`It sets all values to the same default value if the conditions are not matched`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 9
+
+Is the following statement true or false? 
+
+*The LHS (left hand side) of the case_when conditions can only have one condition*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 10
+
+Which of the following statements is correct about the order of priority of conditions in case_when ?
+
+## A 
+
+`The first condition is applied first, others are applied sequentially in a descending order`
+
+## B
+
+`The last condition is applied first, and others are applied sequentially in an ascending order`
+
+## C
+
+`The conditions are independent and override each other`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 11
+
+Is the following statement true or false? 
+
+*The order of priority of conditions in case_when matters the most when the conditions are open-ended.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 12
+
+How can you make best usage of the order of priority of conditions in case_when statements?
+
+## A 
+
+`Never use open-ended conditions`
+
+## B
+
+`Use conditions with only one logical operator`
+
+## C
+
+`Use closed conditions`
+
+## Answer
+
+C
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 13
+
+Is the following statement true or false? 
+
+*if_else statements are made to be used inside case_when statements.*
+
+## A 
+
+`False`
+
+## B
+
+`True`
+
+## Answer
+
+A
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
+
+# Q: 14
+
+Which of the following is correct about if_else?  
+
+## A 
+
+`if_else uses a tilde (~) like case_when`
+
+## B
+
+`if_else can only handle binary conditions`
+
+## C
+
+`if_else can be used outside of mutate`
+
+## Answer
+
+B
+
+## Correct message
+
+```{r echo = FALSE, results = "asis"}
+cat(praise::praise())
+```
+
+------------------------------------------------------------------------
