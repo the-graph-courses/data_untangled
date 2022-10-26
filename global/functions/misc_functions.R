@@ -854,7 +854,7 @@ tgc_contributors_list <- function(ids, csv_path = here::here("global/contributor
                      tgc_contributors$tagline[rows])
   
   ## paste contributor info inside HTML decorations
-  list_elements <-glue::glue("<li><img src= {image_paths} width='50px' height='50px' />
+  list_elements <-glue::glue("<li><img src= '{image_paths}' width='50px' height='50px' />
                              <name><a href='{links}' target='_blank'>{names} </a> </name> <br>
                              <label>{labels}</label>
                              <p>{taglines}</p></li>")
