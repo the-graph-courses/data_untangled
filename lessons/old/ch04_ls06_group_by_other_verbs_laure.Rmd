@@ -32,7 +32,7 @@ registerS3method("reactable_10_rows", "data.frame", reactable_10_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_10_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls06_group_by_other_verbs_autograder.R")))
+suppressMessages(source(here::here("lessons/ls06_group_by_other_verbs_autograder.R")))
 ```
 
 <!-- # Data wrangling: grouping with other verbs -->
@@ -46,7 +46,7 @@ You'll be an expert of grouping variables and manipulating them by the end of th
 
 Let's get started.
 
-![Fig: the different ways of using `group_by()`](../images/custom_dplyr_group_by_other_verbs.png){alt="Fig: the different ways of using group_by()." width="400"}
+![Fig: the different ways of using `group_by()`](images/custom_dplyr_group_by_other_verbs.png){alt="Fig: the different ways of using group_by()." width="400"}
 
 ## Learning objectives
 
@@ -75,7 +75,7 @@ We will make a few transformations to our data. First we'll select a few variabl
 
 ```{r, message = F, render = reactable_10_rows}
 # Import and view the dataset
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv')) 
+yaounde <- read_csv(here::here('data/yaounde_data.csv')) 
   
 yao <- 
   yaounde %>% 
@@ -101,7 +101,7 @@ yao
 For practice questions, we will also the sarcopenia data set. 
 
 ```{r, message = F, render = reactable_10_rows}
-sarcopenia <- read_csv(here::here('ch04_data_wrangling/data/sarcopenia_elderly.csv'))
+sarcopenia <- read_csv(here::here('data/sarcopenia_elderly.csv'))
 
 sarcopenia
 ```
@@ -409,9 +409,9 @@ Q_marital_status_gender_20_individuals <-
 `group_by()` is a marvelous tool for arranging, mutating, filtering based on the groups within a single or multiple variables. 
 
 
-![Fig: arrange() and group_by()](../images/custom_dplyr_groupby_arrange.png){alt="Fig: arrange() and its use combined with group_by()." width="400"}
-![Fig: mutate() and group_by()](../images/custom_dplyr_groupby_mutate.png){alt="Fig: mutate() and its use combined with group_by()." width="400"}
-![Fig: filter() and group_by()](../images/custom_dplyr_groupby_filter.png){alt="Fig: filter() and its use combined with group_by()." width="400"}
+![Fig: arrange() and group_by()](images/custom_dplyr_groupby_arrange.png){alt="Fig: arrange() and its use combined with group_by()." width="400"}
+![Fig: mutate() and group_by()](images/custom_dplyr_groupby_mutate.png){alt="Fig: mutate() and its use combined with group_by()." width="400"}
+![Fig: filter() and group_by()](images/custom_dplyr_groupby_filter.png){alt="Fig: filter() and its use combined with group_by()." width="400"}
 
 However, once grouped, the data set remains grouped. It is of utmost importance to remember to `ungroup` once your operations on the groups are done. 
 

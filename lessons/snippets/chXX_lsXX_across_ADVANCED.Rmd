@@ -27,7 +27,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls05_across_autograder.R")))
+suppressMessages(source(here::here("lessons/ls05_across_autograder.R")))
 ```
 
 

@@ -1,20 +1,12 @@
 ---
 title: '\ '
 output:
-  # word_document:
-  #   toc: yes
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-    pandoc_args: --shift-heading-level-by=-1
-editor_options:
-  markdown:
-    wrap: 100
-  canonical: true
-  chunk_output_type: inline
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -32,12 +24,12 @@ registerS3method("reactable_10_rows", "data.frame", reactable_10_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_10_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls04_conditional_mutate_autograder.R")))
+suppressMessages(source(here::here("lessons/ls04_conditional_mutate_autograder.R")))
 ```
 
 <!-- # Data wrangling: mutating columns -->
 
-## Introduction
+# Introduction
 
 In the last lesson, you learned the basics of data transformation using the {dplyr} function `mutate()`.
 
@@ -47,19 +39,25 @@ For this, we will mostly use the `case_when()` function, which you will likely c
 
 Let's get started.
 
-![Fig: the `case_when()` conditions](../images/custom_dplyr_case_when.png){alt="Fig: the case_when() conditions." width="400"}
+![Fig: the `case_when()` conditions](images/custom_dplyr_case_when.png){alt="Fig: the case_when() conditions." width="400"}
 
-## Learning objectives
+# Learning objectives
 
 1.  You can transform or create new variables based on conditions using `dplyr::case_when()`
+
 2.  You know how to use the `TRUE` condition in `case_when()` to match unmatched cases.
+
 3.  You can handle `NA` values in `case_when()` transformations.
+
 4.  You understand how to keep the default values of a variable in a `case_when()` formula
+
 5.  You can write `case_when()` conditions involving multiple comparators and multiple variables.
+
 6.  You understand `case_when()` conditions priority order.
+
 7.  You can use `dplyr::if_else()` for binary conditional assignment.
 
-## Packages
+# Packages
 
 This lesson will require the tidyverse suite of packages:
 
@@ -68,14 +66,14 @@ if(!require(pacman)) install.packages("pacman")
 pacman::p_load(tidyverse)
 ```
 
-## Datasets
+# Datasets
 
 In this lesson, we will again use data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F, render = reactable_10_rows}
 # Import and view the dataset
 yaounde <- 
-  read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv')) %>% 
+  read_csv(here::here('data/yaounde_data.csv')) %>% 
   ## make every 5th age missing
   mutate(age = case_when(row_number() %in% seq(5, 900, by = 5) ~ NA_real_,
                          TRUE ~ age)) %>% 
@@ -95,11 +93,11 @@ For practice questions, we will also use an outbreak linelist of 136 cases of in
 
 ```{r, message = F, render = reactable_10_rows}
 # Import and view the dataset
-flu_linelist <- read_csv(here::here('ch04_data_wrangling/data/flu_h7n9_china_2013.csv'))
+flu_linelist <- read_csv(here::here('data/flu_h7n9_china_2013.csv'))
 flu_linelist
 ```
 
-## Reminder: relational operators (comparators) in R
+# Reminder: relational operators (comparators) in R
 
 Throughout this lesson, you will use a lot of relational operators in R. Recall that relational operators, sometimes called "comparators", test the relation between two values, and return `TRUE`, `FALSE` or `NA`.
 
@@ -116,7 +114,7 @@ A list of the most common operators is given below:
 | A != B       | A is **not equal** to B             |
 | A %in% B     | A **is an element of** B            |
 
-## Introduction to `case_when()`
+# Introduction to `case_when()`
 
 To get familiar with `case_when(),` let's begin with a simple conditional transformation on the `age_years` column of the `yaounde` dataset. First we subset the data frame to just the `age_years` column for easy illustration:
 
@@ -204,7 +202,7 @@ Q_age_group_percentage <- YOUR_ANSWER_HERE
 ```
 :::
 
-## The `TRUE` default argument
+# The `TRUE` default argument
 
 In a `case_when()` statement, you can use a literal `TRUE` condition to match any rows not yet matched with provided conditions.
 
@@ -230,7 +228,7 @@ yaounde_age %>%
 As you can observe, all individuals are now coded with "Not child", because the `TRUE` condition was placed first, and therefore took precedence. We will explore the issue of precedence further below.
 :::
 
-## Matching NA's with `is.na()`
+# Matching NA's with `is.na()`
 
 Rather than match missing values with `TRUE` as we did above, we can match them manually with `is.na()`. Below we match `NA` ages with `is.na()` and set their age group to "Missing age":
 
@@ -282,7 +280,7 @@ Q_gender_recode <-
 ```
 :::
 
-## Keeping default values of a variable
+# Keeping default values of a variable
 
 The right-hand side (RHS) of a `case_when()` formula can also take in a variable from your data frame. This is often useful when you want to change just a few values in a column.
 
@@ -357,14 +355,14 @@ As you start to write increasingly complex `case_when()` statements, it will bec
 
 To assist with creating line breaks, you can use the {styler} package. Install it with `pacman::p_load(styler)`. Then to reformat any piece of code, highlight the code, click the "Addins" button in RStudio, then click on "Style selection":
 
-![](../images/styler_style_selection.png){width="317"}
+![](images/styler_style_selection.png){width="317"}
 
 Alternatively, you could highlight the code and use the shortcut `Shift` + `Command/Control` + `A` to use RStudio's built-in code reformatter.
 
 Sometimes {styler} does a better job at reformatting. Sometimes the built-in reformatter does a better job.
 :::
 
-## Multiple conditions on a single variable
+# Multiple conditions on a single variable
 
 LHS conditions in `case_when()` formulas can have multiple parts. Let's see an example of this.
 
@@ -449,7 +447,7 @@ Q_adolescent_grouping <-
 ```
 :::
 
-## Multiple conditions on multiple variables
+# Multiple conditions on multiple variables
 
 In all examples seen so far, you have only used conditions involving a single variable at a time. But LHS conditions often refer to multiple variables at once.
 
@@ -514,7 +512,7 @@ Q_age_province_grouping <-
 ```
 :::
 
-## Order of priority of conditions in `case_when()`
+# Order of priority of conditions in `case_when()`
 
 Note that the order of conditions is important, because conditions listed at the top of your `case_when()` statement take priority over others.
 
@@ -535,7 +533,7 @@ What's going on? Essentially, the `case_when()` statement is interpreted as a se
 
 This is illustrated in the schematic below:
 
-![](../images/case_when_eval_order_4.png){width="2000"}
+![](images/case_when_eval_order_4.png){width="2000"}
 
 This means that if you swap the order of the conditions, you will end up with a faulty `case_when()` statement:
 
@@ -550,7 +548,7 @@ As you can see, everyone is coded as "Older adult". This happens because the fir
 
 This is illustrated in the diagram below:
 
-![](../images/case_when_faulty_order.png){width="2000"}
+![](images/case_when_faulty_order.png){width="2000"}
 
 Although we have spent much time explaining the importance of the order of conditions, in this specific example, there would be a much clearer way to write this code that would not depend on the order of conditions. Rather than leave the age groups open-ended like this:
 
@@ -588,7 +586,7 @@ One reason is that understanding condition order should now help you see why it 
 
 The other reason is that there are certain cases where you *may* want to use open-ended overlapping conditions, and so you will have to pay attention to the order of conditions. Let's see one such example now: identifying COVID-like symptoms. Note that this is somewhat advanced material, likely a bit above your current needs. We are introducing it now so you are aware and can stay vigilant with `case_when()` in the future.
 
-### Overlapping conditions within `case_when()`
+## Overlapping conditions within `case_when()`
 
 We want to identify COVID-like symptoms in our data. Consider the symptoms columns in the `yaounde` data frame, which indicates which symptoms were experienced by respondents over a 6-month period:
 
@@ -688,9 +686,9 @@ Q_priority_groups <-
 ```
 :::
 
-## Binary conditions: `dplyr::if_else()`
+# Binary conditions: `dplyr::if_else()`
 
-![Fig: the `if_else()` conditions](../images/custom_dplyr_if_else.png){alt="Fig: the if_else() conditions." width="400"}
+![Fig: the `if_else()` conditions](images/custom_dplyr_if_else.png){alt="Fig: the if_else() conditions." width="400"}
 
 There is another {dplyr} verb similar to `case_when()` for when we want to apply a binary condition to a variable: `if_else()`. A binary condition is either `TRUE` or `FALSE`.
 
@@ -744,7 +742,7 @@ Q_age_group_if_else <-
 ```
 :::
 
-## Wrap up
+# Wrap up
 
 Changing or constructing your variables based on conditions on other variables is one of the most repeated data wrangling tasks. To the point it deserved its very own lesson !
 
@@ -752,15 +750,15 @@ I hope now that you will feel comfortable using `case_when()` and `if_else()` wi
 
 See you next time!
 
-![Fig: the conditional `mutate()` options](../images/custom_dplyr_conditional.png){alt="Fig: the if_else() and the `case_when()` conditions." width="400"}
+![Fig: the conditional `mutate()` options](images/custom_dplyr_conditional.png){alt="Fig: the if_else() and the `case_when()` conditions." width="400"}
 
-## Contributors {.unlisted .unnumbered}
+# Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "kendavidn"))`
 
-## References {.unlisted .unnumbered}
+# References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 

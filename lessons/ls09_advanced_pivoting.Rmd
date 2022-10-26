@@ -1,18 +1,12 @@
 ---
 title: '\ '
 output:
-  # word_document:
-  #   toc: yes
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-editor_options:
-  markdown:
-    wrap: 100
-  chunk_output_type: inline
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -28,7 +22,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls02_filter_autograder.R")))
+suppressMessages(source(here::here("lessons/ls02_filter_autograder.R")))
 ```
 
 # Intro
@@ -196,7 +190,7 @@ If we have a different separator, this argument would change. For example, if th
 ```{r}
 child_stats_space_sep <- 
   tibble::tribble(
-    ~child, ~`yr1 height`, ~`yr2 height`, ~`yr1 weight`, ~`yr2 weight,
+    ~child, ~`yr1 height`, ~`yr2 height`, ~`yr1 weight`, ~`yr2 weight`,
        "A",        "80cm",        "85cm",         "5kg",        "10kg",
        "B",        "85cm",        "90cm",         "7kg",        "12kg",
        "C",        "90cm",       "100cm",         "6kg",        "14kg"
@@ -356,7 +350,7 @@ And that's it!
 Consider the following [data set from Zambia](https://zenodo.org/record/4571669) about enteropathogens and their biomarkers.
 
 ```{r}
-enteropathogens_zambia_wide<- read_csv(here("ch04_data_wrangling/data/enteropathogens_zambia_wide.csv"))
+enteropathogens_zambia_wide<- read_csv(here("data/enteropathogens_zambia_wide.csv"))
 
 enteropathogens_zambia_wide
 ```
@@ -393,7 +387,7 @@ You might measure the height (cm) and weight (kg) of a series of parental couple
 ```{r}
 family_stats <- 
   tibble::tribble(
-  ~couple, ~father_height, father_weight, ~mother_height, ~mother_weight,
+  ~couple, ~father_height, ~father_weight, ~mother_height, ~mother_weight,
       "a",            180,            80,            160,             70,
       "b",            185,            90,            150,             76,
       "c",            182,            93,            143,             78
@@ -482,7 +476,7 @@ Sometimes you do not have a neat separator.
 Consider this [survey data from India](https://zenodo.org/record/5014153) that looked at how much money patients spent on tuberculosis treatment:
 
 ```{r}
-tb_visits <- read_csv(here("ch04_data_wrangling/data/india_tb_pathways_and_costs_data.csv")) %>% 
+tb_visits <- read_csv(here("data/india_tb_pathways_and_costs_data.csv")) %>% 
   clean_names() %>% 
   select(id, first_visit_location, first_visit_cost, second_visit_location, second_visit_cost, third_visit_location, third_visit_cost)
 
@@ -558,7 +552,7 @@ We will use [a survey data about diet from Vietnam](https://www.wur.nl/en/projec
 -   `fat_w_1`: the consumed Lipid from ingredient/food (g) during the first visit (with `_2` for the second visit)
 
 ```{r}
-diet_diversity_vietnam_wide <- read_csv(here("ch04_data_wrangling/data/diet_diversity_vietnam_wide.csv"))
+diet_diversity_vietnam_wide <- read_csv(here("data/diet_diversity_vietnam_wide.csv"))
 
 diet_diversity_vietnam_wide
 ```
@@ -586,7 +580,7 @@ It could be useful to put long to wide to do different transformations, filters,
 Let's take the Zambia enteropathogen data, and this time, let's take the original ! Indeed, what you were handling before was a dataset **prepared for you**, in a wide format. **The original dataset is long** and we will now see the data preparation I did beforehand, behind the scenes. You're almost becoming the teacher of this lesson ;)
 
 ```{r}
-enteropathogens_zambia_long <- read_csv(here("ch04_data_wrangling/data/enteropathogens_zambia_long.csv"))
+enteropathogens_zambia_long <- read_csv(here("data/enteropathogens_zambia_long.csv"))
 
 enteropathogens_zambia_long
 ```
@@ -613,7 +607,7 @@ We are considering this "advanced" pivoting because we are pivoting wider severa
 Let's see another example, using the diet survey data from Vietnam that you manipulated previously:
 
 ```{r}
-diet_diversity_vietnam_long <- read_csv(here("ch04_data_wrangling/data/diet_diversity_vietnam_long.csv"))
+diet_diversity_vietnam_long <- read_csv(here("data/diet_diversity_vietnam_long.csv"))
 
 diet_diversity_vietnam_long
 ```

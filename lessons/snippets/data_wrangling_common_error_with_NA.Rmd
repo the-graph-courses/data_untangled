@@ -34,7 +34,7 @@ knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows
 In this lesson, we will again use the data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F}
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 ## a smaller subset of variables
 yao <- yaounde %>% 
   select(age, sex, weight_kg, highest_education, neighborhood, 
@@ -88,7 +88,7 @@ yao_mini %>%
   filter(is.na(is_pregnant) | is_pregnant == "No" | is_pregnant == "No response")
 ```
 
-![Fig: A common error with NA](../../images/filtering_on_na_values.png){alt="A common error with NA"}{width="300",height="1000"}
+![Fig: A common error with NA](images/filtering_on_na_values.png){alt="A common error with NA"}{width="300",height="1000"}
 
 ::: pro-tip 
 

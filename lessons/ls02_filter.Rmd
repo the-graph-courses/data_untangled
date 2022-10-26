@@ -1,18 +1,12 @@
 ---
 title: '\ '
 output:
-  # word_document:
-  #   toc: yes
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-    pandoc_args: --shift-heading-level-by=-1
-editor_options:
-  markdown:
-    wrap: 100
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -28,34 +22,34 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls02_filter_autograder.R")))
+suppressMessages(source(here::here("lessons/ls02_filter_autograder.R")))
 ```
 
 <!-- # Data wrangling: filtering rows -->
 
-## Intro                                                                                                    
+# Intro                                                                                                    
 
 Onward with the {dplyr} package, discovering the `filter` verb. Last time we saw how to `select` variables (columns) and today we will see how to keep or drop data entries, rows, using `filter`. Dropping abnormal data entries or keeping subsets of your data points is another essential aspect of data wrangling.
 
 Let's go !                                                                                                                                                                                 
-![Fig: the filter() verb.](../images/custom_dplyr_filter.png){width="400"}                                  
+![Fig: the filter() verb.](images/custom_dplyr_filter.png){width="400"}                                  
 
 
-## Learning objectives                                                                                                                                                                           
-1\. You will use `dplyr::filter()` to keep or drop rows from a dataframe.                                                                                                                       
-2\. You will filter rows by specifying conditions on numbers or strings using relational operators like greater than (`>`), less than (`<`), equal to (`==`), and not equal to (`!=`).   
+# Learning objectives                                                                                                                                                                           
+1. You can use `dplyr::filter()` to keep or drop rows from a dataframe.                                                                                                                       
+2. You can filter rows by specifying conditions on numbers or strings using relational operators like greater than (`>`), less than (`<`), equal to (`==`), and not equal to (`!=`).   
 
-3\. You will filter rows by combining conditions using logical operators like the ampersand (`&`) and the vertical bar (`|`).                                                                    
+3. You can filter rows by combining conditions using logical operators like the ampersand (`&`) and the vertical bar (`|`).                                                                    
 
-4\. You will filter rows by negating conditions using the exclamation mark (`!`) logical operator.                                                                             
-5\. You will filter rows with missing values using the `is.na()` function.                                                                                                                       
+4. You can filter rows by negating conditions using the exclamation mark (`!`) logical operator.                                                                            
+5. You can filter rows with missing values using the `is.na()` function.                                                                                                                      
 
-## The Yaounde COVID-19 dataset
+# The Yaounde COVID-19 dataset
 
 In this lesson, we will again use the data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F}
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 ## a smaller subset of variables
 yao <- yaounde %>% 
   select(age, sex, weight_kg, highest_education, neighborhood, 
@@ -64,7 +58,7 @@ yao <- yaounde %>%
 yao
 ```
 
-## Introducing `filter()`
+# Introducing `filter()`
 
 We use `filter()` to keep rows that satisfy a set of conditions. Let's take a look at a simple example. If we want to keep just the male records, we run:
 
@@ -116,7 +110,7 @@ q2 <- "YOUR_ANSWER_HERE"
 ```
 :::
 
-## Relational operators
+# Relational operators
 
 The `==` operator introduced above is an example of a "relational" operator, as it tests the relation between two values. Here is a list of some of these operators:
 
@@ -131,7 +125,7 @@ The `==` operator introduced above is an example of a "relational" operator, as 
 | A != B       | A is **not equal** to B             |
 | A %in% B     | A **is an element of** B            |
 
-![Fig: AND and OR operators visualized.](../images/venn_diagram_and_or.png){width="450"}
+![Fig: AND and OR operators visualized.](images/venn_diagram_and_or.png){width="450"}
 
 Let's see how to use these within `filter()`:
 
@@ -162,7 +156,7 @@ q4 <- "YOUR_ANSWER_HERE"
 ```
 :::
 
-## Combining conditions with `&` and `|`
+# Combining conditions with `&` and `|`
 
 We can pass multiple conditions to a single `filter()` statement separated by commas:
 
@@ -213,7 +207,7 @@ q6 <- "YOUR_ANSWER_HERE"
 ```
 :::
 
-## Negating conditions with `!`
+# Negating conditions with `!`
 
 To negate conditions, we wrap them in `!()`.
 
@@ -260,7 +254,7 @@ q7 <- "YOUR_ANSWER_HERE"
 ```
 :::
 
-## `NA` values
+# `NA` values
 
 The relational operators introduced so far do not work with `NA`.
 
@@ -302,7 +296,7 @@ yao_mini %>% filter(!is.na(is_pregnant))
 ::: side-note
 For tibbles, RStudio will highlight `NA` values bright red to distinguish them from other values:
 
-![A common error with `NA`](../images/tibble_with_na.png){width="300"}
+![A common error with `NA`](images/tibble_with_na.png){width="300"}
 :::
 
 ::: side-note
@@ -330,21 +324,21 @@ q9 <- "YOUR_ANSWER_HERE"
 :::
 
 
-## Wrap Up ! {.unnumbered}
+# Wrap Up ! {.unnumbered}
 
 Now you know the two essential verbs to `select()` columns and to `filter()` rows. This way you keep the variables you are interested in by selecting your columns and you keep the data entries you judge relevant by filtering your rows.
 
 But what about modifying, transforming your data? We will learn about this in the next lesson. See you there!
 
-![Fig: Basic Data Wrangling: `select()` and `filter()`.](../images/custom_dplyr_basic_2.png){width="400"}
+![Fig: Basic Data Wrangling: `select()` and `filter()`.](images/custom_dplyr_basic_2.png){width="400"}
 
-## Contributors {.unlisted .unnumbered}
+# Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
 
-## References {.unlisted .unnumbered}
+# References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 
@@ -357,7 +351,7 @@ Artwork was adapted from:
 -   Horst, A. (2021). *R & stats illustrations by Allison Horst*. <https://github.com/allisonhorst/stats-illustrations> (Original work published 2018)
 
 ```{r, include = F}
-# knitr::purl(input = here::here("ch04_data_wrangling/lessons/01_select_rename.Rmd"),
-#             output = here::here("ch04_data_wrangling/lessons/01_select_rename.R"),
+# knitr::purl(input = here::here("lessons/01_select_rename.Rmd"),
+#             output = here::here("lessons/01_select_rename.R"),
 #             documentation = 2)
 ```

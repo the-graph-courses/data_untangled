@@ -8,7 +8,7 @@ pacman::p_load(praise,
 ## ~  DATA ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+.yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 .yao <- .yaounde %>% 
   select(
     age, age_category_3, sex, weight_kg, height_cm,

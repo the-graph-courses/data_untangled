@@ -12,7 +12,7 @@ pacman::p_load(here,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  DATA ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.sarcopenia <- read_csv(here('ch04_data_wrangling/data/sarcopenia_elderly.csv'))
+.sarcopenia <- read_csv(here('data/sarcopenia_elderly.csv'))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----

@@ -8,7 +8,7 @@ pacman::p_load(praise,
 ## ~  DATA ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.sarcopenia <- read_csv(here::here('ch04_data_wrangling/data/sarcopenia_elderly.csv'))
+.sarcopenia <- read_csv(here::here('data/sarcopenia_elderly.csv'))
 
 
 .CHECK_Q_grip_strength_arranged <- function() invisible(NULL)

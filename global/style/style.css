@@ -161,7 +161,7 @@ div.practice, div.r-practice, div.watch-out, div.key-point, div.side-note, div.p
 body {
   font-family: 'Tajawal', sans-serif;
   color: black;
-  font-size: 17px;
+  font-size: 18.5px;
   padding-left: 20px;
   padding-right: 20px;
   
@@ -178,7 +178,7 @@ body {
 
 
 pre, code{
-  font-size: 0.83em; /* font size for the results code block */
+  font-size: 0.9em; /* font size for the results code block */
   opacity: 0.86;
 }
 
@@ -186,7 +186,7 @@ pre, code{
 .sourceCode {
     margin: 0.3em 0 0em 0 !important;
     padding-bottom: 0.4em;
-    font-size: 14px; /* font size for R code block */
+    font-size: 16px; /* font size for R code block */
     width: 100%;   /* fix rendering of code block within div */
     opacity: 1; !important /* We don't want the opacity reduction from pre, code to apply to the main code blocks */
 }

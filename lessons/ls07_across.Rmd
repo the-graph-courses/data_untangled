@@ -1,19 +1,12 @@
 ---
 title: '\ '
 output:
-  # word_document:
-  #   toc: yes
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-    pandoc_args: --shift-heading-level-by=-1
-editor_options:
-  markdown:
-    wrap: 100
-  chunk_output_type: inline
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -28,18 +21,18 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls07_across_autograder.R")))
+suppressMessages(source(here::here("lessons/ls07_across_autograder.R")))
 ```
 
-## Intro {.unnumbered}
+# Intro {.unnumbered}
 
 In previous lessons, you learned how to perform a range of wrangling operations like filtering, mutating and summarizing. But so far, you only performed these operations *one column at a time*. Sometimes however, it will be useful (and efficient) to apply the same operation to *several columns at the same time*. For this, the `across()` function can be used.
 
 Let's see how!
 
-![Fig: the `across()` verb.](../images/custom_dplyr_across.png){width="400"}
+![Fig: the `across()` verb.](images/custom_dplyr_across.png){width="400"}
 
-## Learning objectives {.unnumbered}
+# Learning objectives {.unnumbered}
 
 1.  You can use `across()` with the `mutate()` and `summarize()` verbs to apply operations over multiple columns.
 
@@ -47,7 +40,7 @@ Let's see how!
 
 3.  You can write anonymous (lambda) functions within `across()`
 
-## Packages
+# Packages
 
 This lesson will require the packages loaded below:
 
@@ -56,12 +49,12 @@ if(!require(pacman)) install.packages("pacman")
 pacman::p_load(here, tidyverse)
 ```
 
-## Datasets
+# Datasets
 
 In this lesson, we will again use data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F}
-yaounde <- read_csv(here("ch04_data_wrangling/data/yaounde_data.csv"))
+yaounde <- read_csv(here("data/yaounde_data.csv"))
 
 yaounde <- yaounde %>% rename(age_years = age)
 
@@ -71,20 +64,20 @@ yaounde
 We will also use data from a hospital [study](https://zenodo.org/record/4541793) conducted in Burkina Faso, in which a range of clinical data was collected from patients with febrile (fever-causing) diseases, with the aim of predicting the cause of the fever.
 
 ```{r, message = F}
-febrile_diseases <- read_csv(here("ch04_data_wrangling/data/febrile_diseases_burkina_faso.csv"))
+febrile_diseases <- read_csv(here("data/febrile_diseases_burkina_faso.csv"))
 febrile_diseases
 ```
 
 Finally, we will use data from a dietary diversity [survey](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/NRNCX0) conducted in Vietnam, in which women were asked to recall (one or several days) the foods and drinks they consumed the previous day.
 
 ```{r, message = F}
-diet <- read_csv(here("ch04_data_wrangling/data/vietnam_diet_diversity.csv"))
+diet <- read_csv(here("data/vietnam_diet_diversity.csv"))
 diet <- diet %>% rename(household_id = hhid)
 
 diet
 ```
 
-## Using `across()` with `mutate()`
+# Using `across()` with `mutate()`
 
 The `mutate()` function gives you an easy way to create new variables or modify in place variables.
 
@@ -149,7 +142,7 @@ There are many reasons to avoid repetitive code. Here are just a few:
 3.  DRY code is usually easier to read and understand, both by yourself and by others.
 :::
 
-### The `.cols` argument
+## The `.cols` argument
 
 Now let's look at the arguments of `across()` in some more detail.
 
@@ -239,7 +232,7 @@ Q_febrile_disease_symptoms <-
 ```
 :::
 
-### The `.fns` argument
+## The `.fns` argument
 
 Now, on to the second argument in `across()`. As mentioned above, this argument takes in the function to be applied across columns.
 
@@ -293,7 +286,7 @@ Q_febrile_disease_symptoms_to_lower <-
 ```
 :::
 
-### Custom ("anonymous") functions
+## Custom ("anonymous") functions
 
 Sometimes it is useful to use a custom function, called a "lambda function" or "anonymous function". You will see more about functions in later lessons. The idea here is that you write your own operation which will be applied across your selected variables. The writing of these lambda functions has certain strict rules so pay attention to this as we go through several examples.
 
@@ -415,7 +408,7 @@ Q_diet_to_grams <-
 ```
 :::
 
-### Creating new columns with the `.names` argument
+## Creating new columns with the `.names` argument
 
 The examples we have seen so far all involved replacing existing columns.
 
@@ -493,7 +486,7 @@ Q_febrile_disease_symptoms_to_numeric_new_variables <-
 ```
 :::
 
-## Using `across()` with `summarize()`
+# Using `across()` with `summarize()`
 
 To get summary statistics over multiple variables it is often helpful to use `across()`.
 
@@ -678,7 +671,7 @@ Q_yaounde_median <-
 ```
 :::
 
-### Multiple summary statistics
+## Multiple summary statistics
 
 When we explored `summarize()` we rejoiced with the fact that we could calculate multiple summary statistics at the same time. This is also possible within `across()`.
 
@@ -758,7 +751,7 @@ Q_febrile_diseases_mean_blood_composition <-
 ```
 :::
 
-## Recap !
+# Recap !
 
 `across()` can be used inside many different {dplyr} verbs:
 
@@ -784,19 +777,19 @@ The function(s) to apply across all columns can be:
 
 -   a list of custom (lambda/anonymous) functions
 
-## Wrap up ! {.unnumbered}
+# Wrap up ! {.unnumbered}
 
 This was your first approach to `across()`: congrats for making it through ! Remember the power of combination of `across()` and other verbs. If you feel a summarizing or mutation operation is identical for more than one variable, then usually you should think of using `across()`.
 
 In the upcoming lessons we will see some more data wrangling verbs: see you soon !
 
-## Contributors {.unlisted .unnumbered}
+# Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "kendavidn"))`
 
-## References {.unlisted .unnumbered}
+# References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 
@@ -810,7 +803,7 @@ Artwork was adapted from:
 
 -   Horst, A. (2022). *R & stats illustrations by Allison Horst*. <https://github.com/allisonhorst/stats-illustrations> (Original work published 2018)
 
-## Appendix 1: FAO Food Groups {.unlisted .unnumbered}
+# Appendix 1: FAO Food Groups {.unlisted .unnumbered}
 
 |           |                                                                  |
 |-------------------|-----------------------------------------------------|
@@ -837,7 +830,7 @@ Artwork was adapted from:
 | fao_fgw20 | Consumed amount from Condiments and seasonings                   |
 | fao_fgw21 | Consumed amount from Other beverages and foods                   |
 
-## Appendix 2: Blood sample composition {.unlisted .unnumbered}
+# Appendix 2: Blood sample composition {.unlisted .unnumbered}
 
 | Abbreviation | Complete Name                     |
 |--------------|-----------------------------------|

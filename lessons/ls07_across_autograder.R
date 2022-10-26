@@ -46,13 +46,13 @@ pacman::p_load(here,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  DATA ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.yaounde <- read_csv(here("ch04_data_wrangling/data/yaounde_data.csv"))
+.yaounde <- read_csv(here("data/yaounde_data.csv"))
 .yaounde <- .yaounde %>% rename(age_years = age)
 
-.diet <- read_csv(here("ch04_data_wrangling/data/vietnam_diet_diversity.csv"))
+.diet <- read_csv(here("data/vietnam_diet_diversity.csv"))
 .diet <- .diet %>% rename(household_id = hhid)
 
-.febrile_diseases <- read_csv(here("ch04_data_wrangling/data/febrile_diseases_burkina_faso.csv"))
+.febrile_diseases <- read_csv(here("data/febrile_diseases_burkina_faso.csv"))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----

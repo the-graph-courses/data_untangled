@@ -27,7 +27,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls04_groupby_summarize_autograder.R")))
+suppressMessages(source(here::here("lessons/ls04_groupby_summarize_autograder.R")))
 ```
 
 <!-- # Data wrangling: grouping and summarizing -->
@@ -49,7 +49,7 @@ suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls04_groupby_sum
 In this lesson, we will again use the data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F}
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 ## a smaller subset of variables
 yao <- yaounde %>% select(neighborhood, is_smoker, occupation, 
                           treatment_combinations, symptoms, 

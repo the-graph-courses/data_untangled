@@ -1,19 +1,12 @@
 ---
 title: '\ '
 output:
-  # word_document:
-  #   toc: yes
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-    pandoc_args: --shift-heading-level-by=-1
-editor_options:
-  markdown:
-    wrap: 100
-  chunk_output_type: console
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -27,12 +20,12 @@ source(here::here("global/functions/misc_functions.R"))
 knitr::opts_chunk$set(class.source = "tgc-code-block")
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls05_groupby_summarize_autograder.R")))
+suppressMessages(source(here::here("lessons/ls05_groupby_summarize_autograder.R")))
 ```
 
 <!-- # Data wrangling: grouping and summarizing -->
 
-## Introduction
+# Introduction
 
 You currently know how to keep your data entries of interest, how keep relevant variables and how to modify them or create new ones.
 
@@ -44,7 +37,7 @@ Let's go !
 
 ------------------------------------------------------------------------
 
-## Learning objectives
+# Learning objectives
 
 1.  You can use `dplyr::summarize()` to extract summary statistics from datasets.
 
@@ -60,12 +53,12 @@ Let's go !
 
 ------------------------------------------------------------------------
 
-## The Yaounde COVID-19 dataset
+# The Yaounde COVID-19 dataset
 
 In this lesson, we will again use data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F}
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 
 # A smaller subset of variables
 yao <- yaounde %>% select(
@@ -79,19 +72,19 @@ yao
 
 See the first lesson in this chapter for more information about this dataset.
 
-## What are summary statistics?
+# What are summary statistics?
 
 A summary statistic is a single value (such as a mean or median) that describes a variable (typically a column in your dataset).
 
-![](../images/what_is_a_summary_statistic.png){width="300"}
+![](images/what_is_a_summary_statistic.png){width="300"}
 
 Summary statistics can describe the center, spread or range of a variable, or the counts and positions of values within that variable. Some common summary statistics are shown in the diagram below:
 
-![](../images/summary_stats_examples.png){width="300"}
+![](images/summary_stats_examples.png){width="300"}
 
 Computing summary statistics is a very common operation in most data analysis workflows, so it will be important to become fluent in extracting them from your datasets. And for this task, there is no better tool than the {dplyr} function `summarize()`! So let's see how to use this powerful function.
 
-## Introducing `dplyr::summarize()`
+# Introducing `dplyr::summarize()`
 
 To get started, it is best to first consider how to get simple summary statistics *without* using `summarize()`, then we will consider why you *should* actually use it.
 
@@ -123,7 +116,7 @@ yao %>%
 
 The 'anatomy' of this syntax is shown below. You simply need the name of the new column (e.g. `mean_age`), the summary function (e.g. `mean()`), and the column to summarize (e.g. `age`).
 
-![*Fig.* Basic syntax for the `summarize()` function.](../images/summarize_syntax.png)
+![*Fig.* Basic syntax for the `summarize()` function.](images/summarize_syntax.png)
 
 ------------------------------------------------------------------------
 
@@ -187,7 +180,7 @@ Q_height_summary <-
 ```
 :::
 
-## Grouped summaries with `dplyr::group_by()`
+# Grouped summaries with `dplyr::group_by()`
 
 As its name suggests, `dplyr::group_by()` lets you group a data frame by the values in a variable (e.g. male vs female sex). You can then perform operations that are split according to these groups.
 
@@ -356,7 +349,7 @@ yao %>%
 ```
 :::
 
-## Grouping by multiple variables (nested grouping)
+# Grouping by multiple variables (nested grouping)
 
 It is possible to group a data frame by more than one variable. This is sometimes called "nested" grouping.
 
@@ -422,7 +415,7 @@ Q_bedridden_by_age_sex_iggresult <-
 ```
 :::
 
-## Ungrouping with `dplyr::ungroup()` (why and how)
+# Ungrouping with `dplyr::ungroup()` (why and how)
 
 When you `group_by()` more than one variable before using `summarize()`, the output data frame is still grouped. This persistent grouping can have unwanted downstream effects, so you will sometimes need to use `dplyr::ungroup()` to ungroup the data before doing further analysis.
 
@@ -485,7 +478,7 @@ yao %>%
   select(mean_age)
 ```
 
-## Counting rows
+# Counting rows
 
 > You can do a lot of data science by just *counting* and occasionally *dividing.* - Hadley Wickham, Chief Scientist at RStudio
 
@@ -534,7 +527,7 @@ Q_occupation_summary <-
 ```
 :::
 
-### Counting rows that meet a condition
+## Counting rows that meet a condition
 
 Rather than counting *all* rows as above, it is sometimes more useful to count just the rows that meet specific conditions. This can be done easily by placing the required conditions within the `sum()` function.
 
@@ -630,7 +623,7 @@ Q_symptoms_adults <-
 ```
 :::
 
-### Dplyr::count()
+## dplyr::count()
 
 The `dplyr::count()` function wraps a bunch of things into one beautiful friendly line of code to help you find counts of observations by group.
 
@@ -717,7 +710,7 @@ yao %>%
   count()
 ```
 
-## Including missing combinations in summaries
+# Including missing combinations in summaries
 
 When you use `group_by()` and `summarize()` on multiple variables, you obtain a summary statistic for every unique combination of the grouped variables. For instance, consider the code and output below, which counts the number of individuals in each age-sex group:
 
@@ -887,17 +880,17 @@ Additionally, you have discovered one of the marvels of {dplyr}, the possibility
 
 `group_by()` combined with `summarize()` is a one of the most common grouping manipulations.
 
-![Fig: summarize() and group_by()](../images/custom_dplyr_groupby_summarize.png){alt="Fig: summarize() and its use combined with group_by()." width="400"} 
+![Fig: summarize() and group_by()](images/custom_dplyr_groupby_summarize.png){alt="Fig: summarize() and its use combined with group_by()." width="400"} 
 
 However, you can also combine `group_by()` with many of the other {dplyr} verbs: this is what we will cover in our next lesson. See you soon !
 
-## Contributors {.unlisted .unnumbered}
+# Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
 
-## References {.unlisted .unnumbered}
+# References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 

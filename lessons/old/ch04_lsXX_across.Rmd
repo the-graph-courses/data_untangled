@@ -27,7 +27,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls05_across_autograder.R")))
+suppressMessages(source(here::here("lessons/ls05_across_autograder.R")))
 ```
 
 ## Introduction
@@ -42,7 +42,7 @@ Nonetheless, we believe in you! And we think you can already handle an introduct
 
 Let's go !
 
-![Fig: the `across()` verb.](../images/custom_dplyr_across.png){width="400"}
+![Fig: the `across()` verb.](images/custom_dplyr_across.png){width="400"}
 
 ## Learning objectives
 
@@ -57,7 +57,7 @@ Let's go !
 In this lesson, we will again (and for the last time for data wrangling) use data from the COVID-19 serological survey conducted in Yaounde, Cameroon.
 
 ```{r, message = F}
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 
 # A smaller subset of variables
 yao <- yaounde %>% select(
@@ -73,7 +73,7 @@ yao
 For practice questions, we shall use the sarcopenia prevalence data you have encountered in previous lessons, from a cross-sectional study from India.
 
 ```{r, message = F, render = reactable_10_rows}
-sarcopenia <- read_csv(here::here('ch04_data_wrangling/data/sarcopenia_elderly.csv'))
+sarcopenia <- read_csv(here::here('data/sarcopenia_elderly.csv'))
 
 sarcopenia <- 
   sarcopenia %>%

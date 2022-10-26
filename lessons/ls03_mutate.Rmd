@@ -1,20 +1,12 @@
 ---
 title: '\ '
 output:
-  # word_document:
-  #   toc: yes
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-    pandoc_args: --shift-heading-level-by=-1
-editor_options:
-  markdown:
-    wrap: 100
-  canonical: true
-  chunk_output_type: console
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -32,26 +24,26 @@ registerS3method("reactable_10_rows", "data.frame", reactable_10_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("ch04_data_wrangling/lessons/ls03_mutate_autograder.R")))
+suppressMessages(source(here::here("lessons/ls03_mutate_autograder.R")))
 ```
 
 <!-- # Data wrangling: mutating columns -->
 
-## Intro
+# Intro
 
 You now know how to keep or drop columns and rows from your dataset. Today you will learn how to modify existing variables or create new ones, using the `mutate()` verb from {dplyr}. This is an essential step in most data analysis projects.
 
 Let's go!
 
-![Fig: the `mutate()` verb.](../images/custom_dplyr_mutate.png){width="400"}
+![Fig: the `mutate()` verb.](images/custom_dplyr_mutate.png){width="400"}
 
-## Learning objectives
+# Learning objectives
 
 1.  You can use the `mutate()` function from the `{dplyr}` package to create new variables or modify existing variables.
 
 2.  You can create new numeric, character, factor, and boolean variables
 
-## Packages
+# Packages
 
 This lesson will require the packages loaded below:
 
@@ -62,12 +54,12 @@ pacman::p_load(here,
                tidyverse)
 ```
 
-## Datasets
+# Datasets
 
 In this lesson, we will again use the data from the COVID-19 serological survey conducted in Yaounde, Cameroon. Below, we import the dataset `yaounde` and create a smaller subset called `yao`. Note that this dataset is slightly different from the one used in the previous lesson.
 
 ```{r, message = F, render = reactable_10_rows}
-yaounde <- read_csv(here::here('ch04_data_wrangling/data/yaounde_data.csv'))
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
 
 ## a smaller subset of variables
 yao <- yaounde %>% select(date_surveyed, 
@@ -83,14 +75,14 @@ We will also use a dataset from a cross-sectional study that aimed to determine 
 Below, we import and view this dataset:
 
 ```{r, message = F, render = reactable_10_rows}
-sarcopenia <- read_csv(here::here('ch04_data_wrangling/data/sarcopenia_elderly.csv'))
+sarcopenia <- read_csv(here::here('data/sarcopenia_elderly.csv'))
 
 sarcopenia
 ```
 
-## Introducing `mutate()`
+# Introducing `mutate()`
 
-![The `mutate()` function. (Drawing adapted from Allison Horst)](../images/dplyr_mutate.png){width="336"}
+![The `mutate()` function. (Drawing adapted from Allison Horst)](images/dplyr_mutate.png){width="336"}
 
 We use `dplyr::mutate()` to create new variables or modify existing variables. The syntax is quite intuitive, and generally looks like `df %>% mutate(new_column_name = what_it_contains)`.
 
@@ -115,7 +107,7 @@ Great. The syntax is beautifully simple, isn't it?
 ::: side-note
 Sometimes it is helpful to think of data manipulation functions in the context of familiar spreadsheet software. Here is what the R command `mutate(height_m = height_cm/100)` would be equivalent to in Google Sheets:
 
-![](../images/mutate_equivalent_in_excel.gif){width="321"}
+![](images/mutate_equivalent_in_excel.gif){width="321"}
 :::
 
 Now, imagine there was a small error in the equipment used to measure respondent heights, and all heights are 5cm too small. You therefore like to add 5cm to all heights in the dataset. To do this, rather than creating a new variable as you did before, you can **modify the existing variable** with mutate:
@@ -148,7 +140,7 @@ Hopefully you now see that the mutate function is quite user-friendly. In theory
 
 The rest of the lesson will go through a few use cases for the `mutate()` verb. In the process, we'll touch on several new functions you have not yet encountered.
 
-## Creating a rank variable
+# Creating a rank variable
 
 It is sometimes useful to rank rows based on the value of a column. For example, you may want to rank survey respondents in order of their height. You can do this with `mutate()` and the `rank()` function.
 
@@ -198,7 +190,7 @@ Q_sarcopenia_grip_strength <-
 ```
 :::
 
-## Creating a Boolean variable
+# Creating a Boolean variable
 
 You can use `mutate()` to create a Boolean variable to categorize part of your population.
 
@@ -277,7 +269,7 @@ Q_prop_women_low_grip_strength <- YOUR_ANSWER_HERE
 ```
 :::
 
-## Creating a numeric variable based on a formula
+# Creating a numeric variable based on a formula
 
 Now, let's look at an example of creating a numeric variable, the body mass index (BMI), which a commonly used health indicator. The formula for the body mass index can be written as:
 
@@ -331,11 +323,11 @@ Q_asm_calculation <-
 ```
 :::
 
-## Changing a variable's type
+# Changing a variable's type
 
 In your data analysis workflow, you often need to redefine variable *types*. You can do so with functions like `as.integer()`, `as.factor()`, `as.character()` and `as.Date()` within your `mutate()` call. Let's see one example of this.
 
-### Integer: `as.integer`
+## Integer: `as.integer`
 
 `as.integer()` converts any numeric values to integers:
 
@@ -381,7 +373,7 @@ Q_age_integer <-
 ```
 :::
 
-## Wrap up
+# Wrap up
 
 As you can imagine, transforming data is an essential step in any data analysis workflow. It is often required to clean data and to prepare it for further statistical analysis or for making plots. And as you have seen, it is quite simple to transform data with dplyr's `mutate()` function, although certain transformations are trickier to achieve than others.
 
@@ -389,15 +381,15 @@ Congrats on making it through.
 
 But your data wrangling journey isn't over yet! In our next lessons, we will learn how to create complex data summaries and how to create and work with data frame groups. Intrigued? See you next lesson.
 
-![Fig: Basic Data Wrangling with `select()`, `filter()`, and `mutate()`.](../images/custom_dplyr_basic_3.png){width="400"}
+![Fig: Basic Data Wrangling with `select()`, `filter()`, and `mutate()`.](images/custom_dplyr_basic_3.png){width="400"}
 
-## Contributors {.unlisted .unnumbered}
+# Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
 
-## References {.unlisted .unnumbered}
+# References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 

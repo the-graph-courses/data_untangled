@@ -2,18 +2,11 @@
 title: '\ '
 output:
   html_document:
-    number_sections: yes
-    toc: yes
+    number_sections: true
+    toc: true
+    toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-    pandoc_args: --shift-heading-level-by=-1
-  # word_document:
-  #   toc: yes
-editor_options:
-  markdown:
-    wrap: 100
-  chunk_output_type: console
-always_allow_html: yes
 ---
 
 ```{r, echo = F, message = F, warning = F}
@@ -28,22 +21,22 @@ source(here("global/functions/misc_functions.R"))
 knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
 
 # autograders
-mute(here("ch04_data_wrangling/lessons/ls01_select_rename_autograder.R"))
+mute(here("lessons/ls01_select_rename_autograder.R"))
 ```
 
 ------------------------------------------------------------------------
 
 <!-- # Data wrangling: selecting and renaming columns -->
 
-## Introduction
+# Introduction
 
 Today we will begin our exploration of the {dplyr} package! Our first verb on the list is `select` which allows to keep or drop variables from your dataframe. Choosing your variables is the first step in cleaning your data. 
 
-![Fig: the `select()` function.](../images/custom_dplyr_select.png){width="408"}
+![Fig: the `select()` function.](images/custom_dplyr_select.png){width="408"}
 
 Let's go !
 
-## Learning objectives
+# Learning objectives
 
 -   You can keep or drop columns from a dataframe using the `dplyr::select()` function from the {dplyr} package.
 
@@ -53,22 +46,22 @@ Let's go !
 
 -   You can use `rename()` and `select()` to change column names.
 
-## The Yaounde COVID-19 dataset
+# The Yaounde COVID-19 dataset
 
 In this lesson, we analyse results from a COVID-19 serological survey conducted in Yaounde, Cameroon in late 2020. The survey estimated how many people had been infected with COVID-19 in the region, by testing for IgG and IgM antibodies. The full dataset can be obtained from [Zenodo](https://zenodo.org/record/5218965){target="_blank"}, and the paper can be viewed [here](https://www.nature.com/articles/s41467-021-25946-0){target="_blank"}.
 
 Spend some time browsing through this dataset. Each line corresponds to one patient surveyed. There are some demographic, socio-economic and COVID-related variables. The results of the IgG and IgM antibody tests are in the columns `igg_result` and `igm_result`.
 
 ```{r, message = F, render = reactable_5_rows}
-yaounde <- read_csv(here::here("ch04_data_wrangling/data/yaounde_data.csv"))
+yaounde <- read_csv(here::here("data/yaounde_data.csv"))
 yaounde  
 ```
 
-![Left: the Yaounde survey team. Right: an antibody test being administered.](../images/yao_survey_team.png){width="450"}
+![Left: the Yaounde survey team. Right: an antibody test being administered.](images/yao_survey_team.png){width="450"}
 
-## Introducing `select()`
+# Introducing `select()`
 
-![Fig: the `select()` function. (Drawing adapted from Allison Horst).](../images/final_dplyr_select.png){width="408"}
+![Fig: the `select()` function. (Drawing adapted from Allison Horst).](images/final_dplyr_select.png){width="408"}
 
 `dplyr::select()` lets us pick which columns (variables) to keep or drop.
 
@@ -125,7 +118,7 @@ yao <-
 yao
 ```
 
-### Selecting column ranges with `:`
+## Selecting column ranges with `:`
 
 The `:` operator selects a **range of consecutive variables**:
 
@@ -149,7 +142,7 @@ q3 <- "YOUR ANSWER HERE"
 ```
 :::
 
-### Excluding columns with `!`
+## Excluding columns with `!`
 
 The **exclamation point** negates a selection:
 
@@ -179,11 +172,11 @@ q4 <- "YOUR ANSWER HERE"
 ```
 :::
 
-## Helper functions for `select()`
+# Helper functions for `select()`
 
 `dplyr` has a number of helper functions to make selecting easier by using patterns from the column names. Let's take a look at some of these.
 
-### `starts_with()` and `ends_with()`
+## `starts_with()` and `ends_with()`
 
 These two helpers work exactly as their names suggest!
 
@@ -192,7 +185,7 @@ yao %>% select(starts_with("is_")) # Columns that start with "is"
 yao %>% select(ends_with("_result")) # Columns that end with "result"
 ```
 
-### `contains()`
+## `contains()`
 
 `contains()` helps select columns that contain a certain string:
 
@@ -200,7 +193,7 @@ yao %>% select(ends_with("_result")) # Columns that end with "result"
 yaounde %>% select(contains("drug")) # Columns that contain the string "drug"
 ```
 
-### `everything()`
+## `everything()`
 
 Another helper function, `everything()`, matches all variables that have not yet been selected.
 
@@ -258,9 +251,9 @@ q6 <- "YOUR ANSWER HERE"
 ```
 :::
 
-## Change column names with `rename()`
+# Change column names with `rename()`
 
-![Fig: the `rename()` function. (Drawing adapted from Allison Horst)](../images/dplyr_rename.png)
+![Fig: the `rename()` function. (Drawing adapted from Allison Horst)](images/dplyr_rename.png)
 
 [`dplyr::rename()`](https://dplyr.tidyverse.org/reference/rename.html) is used to change column names:
 
@@ -275,7 +268,7 @@ yaounde %>%
 The fact that the new name comes first in the function (`rename(NEWNAME = OLDNAME)`) is sometimes confusing. You should get used to this with time.
 :::
 
-### Rename within `select()`
+## Rename within `select()`
 
 You can also rename columns while selecting them:
 
@@ -286,19 +279,19 @@ yaounde %>%
          patient_sex = sex)
 ```
 
-## Wrap Up ! {.unnumbered}
+# Wrap Up ! {.unnumbered}
 
 I hope this first lesson has allowed you to see how intuitive and useful the {dplyr} verbs are! This is the first of a series of basic data wrangling verbs: see you in the next lesson to learn more.
 
-![Fig: Basic Data Wrangling Dplyr Verbs.](../images/custom_dplyr_basic_1.png){width="400"}
+![Fig: Basic Data Wrangling Dplyr Verbs.](images/custom_dplyr_basic_1.png){width="400"}
 
-## Contributors {.unlisted .unnumbered}
+# Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
 
-## References {.unlisted .unnumbered}
+# References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 

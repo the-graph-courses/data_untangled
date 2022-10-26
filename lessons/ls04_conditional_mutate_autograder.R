@@ -38,7 +38,7 @@ pacman::p_load(here,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  DATA ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.flu_linelist <- read_csv(here::here('ch04_data_wrangling/data/flu_h7n9_china_2013.csv'))
+.flu_linelist <- read_csv(here::here('data/flu_h7n9_china_2013.csv'))
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
