@@ -9,7 +9,7 @@
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(tidyverse, htmltools, parsermd, 
+pacman::p_load(tidyverse, htmltools, parsermd, DT, reactable,
                png, openxlsx, htmlTable)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -813,6 +813,13 @@ reactable_10_rows <- function(df, options) df %>% reactable_print(10) %>% knitr:
 head_10_rows <- function(df, options) df %>% head(10) %>% knitr::knit_print()
 head_5_rows <- function(df, options) df %>% head(5) %>% knitr::knit_print()
 
+# kable print
+kable_10_rows <- function(df, options) df %>% head(10) %>% knitr::kable() %>% knitr::knit_print()
+kable_5_rows <- function(df, options) df %>% head(5) %>% knitr::kable() %>% knitr::knit_print()
+
+# DT print
+dt_10_rows <- function(df, options) df %>% head(10) %>% DT::datatable() %>% knitr::knit_print()
+dt_5_rows <- function(df, options) df %>% head(5) %>% DT::datatable() %>% knitr::knit_print()
 
 
 #' Print the GRAPH Courses license

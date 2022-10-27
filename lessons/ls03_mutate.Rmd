@@ -7,8 +7,9 @@ output:
     toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
+editor_options: 
+  chunk_output_type: console
 ---
-
 ```{r, echo = F, message = F, warning = F}
 if(!require(pacman)) install.packages("pacman")
 pacman::p_load(knitr, 
