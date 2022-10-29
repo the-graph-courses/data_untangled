@@ -18,7 +18,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 11)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 9)   # Put total number of questions as `times` argument
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q1 ----
