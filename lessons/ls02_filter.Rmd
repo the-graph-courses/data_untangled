@@ -101,6 +101,10 @@ Filter the `yao` data frame to respondents who were pregnant during the survey. 
 q1 <- "YOUR_ANSWER_HERE" 
 .check_q1()
 .hint_q1()
+
+# Since this is the first question, we'll give you the answer directly.
+# Your answer should look like this:
+# q1 <- yao %>% filter(is_pregnant == "Yes")
 ```
 
 How many respondents were female? (Use `filter()` and `nrow()`)
