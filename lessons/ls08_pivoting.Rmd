@@ -611,7 +611,3 @@ You have now explored different datasets and how they are either in a long or wi
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("kendavidn", "lolovanco"))`
-
-# References {.unlisted .unnumbered}
-
-![<https://tavareshugo.github.io/r-intro-tidyverse-gapminder/09-reshaping/index.html>](images/07-data_shapes.png){alt="https://tavareshugo.github.io/r-intro-tidyverse-gapminder/09-reshaping/index.html"}
