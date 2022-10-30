@@ -89,7 +89,10 @@ yaounde %>% select(age, sex, igg_result)
 -   Select the weight and height variables in the `yaounde` data frame. Store the result in `q1`.
 
 ```{r, eval = F, echo = FALSE}
-q1 <- "YOUR ANSWER HERE" 
+# For this first question we'll provide the answer. Your code should be 
+q1 <- yaounde %>% select(weight_kg, height_cm)
+# Run that line, then run the check and hint functions below
+
 .check_q1()
 .hint_q1()
 ```
