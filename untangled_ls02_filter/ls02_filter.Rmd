@@ -308,7 +308,7 @@ For tibbles, RStudio will highlight `NA` values bright red to distinguish them f
 :::
 
 ::: practice
-Keep all the responders who had missing records for the report of their smoking status
+From the `yao` dataset, keep all the respondents who had missing records for the report of their smoking status
 
 ```{r, eval = F, echo = FALSE}
 q8 <- "YOUR_ANSWER_HERE" 
@@ -318,7 +318,7 @@ q8 <- "YOUR_ANSWER_HERE"
 :::
 
 ::: practice
-For some respondents the respiration rate, in breaths per minute, was recorded in the `respiration_frequency` column. From `yaounde`, drop those with a respiration frequency under 20.
+For some respondents the respiration rate, in breaths per minute, was recorded in the `respiration_frequency` column. From `yaounde`, drop those with a respiration frequency under 20. Think about NAs while doing this!
 
 ```{r, eval = F, echo = FALSE}
 q9 <- "YOUR_ANSWER_HERE" 

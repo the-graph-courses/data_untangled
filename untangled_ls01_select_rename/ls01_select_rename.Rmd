@@ -248,8 +248,6 @@ q5 <- "YOUR ANSWER HERE"
 q6 <- "YOUR ANSWER HERE"  
 .check_q6()
 .hint_q6()
-
-.score_print()
 ```
 :::
 

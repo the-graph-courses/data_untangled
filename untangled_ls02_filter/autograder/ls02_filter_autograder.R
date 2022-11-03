@@ -258,7 +258,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(q9)) return(c(value = -1, message = "Your result should be a data frame."))
         
-        if (isTRUE(all_equal(q9, .q9_wrong_forgot_na))) return(c(value = 0, message = paste("Correct!", praise())))
+        if (isTRUE(all_equal(q9, .q9_wrong_forgot_na))) return(c(value = 0, message = "Remember to to also keep those with NA values."))
         
         if (isTRUE(all_equal(q9, .q9))) return(c(value = 1, message = paste("Correct!", praise())))
         
@@ -273,65 +273,65 @@ pacman::p_load(praise)
 }
 
 
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## ~  q10 ----
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q10 <-
-  function() {
-    .problem_number <<- 10
-    
-    .q10 <- .yao %>% filter(row_number() %in% c(8:20, 80))
-    
-    .autograder <<- 
-      function(){
-        if (!is.data.frame(q10)) return(c(value = -1, message = "Your result should be a data frame."))
-        
-        if (isTRUE(all_equal(q10, .q10))) return(c(value = 1, message = paste("Correct!", praise())))
-        
-        return(c(value = 0, message = "Wrong. Please try again."))
-      }
-    .apply_autograder()
-  }
-
-.hint_q10 <- function(){ 
-  'YOURDATA %>% filter(row_number() %in% SELECTION)' -> out
-  cat(out)
-}
-
-
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## ~  q11 ----
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q11 <-
-  function() {
-    .problem_number <<- 11
-    
-    .q11 <- .yao %>% filter(str_detect(occupation, "Student"))
-    
-    .q11_wrong_used_equality_test <- .yao %>% filter(occupation == "Student")
-    
-    .autograder <<- 
-      function(){
-        if (!is.data.frame(q11)) return(c(value = -1, message = "Your result should be a data frame."))
-        
-        if (isTRUE(all_equal(q11, .q11_wrong_used_equality_test))) return(c(value = 0, message = cat("Wrong.",
-                                                                                                    "It seems you tested for equality with `== 'Student'`", 
-                                                                                                    "That will keep people who are ONLY students.",
-                                                                                                    "You want to include students who have other occupations.")))
-        
-        if (isTRUE(all_equal(q11, .q11))) return(c(value = 1, message = paste("Correct!", praise())))
-        
-        return(c(value = 0, message = "Wrong. Please try again."))
-      }
-    .apply_autograder()
-  }
-
-
-.hint_q11 <- function(){ 
-  'YOURDATA %>% filter(str_detect(COLUMN, PATTERN))' -> out
-  cat(out)
-}
+# 
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ## ~  q10 ----
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# .check_q10 <-
+#   function() {
+#     .problem_number <<- 10
+#     
+#     .q10 <- .yao %>% filter(row_number() %in% c(8:20, 80))
+#     
+#     .autograder <<- 
+#       function(){
+#         if (!is.data.frame(q10)) return(c(value = -1, message = "Your result should be a data frame."))
+#         
+#         if (isTRUE(all_equal(q10, .q10))) return(c(value = 1, message = paste("Correct!", praise())))
+#         
+#         return(c(value = 0, message = "Wrong. Please try again."))
+#       }
+#     .apply_autograder()
+#   }
+# 
+# .hint_q10 <- function(){ 
+#   'YOURDATA %>% filter(row_number() %in% SELECTION)' -> out
+#   cat(out)
+# }
+# 
+# 
+# 
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ## ~  q11 ----
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# .check_q11 <-
+#   function() {
+#     .problem_number <<- 11
+#     
+#     .q11 <- .yao %>% filter(str_detect(occupation, "Student"))
+#     
+#     .q11_wrong_used_equality_test <- .yao %>% filter(occupation == "Student")
+#     
+#     .autograder <<- 
+#       function(){
+#         if (!is.data.frame(q11)) return(c(value = -1, message = "Your result should be a data frame."))
+#         
+#         if (isTRUE(all_equal(q11, .q11_wrong_used_equality_test))) return(c(value = 0, message = cat("Wrong.",
+#                                                                                                     "It seems you tested for equality with `== 'Student'`", 
+#                                                                                                     "That will keep people who are ONLY students.",
+#                                                                                                     "You want to include students who have other occupations.")))
+#         
+#         if (isTRUE(all_equal(q11, .q11))) return(c(value = 1, message = paste("Correct!", praise())))
+#         
+#         return(c(value = 0, message = "Wrong. Please try again."))
+#       }
+#     .apply_autograder()
+#   }
+# 
+# 
+# .hint_q11 <- function(){ 
+#   'YOURDATA %>% filter(str_detect(COLUMN, PATTERN))' -> out
+#   cat(out)
+# }
 
 

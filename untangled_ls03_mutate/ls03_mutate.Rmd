@@ -255,7 +255,7 @@ Q_women_low_grip_strength <-
 .HINT_Q_women_low_grip_strength()
 ```
 
-What percentage of women surveyed have a low grip strength according to the definition above? Enter your answer as a number without quotes (e.g. 43.3 or 12.2).
+What percentage of women surveyed have a low grip strength according to the definition above? Enter your answer as a number without quotes (e.g. 43.3 or 12.2), to one decimal place.
 
 ```{r, eval = FALSE}
 Q_prop_women_low_grip_strength <- YOUR_ANSWER_HERE
