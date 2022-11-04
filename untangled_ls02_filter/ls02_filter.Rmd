@@ -308,7 +308,7 @@ For tibbles, RStudio will highlight `NA` values bright red to distinguish them f
 :::
 
 ::: practice
-From the `yao` dataset, keep all the respondents who had missing records for the report of their smoking status
+From the `yao` dataset, keep all the respondents who had missing records for the report of their smoking status.
 
 ```{r, eval = F, echo = FALSE}
 q8 <- "YOUR_ANSWER_HERE" 
