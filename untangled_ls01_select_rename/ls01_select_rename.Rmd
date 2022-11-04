@@ -87,19 +87,26 @@ yaounde %>% select(age, sex, igg_result)
 
 ```{r, eval = F, echo = FALSE}
 # For this first question we'll provide the answer. Your code should be 
-q1 <- yaounde %>% select(weight_kg, height_cm)
-# Run that line, then run the check and hint functions below
+.Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
+# Run that line, then run the CHECK and HINT functions below
 
-.check_q1()
-.hint_q1()
+.CHECK_Q_weight_height()
+.HINT_Q_weight_height()
+
+# Now, to obtain the solution, run the line below!
+.SOLUTION_Q_weight_height()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
 ```
 
 -   Select the 16th and 22nd columns in the `yaounde` data frame. Store the result in `q2`.
 
 ```{r, eval = F, echo = FALSE}
-q2 <- "YOUR ANSWER HERE" 
-.check_q2()
-.hint_q2()
+Q_cols_16_22 <- "YOUR ANSWER HERE" 
+.CHECK_Q_cols_16_22()
+.HINT_Q_cols_16_22()
 ```
 :::
 
@@ -138,9 +145,9 @@ yao %>% select(1:4) # Select columns 1 to 4
 -   With the `yaounde` data frame, select the columns between `symptoms` and `sequelae`, inclusive. ("Inclusive" means you should also include `symptoms` and `sequelae` in the selection.)
 
 ```{r, eval = F, echo = FALSE}
-q3 <- "YOUR ANSWER HERE"  
-.check_q3()
-.hint_q3()
+Q_symp_to_sequel <- "YOUR ANSWER HERE"  
+.CHECK_Q_symp_to_sequel()
+.SOLUTION_Q_symp_to_sequel()
 ```
 :::
 
@@ -168,9 +175,9 @@ yao %>% select(!c(age, sex, igg_result))
 -   From the `yaounde` data frame, **remove** all columns between `highest_education` and `consultation`, inclusive.
 
 ```{r, eval = F, echo = FALSE}
-q4 <- "YOUR ANSWER HERE" 
-.check_q4()
-.hint_q4()
+Q_educ_consult <- "YOUR ANSWER HERE" 
+.CHECK_Q_educ_consult()
+.HINT_Q_educ_consult()
 ```
 :::
 
@@ -237,17 +244,17 @@ yaounde %>% select(ends_with("result"), everything())
 -   Select all columns in the `yaounde` data frame that start with "is\_".
 
 ```{r, eval = F, echo = FALSE}
-q5 <- "YOUR ANSWER HERE"  
-.check_q5()
-.hint_q5()
+Q_starts_with_is <- "YOUR ANSWER HERE"  
+.CHECK_Q_starts_with_is()
+.HINT_Q_starts_with_is()
 ```
 
 -   Move the columns that start with "is\_" to the beginning of the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
-q6 <- "YOUR ANSWER HERE"  
-.check_q6()
-.hint_q6()
+Q_rearrange <- "YOUR ANSWER HERE"  
+.CHECK_Q_rearrange()
+.HINT_Q_rearrange()
 ```
 :::
 

@@ -20,10 +20,20 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .scores <- rep(-1, times = 9)   # Put total number of questions as `times` argument
 
+.NUM_Q_weight_to_g <- 1
+.NUM_Q_sarcopenia_resp_id <- 2
+.NUM_Q_sarcopenia_grip_strength <- 3
+.NUM_Q_women_low_grip_strength <- 4
+.NUM_Q_prop_women_low_grip_strength <- 5
+.NUM_Q_asm_calculation <- 6
+.NUM_Q_age_integer <- 7
+.NUM_Q_age_integer <- 8
+.NUM_Q_age_integer <- 9
+
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q1 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q1 <-
+.CHECK_Q_1 <-
   function() {
     .problem_number <<- 1
     
@@ -40,7 +50,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q1 <- function(){ 
+.HINT_Q_1 <- function(){ 
   'YOURDATA %>% filter(CONDITION)' -> out
   cat(out)
 }
@@ -48,7 +58,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q2 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q2 <-
+.CHECK_Q_2 <-
   function() {
     .problem_number <<- 2
     
@@ -67,7 +77,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q2 <- function(){ 
+.HINT_Q_2 <- function(){ 
 'YOURDATA %>% 
   filter(sex == "YOURSTRING") %>%
   nrow()' -> out
@@ -78,7 +88,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q3 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q3 <-
+.CHECK_Q_3 <-
   function() {
     .problem_number <<- 3
     
@@ -96,7 +106,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q3 <- function(){ 
+.HINT_Q_3 <- function(){ 
 'YOURDATA %>% 
   filter(CONDITION)' -> out
   cat(out)
@@ -105,7 +115,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q4 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q4 <-
+.CHECK_Q_4 <-
   function() {
     .problem_number <<- 4
     
@@ -123,7 +133,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q4 <- function(){ 
+.HINT_Q_4 <- function(){ 
 'YOURDATA %>% 
   filter(neighborhood %in% c("STRING1", "STRING2"))' -> out
   cat(out)
@@ -132,7 +142,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q5 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q5 <-
+.CHECK_Q_5 <-
   function() {
     .problem_number <<- 5
     
@@ -150,7 +160,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q5 <- function(){ 
+.HINT_Q_5 <- function(){ 
 'YOURDATA %>% 
   filter(sex == "Male" & CONDITION2) %>%
   nrow()' -> out
@@ -161,7 +171,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q6 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q6 <-
+.CHECK_Q_6 <-
   function() {
     .problem_number <<- 6
     
@@ -184,7 +194,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q6 <- function(){ 
+.HINT_Q_6 <- function(){ 
   'YOURDATA %>% filter(CONDITION1 | CONDITION2)' -> out
   cat(out)
 }
@@ -193,7 +203,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q7 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q7 <-
+.CHECK_Q_7 <-
   function() {
     .problem_number <<- 7
     
@@ -211,7 +221,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q7 <- function(){ 
+.HINT_Q_7 <- function(){ 
 'YOURDATA %>% 
   filter(neighborhood %in% c("STRING1", "STRING2") )' -> out
   cat(out)
@@ -220,7 +230,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q8 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q8 <-
+.CHECK_Q_8 <-
   function() {
     .problem_number <<- 8
     
@@ -237,7 +247,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q8 <- function(){ 
+.HINT_Q_8 <- function(){ 
 'YOURDATA %>% 
   filter(is.na(VARIABLE))' -> out
   cat(out)
@@ -246,7 +256,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  q9 ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.check_q9 <-
+.CHECK_Q_9 <-
   function() {
     .problem_number <<- 9
     
@@ -267,7 +277,7 @@ pacman::p_load(praise)
     .apply_autograder()
   }
 
-.hint_q9 <- function(){ 
+.HINT_Q_9 <- function(){ 
   'YOURDATA %>% filter(CONDITION1 | NA_CONDITION )' -> out
   cat(out)
 }
@@ -277,7 +287,7 @@ pacman::p_load(praise)
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ## ~  q10 ----
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# .check_q10 <-
+# .CHECK_Q_10 <-
 #   function() {
 #     .problem_number <<- 10
 #     
@@ -294,7 +304,7 @@ pacman::p_load(praise)
 #     .apply_autograder()
 #   }
 # 
-# .hint_q10 <- function(){ 
+# .HINT_Q_10 <- function(){ 
 #   'YOURDATA %>% filter(row_number() %in% SELECTION)' -> out
 #   cat(out)
 # }
@@ -304,7 +314,7 @@ pacman::p_load(praise)
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ## ~  q11 ----
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# .check_q11 <-
+# .CHECK_Q_11 <-
 #   function() {
 #     .problem_number <<- 11
 #     
@@ -329,7 +339,7 @@ pacman::p_load(praise)
 #   }
 # 
 # 
-# .hint_q11 <- function(){ 
+# .HINT_Q_11 <- function(){ 
 #   'YOURDATA %>% filter(str_detect(COLUMN, PATTERN))' -> out
 #   cat(out)
 # }

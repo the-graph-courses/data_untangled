@@ -132,6 +132,14 @@ Q_weight_to_g <-
 # Check your answer:
 .CHECK_Q_weight_to_g()
 .HINT_Q_weight_to_g()
+
+
+# To obtain the solution, run the line below!
+.SOLUTION_Q_weight_to_g()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
 ```
 :::
 

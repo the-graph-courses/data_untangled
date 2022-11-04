@@ -74,7 +74,6 @@ sex_vector <- c("Male", "Female", "Female")
 ## test which elements are equal to "Male"
 sex_vector == "Male"
 ```
-
 So the code `yao %>% filter(sex == "Male")` will keep all rows where the equality test `sex == "Male"` evaluates to `TRUE`.
 
 ------------------------------------------------------------------------
@@ -97,8 +96,8 @@ Filter the `yao` data frame to respondents who were pregnant during the survey. 
 
 ```{r, eval = F, echo = FALSE}
 q1 <- "YOUR_ANSWER_HERE" 
-.check_q1()
-.hint_q1()
+.CHECK_Q_1()
+.HINT_Q_1()
 
 # Since this is the first question, we'll give you the answer directly.
 # Your answer should look like this:
@@ -109,8 +108,8 @@ How many respondents were female? (Use `filter()` and `nrow()`)
 
 ```{r, eval = F, echo = FALSE}
 q2 <- "YOUR_ANSWER_HERE"
-.check_q2()
-.hint_q2()
+.CHECK_Q_2()
+.HINT_Q_2()
 ```
 :::
 
@@ -147,16 +146,16 @@ From `yao`, keep only respondents who were children (under 18).
 
 ```{r, eval = F, echo = FALSE}
 q3 <- "YOUR_ANSWER_HERE" 
-.check_q3()
-.hint_q3()
+.CHECK_Q_3()
+.HINT_Q_3()
 ```
 
 With `%in%`, keep only respondents who live in the "Tsinga" or "Messa" neighborhoods.
 
 ```{r, eval = F, echo = FALSE}
 q4 <- "YOUR_ANSWER_HERE" 
-.check_q4()
-.hint_q4()
+.CHECK_Q_4()
+.HINT_Q_4()
 ```
 :::
 
@@ -198,16 +197,16 @@ Filter `yao` to only keep men who tested IgG positive.
 
 ```{r, eval = F, echo = FALSE}
 q5 <- "YOUR_ANSWER_HERE" 
-.check_q5()
-.hint_q5()
+.CHECK_Q_5()
+.HINT_Q_5()
 ```
 
 Filter `yao` to children (under 18) and those whose highest education is primary school.
 
 ```{r, eval = F, echo = FALSE}
 q6 <- "YOUR_ANSWER_HERE" 
-.check_q6()
-.hint_q6()
+.CHECK_Q_6()
+.HINT_Q_6()
 ```
 :::
 
@@ -253,8 +252,8 @@ Drop respondents who live in the Tsinga or Messa neighborhoods.
 
 ```{r, eval = F, echo = FALSE}
 q7 <- "YOUR_ANSWER_HERE" 
-.check_q7()
-.hint_q7()
+.CHECK_Q_7()
+.HINT_Q_7()
 ```
 :::
 
@@ -312,8 +311,8 @@ From the `yao` dataset, keep all the respondents who had missing records for the
 
 ```{r, eval = F, echo = FALSE}
 q8 <- "YOUR_ANSWER_HERE" 
-.check_q8()
-.hint_q8()
+.CHECK_Q_8()
+.HINT_Q_8()
 ```
 :::
 
@@ -322,8 +321,8 @@ For some respondents the respiration rate, in breaths per minute, was recorded i
 
 ```{r, eval = F, echo = FALSE}
 q9 <- "YOUR_ANSWER_HERE" 
-.check_q9()
-.hint_q9()
+.CHECK_Q_9()
+.HINT_Q_9()
 ```
 :::
 
