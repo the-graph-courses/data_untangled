@@ -147,7 +147,7 @@ yao %>% select(1:4) # Select columns 1 to 4
 ```{r, eval = F, echo = FALSE}
 Q_symp_to_sequel <- "YOUR ANSWER HERE"  
 .CHECK_Q_symp_to_sequel()
-.SOLUTION_Q_symp_to_sequel()
+.HINT_Q_symp_to_sequel()
 ```
 :::
 

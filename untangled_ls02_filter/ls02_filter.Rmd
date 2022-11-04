@@ -95,9 +95,9 @@ The double equal sign, `==`, tests for equality, while the single equals sign, `
 Filter the `yao` data frame to respondents who were pregnant during the survey. Store in `q1`.
 
 ```{r, eval = F, echo = FALSE}
-q1 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_1()
-.HINT_Q_1()
+Q_is_pregnant <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_is_pregnant()
+.HINT_Q_is_pregnant()
 
 # Since this is the first question, we'll give you the answer directly.
 # Your answer should look like this:
@@ -107,9 +107,9 @@ q1 <- "YOUR_ANSWER_HERE"
 How many respondents were female? (Use `filter()` and `nrow()`)
 
 ```{r, eval = F, echo = FALSE}
-q2 <- "YOUR_ANSWER_HERE"
-.CHECK_Q_2()
-.HINT_Q_2()
+Q_female_nrow <- "YOUR_ANSWER_HERE"
+.CHECK_Q_female_nrow()
+.HINT_Q_female_nrow()
 ```
 :::
 
@@ -145,17 +145,17 @@ yao %>% filter(highest_education %in% c("Primary", "Secondary"))
 From `yao`, keep only respondents who were children (under 18).
 
 ```{r, eval = F, echo = FALSE}
-q3 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_3()
-.HINT_Q_3()
+Q_under_18 <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_under_18()
+.HINT_Q_under_18()
 ```
 
 With `%in%`, keep only respondents who live in the "Tsinga" or "Messa" neighborhoods.
 
 ```{r, eval = F, echo = FALSE}
-q4 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_4()
-.HINT_Q_4()
+Q_tsinga_messa <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_tsinga_messa()
+.HINT_Q_tsinga_messa()
 ```
 :::
 
@@ -196,17 +196,17 @@ yao %>% filter(is_pregnant == "Yes" | is_smoker == "Ex-smoker")
 Filter `yao` to only keep men who tested IgG positive.
 
 ```{r, eval = F, echo = FALSE}
-q5 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_5()
-.HINT_Q_5()
+Q_male_positive <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_male_positive()
+.HINT_Q_male_positive()
 ```
 
 Filter `yao` to children (under 18) and those whose highest education is primary school.
 
 ```{r, eval = F, echo = FALSE}
-q6 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_6()
-.HINT_Q_6()
+Q_child_primary <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_child_primary()
+.HINT_Q_child_primary()
 ```
 :::
 
@@ -251,9 +251,9 @@ yao %>% filter(!(age < 18 | weight_kg < 30))
 Drop respondents who live in the Tsinga or Messa neighborhoods.
 
 ```{r, eval = F, echo = FALSE}
-q7 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_7()
-.HINT_Q_7()
+Q_not_tsinga_messa <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_not_tsinga_messa()
+.HINT_Q_not_tsinga_messa()
 ```
 :::
 
@@ -310,9 +310,9 @@ For tibbles, RStudio will highlight `NA` values bright red to distinguish them f
 From the `yao` dataset, keep all the respondents who had missing records for the report of their smoking status.
 
 ```{r, eval = F, echo = FALSE}
-q8 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_8()
-.HINT_Q_8()
+Q_na_smoker <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_na_smoker()
+.HINT_Q_na_smoker()
 ```
 :::
 
@@ -320,9 +320,9 @@ q8 <- "YOUR_ANSWER_HERE"
 For some respondents the respiration rate, in breaths per minute, was recorded in the `respiration_frequency` column. From `yaounde`, drop those with a respiration frequency under 20. Think about NAs while doing this!
 
 ```{r, eval = F, echo = FALSE}
-q9 <- "YOUR_ANSWER_HERE" 
-.CHECK_Q_9()
-.HINT_Q_9()
+Q_drop_resp_under_20 <- "YOUR_ANSWER_HERE" 
+.CHECK_Q_drop_resp_under_20()
+.HINT_Q_drop_resp_under_20()
 ```
 :::
 
@@ -352,9 +352,3 @@ Some material in this lesson was adapted from the following sources:
 Artwork was adapted from:
 
 -   Horst, A. (2021). *R & stats illustrations by Allison Horst*. <https://github.com/allisonhorst/stats-illustrations> (Original work published 2018)
-
-```{r, include = F}
-# knitr::purl(input = here::here("lessons/01_select_rename.Rmd"),
-#             output = here::here("lessons/01_select_rename.R"),
-#             documentation = 2)
-```
