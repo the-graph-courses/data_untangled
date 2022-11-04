@@ -83,11 +83,11 @@ yaounde %>% select(age, sex, igg_result)
 ```
 
 ::: practice
--   Select the weight and height variables in the `yaounde` data frame. Store the result in `q1`.
+-   Select the weight and height variables in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
 # For this first question we'll provide the answer. Your code should be 
-.Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
+Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
 # Run that line, then run the CHECK and HINT functions below
 
 .CHECK_Q_weight_height()
@@ -101,7 +101,7 @@ yaounde %>% select(age, sex, igg_result)
 # (This is to discourage you from looking at the solution before answering the question.)
 ```
 
--   Select the 16th and 22nd columns in the `yaounde` data frame. Store the result in `q2`.
+-   Select the 16th and 22nd columns in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
 Q_cols_16_22 <- "YOUR ANSWER HERE" 

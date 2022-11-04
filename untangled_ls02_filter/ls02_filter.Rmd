@@ -92,16 +92,23 @@ The double equal sign, `==`, tests for equality, while the single equals sign, `
 :::
 
 ::: practice
-Filter the `yao` data frame to respondents who were pregnant during the survey. Store in `q1`.
+Filter the `yao` data frame to respondents who were pregnant during the survey.
 
 ```{r, eval = F, echo = FALSE}
-Q_is_pregnant <- "YOUR_ANSWER_HERE" 
+# Since this is the first question, we'll give you the answer directly.
+# Your answer should look like this:
+Q_is_pregnant<- yao %>% filter(is_pregnant == "Yes")
+# Run that line, then run the CHECK and HINT functions below
+
 .CHECK_Q_is_pregnant()
 .HINT_Q_is_pregnant()
 
-# Since this is the first question, we'll give you the answer directly.
-# Your answer should look like this:
-# q1 <- yao %>% filter(is_pregnant == "Yes")
+# Now, to obtain the solution, run the line below!
+.SOLUTION_Q_is_pregnant()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
 ```
 
 How many respondents were female? (Use `filter()` and `nrow()`)
@@ -201,7 +208,7 @@ Q_male_positive <- "YOUR_ANSWER_HERE"
 .HINT_Q_male_positive()
 ```
 
-Filter `yao` to children (under 18) and those whose highest education is primary school.
+Filter `yao` to keep both children (under 18) and anyone whose highest education is primary school.
 
 ```{r, eval = F, echo = FALSE}
 Q_child_primary <- "YOUR_ANSWER_HERE" 
@@ -248,7 +255,7 @@ yao %>% filter(!(age < 18 | weight_kg < 30))
 :::
 
 ::: practice
-Drop respondents who live in the Tsinga or Messa neighborhoods.
+From `yao`, drop respondents who live in the Tsinga or Messa neighborhoods.
 
 ```{r, eval = F, echo = FALSE}
 Q_not_tsinga_messa <- "YOUR_ANSWER_HERE" 
@@ -317,7 +324,9 @@ Q_na_smoker <- "YOUR_ANSWER_HERE"
 :::
 
 ::: practice
-For some respondents the respiration rate, in breaths per minute, was recorded in the `respiration_frequency` column. From `yaounde`, drop those with a respiration frequency under 20. Think about NAs while doing this!
+For some respondents the respiration rate, in breaths per minute, was recorded in the `respiration_frequency` column. 
+
+From `yaounde`, drop those with a respiration frequency under 20. Think about NAs while doing this! You should avoid also dropping the NA values.
 
 ```{r, eval = F, echo = FALSE}
 Q_drop_resp_under_20 <- "YOUR_ANSWER_HERE" 

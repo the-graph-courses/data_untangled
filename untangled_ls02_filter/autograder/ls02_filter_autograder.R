@@ -93,7 +93,7 @@ pacman::p_load(praise)
   cat(out)
 }
 
-.SOLUTION_Q_is_pregnant <- function(){ 
+.SOLUTION_Q_female_nrow <- function(){ 
   "SOLUTION: 
       yao %>%
       filter(sex == 'Female') %>%
@@ -224,10 +224,13 @@ pacman::p_load(praise)
         
         if (isTRUE(all_equal(Q_child_primary, .Q_child_primary_wrong_operator))) return(c(value = 0, message = paste("Wrong. You should use the `|` operator.",
                                                                                 "We actually want children OR anyone with a 'Primary' highest_education",
-                                                                                "(despite it saying 'and' in the question). Think for some time about this. 
-                                                                                It is quite counterintuitive!")))
+                                                                                "(despite it saying 'and' in the question). Think for some time about this.", 
+                                                                                "It is quite counterintuitive!")))
         
-        if (isTRUE(all_equal(Q_child_primary, .Q_child_primary))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all_equal(Q_child_primary, .Q_child_primary))) return(c(value = 1, message = paste("Correct!", 
+                                                                                                      "We actually want children OR anyone with a 'Primary' highest_education",
+                                                                                                      "(despite it saying 'and' in the question).", 
+                                                                                                      "It is quite counterintuitive!")))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -312,7 +315,7 @@ pacman::p_load(praise)
 
 .SOLUTION_Q_na_smoker <- function(){ 
   "SOLUTION: 
-  yaounde %>% select(!c(highest_education:consultation))" -> out
+  yao %>% filter(is.na(is_smoker))" -> out
   cat(out)
 }
 
@@ -326,21 +329,21 @@ pacman::p_load(praise)
     
     .Q_drop_resp_under_20 <- .yaounde %>% filter(respiration_frequency >= 20 | is.na(respiration_frequency))
     
-    .Q_drop_resp_under_20_wrong_forgot_na <- .yaounde %>% filter(respiration_frequency > 20)
+    .Q_drop_resp_under_20_wrong_forgot_na <- .yaounde %>% filter(respiration_frequency >= 20)
     
     .autograder <<- 
       function(){
         if (!is.data.frame(Q_drop_resp_under_20))
-          .na("Your result should be a data frame.")
+          return(c(value = -1, message = "Invalid. Your result should be dataframe."))
         if (isTRUE(all_equal(Q_drop_resp_under_20, .Q_drop_resp_under_20_wrong_forgot_na))) 
-          .fail("Remember to to also keep those with NA values.")
+          return(c(value = 0, message = "Wrong. Remember to also keep those with NA values."))
         
         if (isTRUE(all_equal(Q_drop_resp_under_20, .Q_drop_resp_under_20))) 
-          .pass()
+          return(c(value = 1, message = paste("Correct!", praise())))
         
         else
-          .fail()
-        return(c(value = 0, message = "Wrong. Please try again."))
+          return(c(value = 0, message = "Wrong. Please try again."))
+        
       }
     .apply_autograder()
   }
