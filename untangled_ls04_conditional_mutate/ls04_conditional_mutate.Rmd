@@ -186,6 +186,15 @@ Q_age_group <-
 # Check your answer
 .CHECK_Q_age_group()
 .HINT_Q_age_group()
+
+
+# To get the solution, run the line below!
+.SOLUTION_Q_age_group()
+
+# Each question has a solution function like this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the functions on your own.
+# (To discourage you from looking at the solution before answering the question)
 ```
 
 What percentage of individuals in the dataset are below 60? (You can use the `tabyl()` function to compute this.)

@@ -256,10 +256,11 @@ Q_women_low_grip_strength <-
 
 # To get the solution, run the line below!
 .SOLUTION_Q_women_low_grip_strength()
-# Each question has a solution function like this. 
-# (Replace HINT with SOLUTION in the function name)
-# But you will need to type this out on your own, 
-# (to discourage you from looking at the solution before answering the question)
+
+# Each question has a solution function like this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the functions on your own.
+# (To discourage you from looking at the solution before answering the question)
 ```
 
 What percentage of women surveyed have a low grip strength according to the definition above? Enter your answer as a number without quotes (e.g. 43.3 or 12.2), to one decimal place.

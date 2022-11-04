@@ -231,6 +231,14 @@ Q_febrile_disease_symptoms <-
 ```{r, include = FALSE}
 .CHECK_Q_febrile_disease_symptoms()
 .HINT_Q_febrile_disease_symptoms()
+
+# To get the solution, run the line below!
+.SOLUTION_Q_febrile_disease_symptoms()
+
+# Each question has a solution function like this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the functions on your own.
+# (To discourage you from looking at the solution before answering the question)
 ```
 :::
 
