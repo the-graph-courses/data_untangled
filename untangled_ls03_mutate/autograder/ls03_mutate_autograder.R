@@ -17,7 +17,7 @@ pacman::p_load(here,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 7)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 6)   # Put total number of questions as `times` argument
 
 .NUM_Q_weight_to_g <- 1
 .NUM_Q_sarcopenia_grip_strength <- 2
