@@ -394,7 +394,7 @@ As you can imagine, transforming data is an essential step in any data analysis 
 
 Congrats on making it through.
 
-But your data wrangling journey isn't over yet! In our next lessons, we will learn how to create complex data summaries and how to create and work with data frame groups. Intrigued? See you next lesson.
+But your data wrangling journey isn't over yet! In our next lessons, we will learn how to create complex data summaries and how to create and work with data frame groups. Intrigued? See you in the next lesson.
 
 ![Fig: Basic Data Wrangling with `select()`, `filter()`, and `mutate()`.](images/custom_dplyr_basic_3.png){width="400"}
 
