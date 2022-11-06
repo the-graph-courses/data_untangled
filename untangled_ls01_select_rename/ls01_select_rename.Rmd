@@ -236,7 +236,7 @@ yaounde %>% select(is_pregnant, everything())
 This helper can be combined with many others.
 
 ```{r, render = reactable_5_rows}
-# Bring columns that start with "is" to the front of the data frame
+# Bring columns that end with "result" to the front of the data frame
 yaounde %>% select(ends_with("result"), everything())
 ```
 
