@@ -20,11 +20,11 @@ pacman::p_load(here,
 .scores <- rep(-1, times = 6)   # Put total number of questions as `times` argument
 
 .NUM_Q_weight_to_g <- 1
-.NUM_Q_sarcopenia_grip_strength <- 2
-.NUM_Q_women_low_grip_strength <- 3
-.NUM_Q_prop_women_low_grip_strength <- 4
-.NUM_Q_asm_calculation <- 5
-.NUM_Q_age_integer <- 6
+#.NUM_Q_sarcopenia_grip_strength <- 2
+.NUM_Q_women_low_grip_strength <- 2
+.NUM_Q_prop_women_low_grip_strength <- 3
+.NUM_Q_asm_calculation <- 4
+.NUM_Q_age_integer <- 5
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_weight_to_g ----

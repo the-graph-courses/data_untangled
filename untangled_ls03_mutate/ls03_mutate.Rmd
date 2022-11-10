@@ -10,6 +10,7 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
+
 ```{r, echo = F, message = F, warning = F}
 if(!require(pacman)) install.packages("pacman")
 pacman::p_load(knitr, 
@@ -147,56 +148,6 @@ Hopefully you now see that the mutate function is quite user-friendly. In theory
 
 The rest of the lesson will go through a few use cases for the `mutate()` verb. In the process, we'll touch on several new functions you have not yet encountered.
 
-# Creating a rank variable
-
-It is sometimes useful to rank rows based on the value of a column. For example, you may want to rank survey respondents in order of their height. You can do this with `mutate()` and the `rank()` function.
-
-```{r}
-yao_height %>% 
-  mutate(height_rank = rank(height_cm, ties.method = "min"))
-```
-
-How should we understand this output? It shows, for example, that the first respondent, with a height of 169 cm, is the 659th shortest person.
-
-The `ties.method` argument specifies how individuals with the same height should be ranked. `ties.method = "min"` means that the lower (minimum) rank should be used. What this implies should become clear when you `arrange()` the data frame by rank:
-
-```{r}
-yao_height %>% 
-  mutate(height_rank = rank(height_cm, ties.method = "min")) %>% 
-  arrange(height_rank)
-```
-
-As you can see, the respondents in row 5 and 6 are both 99cm tall. And because of the `ties.method = "min"` argument, they are both ranked the 5th tallest, because 5 is the lower rank between 5 and 6.
-
-------------------------------------------------------------------------
-
-If you want to reorder the rank, such that the tallest person is ranked number 1, you can wrap the variable to be ranked in the `desc()` function, which stands for "descending":
-
-```{r}
-yao_height %>% 
-  mutate(height_rank = rank(desc(height_cm), ties.method = "min")) %>% 
-  arrange(height_rank)
-```
-
-There are some very tall people!
-
-::: practice
-The `grip_strength_kg` variable in the `sarcopenia` data frame reports participant hand grip strength in kilograms as measured by a hand dynamometer. Add a variable called `grip_strength_rank` , which ranks participants by their grip strength. The person with the highest grip strength should be number 1. Use the "min" ties method.
-
-```{r, eval = FALSE}
-# Complete the code with your answer:
-Q_sarcopenia_grip_strength <- 
-  sarcopenia %>% 
-  mutate(grip_strength_rank = ______________________________________)
-```
-
-```{r, include = FALSE}
-# Check your answer:
-.CHECK_Q_sarcopenia_grip_strength()
-.HINT_Q_sarcopenia_grip_strength()
-```
-:::
-
 # Creating a Boolean variable
 
 You can use `mutate()` to create a Boolean variable to categorize part of your population.
@@ -253,22 +204,14 @@ Women with a grip strength below 20kg are considered to have low grip strength. 
 # Complete the code with your answer:
 Q_women_low_grip_strength <- 
   sarcopenia %>% 
-  filter(sex_male_1_female_0 == 0) %>% # first we filter the dataset to only women
-  mutate(________________________)
+  filter(sex_male_1_female_0 == 0) # first we filter the dataset to only women
+  # mutate code here
 ```
 
 ```{r, include = FALSE}
 # Check your answer:
 .CHECK_Q_women_low_grip_strength()
 .HINT_Q_women_low_grip_strength()
-
-# To get the solution, run the line below!
-.SOLUTION_Q_women_low_grip_strength()
-
-# Each question has a solution function like this.
-# (Where HINT is replaced with SOLUTION in the function name.)
-# But you will need to type out the functions on your own.
-# (To discourage you from looking at the solution before answering the question)
 ```
 
 What percentage of women surveyed have a low grip strength according to the definition above? Enter your answer as a number without quotes (e.g. 43.3 or 12.2), to one decimal place.
@@ -318,17 +261,17 @@ yao_bmi <-
 ::: practice
 Appendicular muscle mass (ASM), a useful health indicator, is the sum of muscle mass in all 4 limbs. It can predicted with the following formula, called Lee's equation:
 
-$$ASM(kg)= (0.244 \times weight(kg)) + (7.8 \times height(meters)) + (6.6 \times sex) - (0.098 \times age) - 4.5$$
+$$ASM(kg)= (0.244 \times weight(kg)) + (7.8 \times height(m)) + (6.6 \times sex) - (0.098 \times age) - 4.5$$
 
 The `sex` variable in the formula assumes that men are coded as 1 and women are coded as 0 (which is already the case for our `sarcopenia` dataset.) The `- 4.5` at the end is a constant used for Asians.
 
-Calculate the ASM value for all individuals in the `sarcopenia` dataset.
+Calculate the ASM value for all individuals in the `sarcopenia` dataset. This value should be in a new column called `asm`
 
 ```{r, eval = FALSE}
 # Complete the code with your answer:
 Q_asm_calculation <- 
-  sarcopenia %>% 
-  mutate(asm = _______________________________________________)
+  sarcopenia #_____
+  #________________
 ```
 
 ```{r, include = FALSE}
@@ -377,8 +320,8 @@ Use `as_integer()` to convert the ages of respondents in the `sarcopenia` datase
 ```{r, eval = FALSE}
 # Complete the code with your answer:
 Q_age_integer <- 
-  sarcopenia %>% 
-  mutate(age_integer =  ________________________)
+  sarcopenia #_____
+  #________________
 ```
 
 ```{r, include = FALSE}
