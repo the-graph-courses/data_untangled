@@ -8,32 +8,6 @@ pacman::p_load(here,
                janitor,
                tidyverse)
 
-.CHECK_Q_age_group <- function() invisible(NULL)
-.HINT_Q_age_group <- function() invisible(NULL)
-
-.CHECK_Q_age_group_nas <- function() invisible(NULL)
-.HINT_Q_age_group_nas <- function() invisible(NULL)
-
-.CHECK_Q_gender_recode  <- function() invisible(NULL)
-.HINT_Q_gender_recode <- function() invisible(NULL)
-
-.CHECK_Q_age_group_percentage  <- function() invisible(NULL)
-.HINT_Q_age_group_percentage <- function() invisible(NULL)
-
-.CHECK_Q_recode_recovery <- function() invisible(NULL)
-.HINT_Q_recode_recovery <- function() invisible(NULL)
-
-.CHECK_Q_adolescent_grouping <- function() invisible(NULL)
-.HINT_Q_adolescent_grouping <- function() invisible(NULL)
-
-.CHECK_Q_age_province_grouping <- function() invisible(NULL)
-.HINT_Q_age_province_grouping <- function() invisible(NULL)
-
-.CHECK_Q_priority_groups <- function() invisible(NULL)
-.HINT_Q_priority_groups <- function() invisible(NULL)
-
-.CHECK_Q_age_group_if_else <- function() invisible(NULL)
-.HINT_Q_age_group_if_else <- function() invisible(NULL)
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  DATA ----
@@ -139,7 +113,9 @@ Q_age_group <-
           .na("You have not yet defined the answer object, `Q_age_group_percentage`.")
         if (!is.numeric(Q_age_group_percentage))
           .na("Invalid answer. Your answer should be a number")
-        if (between(Q_age_group_percentage, correct_answer + 1, correct_answer - 1))
+        if (between(Q_age_group_percentage, correct_answer/100 - 0.1, correct_answer/100 + 0.1))
+          .fail("You may be entering a decimal fraction, rather than a percentage")
+        if (between(Q_age_group_percentage, correct_answer - 1, correct_answer + 1))
           .pass()
         else
           .fail()
@@ -150,7 +126,7 @@ Q_age_group <-
 .HINT_Q_age_group_percentage <- function(){
   '
 HINT
-  Ideally, write a case_when that contains the conditions `age < 60`, then call janitor::tabyl() on your created variable.
+  Ideally, write a case_when() call that contains the conditions `age < 60`, then call janitor::tabyl() on your created variable.
 ' -> out
   cat(out)
 }
@@ -158,7 +134,8 @@ HINT
 
 .SOLUTION_Q_age_group_percentage <- function(){
   '
-SOLUTION
+SOLUTION. Here is one way (not the only way) to get it:
+  
 Q_age_group_percentage <- 
   flu_linelist %>% 
       mutate(age_group_percentage = case_when(age < 60 ~ "Below 60", 
@@ -178,8 +155,8 @@ Q_age_group_percentage <-
     
     .problem_number <<- .NUM_Q_age_group_nas
     correct_answer <- .flu_linelist %>%  
-      mutate(age_group = case_when(age < 18 ~ "Child", 
-                                   age >= 18 ~ "Adult", 
+      mutate(age_group = case_when(age < 60 ~ "Below 60", 
+                                   age >= 18 ~ "60 and above", 
                                    is.na(age) ~ "Missing age"))
     
     .autograder <<-
@@ -218,9 +195,9 @@ Q_age_group_nas <-
 SOLUTION
 Q_age_group_nas <- 
   flu_linelist %>% 
-  mutate(age_group = case_when(age < 18 ~ "Child", 
-                                   age >= 18 ~ "Adult", 
-                                   is.na(age) ~ "Missing age"))' -> out
+  mutate(age_group = case_when(age < 60 ~ "Below 60", 
+                               age >= 60 ~ "60 and above", 
+                               is.na(age) ~ "Missing age"))' -> out
   cat(out)
 }
 
@@ -234,7 +211,8 @@ Q_age_group_nas <-
     .problem_number <<- .NUM_Q_gender_recode
     correct_answer <- .flu_linelist %>%  
       mutate(gender = case_when(gender == "f" ~ "Female",
-                                gender == "m" ~ "Male"))
+                                gender == "m" ~ "Male", 
+                                is.na(gender) ~ "Missing gender"))
     
     .autograder <<-
       function(){
@@ -263,7 +241,7 @@ Your answer should look this:
 
 Q_gender_recode <- 
   flu_linelist %>% 
-  mutate(gender = FORMULA_HERE)' -> out
+  mutate(gender = case_when(STATEMENTS HERE))' -> out
   cat(out)
 }
 
@@ -273,7 +251,8 @@ SOLUTION
 Q_gender_recode <- 
   flu_linelist %>%  
       mutate(gender = case_when(gender == "f" ~ "Female",
-                                gender == "m" ~ "Male"))' -> out
+                                gender == "m" ~ "Male",
+                                is.na(gender) ~ "Missing gender"))' -> out
   cat(out)
 }
 
@@ -341,6 +320,12 @@ Q_recode_recovery <-
     .problem_number <<- .NUM_Q_adolescent_grouping
     correct_answer <- .flu_linelist %>% 
       mutate(adolescent = case_when(
+        age >= 10 & age < 20 ~ "Yes",
+        TRUE ~ "No"
+      ))
+    
+    mistake1 <- .flu_linelist %>% 
+      mutate(adolescent = case_when(
         age >= 10 & age < 19 ~ "Yes",
         TRUE ~ "No"
       ))
@@ -354,6 +339,9 @@ Q_recode_recovery <-
         if (!"adolescent" %in% names(Q_adolescent_grouping))
           .fail("Your answer should have a column called 'adolescent'.")
         
+           if (isTRUE(all_equal(select(Q_adolescent_grouping, adolescent) , 
+                                 select(mistake1, adolescent))))
+          .fail("Your condition should be `age >= 10 & age < 20`")
         
         if (isTRUE(all_equal(select(Q_adolescent_grouping, adolescent) , 
                              select(correct_answer, adolescent))))
@@ -368,11 +356,7 @@ Q_recode_recovery <-
 .HINT_Q_adolescent_grouping <- function(){
   '
 HINT.
-Your answer should look this: 
-
-Q_adolescent_grouping <- 
-  flu_linelist %>% 
-  mutate(recruit = FORMULA_HERE)' -> out
+THe LHS condition should take the form `age >= 10 & age < 20`' -> out
   cat(out)
 }
 
@@ -382,9 +366,8 @@ SOLUTION
 Q_adolescent_grouping <- 
   flu_linelist %>% 
       mutate(adolescent = case_when(
-        age >= 10 & age < 19 ~ "Yes",
-        TRUE ~ "No"
-      ))' -> out
+        age >= 10 & age < 20 ~ "Yes",
+        TRUE ~ "No"))' -> out
   cat(out)
 }
 
@@ -426,11 +409,8 @@ Q_adolescent_grouping <-
 .HINT_Q_age_province_grouping <- function(){
   '
 HINT.
-Your answer should look this: 
-
-Q_age_province_grouping <- 
-  flu_linelist %>% 
-  mutate(recruit = FORMULA_HERE)' -> out
+Here is an example LHS condition: 
+  `age >= 30 & age <= 59 & province == "Zhejiang" ~ "Recruit to Zhejiang study"` ' -> out
   cat(out)
 }
 
@@ -463,6 +443,13 @@ Q_age_province_grouping <-
         TRUE ~ "No priority"
       ))
     
+    mistake1 <- .flu_linelist %>% 
+      mutate(follow_up_priority = case_when(gender == "f" ~ "High priority",
+                                            age < 18 ~ "Highest priority", 
+                                            TRUE ~ "No priority"
+      ))
+    
+    
     .autograder <<-
       function(){
         if(!exists("Q_priority_groups"))
@@ -471,6 +458,14 @@ Q_age_province_grouping <-
           .na("Invalid answer. Your answer should be a data frame.")
         if (!"follow_up_priority" %in% names(Q_priority_groups))
           .fail("Your answer should have a column called 'follow_up_priority'.")
+        
+        
+        if (isTRUE(all_equal(select(Q_priority_groups, follow_up_priority) , 
+                             select(mistake1, follow_up_priority))))
+          .fail(paste0("Wrong. It seems you put the gender condition first. This means it takes precedence over the age condition.", 
+                       "That is, with what you have coded, female children won't get 'highest priority', only male children!",
+                       "But the question says that children of any gender should be highest priority.",
+                       "So this condition needs to come first in your case_when() statement."))
         
         
         if (isTRUE(all_equal(select(Q_priority_groups, follow_up_priority) , 
@@ -486,11 +481,8 @@ Q_age_province_grouping <-
 .HINT_Q_priority_groups <- function(){
   '
 HINT.
-Your answer should look this: 
 
-Q_priority_groups <- 
-  flu_linelist %>% 
-  mutate(follow_up_priority = FORMULA_HERE)' -> out
+The age condition needs to come first, in order to take priority over the others.' -> out
   cat(out)
 }
 
@@ -529,7 +521,7 @@ Q_priority_groups <-
         
         
         if (isTRUE(all_equal(select(Q_age_group_if_else, age_group) , 
-                             select(correct_answer, outcome))))
+                             select(correct_answer, age_group))))
           .pass()
         
         else
