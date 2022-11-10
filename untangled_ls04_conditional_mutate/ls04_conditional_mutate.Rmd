@@ -196,7 +196,7 @@ Q_age_group <-
 # (This is to discourage you from looking at the solution before answering the question.)
 ```
 
-What percentage of individuals in the dataset are below 60? (You can use the `tabyl()` function to compute this.)
+Out of the entire sample of individuals in the `flu_linelist` dataset, what percentage are below 60?
 
 ```{r eval = FALSE}
 # Enter your answer as a number without quotes:
@@ -222,7 +222,9 @@ yaounde_age %>%
                                TRUE ~ "Not child"))
 ```
 
-This `TRUE` condition can be read as "for everything else...". So the full `case_when()` statement used above, `age_years < 18 ~ "Child", TRUE ~ "Not child"`, would then be read as: "if age is below 18, input 'Child' and *for everyone else not yet matched*, input 'Not child'".
+This `TRUE` condition can be read as "for everything else...".
+
+So the full `case_when()` statement used above, `age_years < 18 ~ "Child", TRUE ~ "Not child"`, would then be read as: "if age is below 18, input 'Child' and *for everyone else not yet matched*, input 'Not child'".
 
 ::: watch-out
 It is important to use `TRUE` as the *final* condition in `case_when()`. If you use it as the first condition, it will take precedence over all others, as seen here:
@@ -238,7 +240,7 @@ As you can observe, all individuals are now coded with "Not child", because the 
 
 # Matching NA's with `is.na()`
 
-Rather than match missing values with `TRUE` as we did above, we can match them manually with `is.na()`. Below we match `NA` ages with `is.na()` and set their age group to "Missing age":
+We can match missing values manually with `is.na()`. Below we match `NA` ages with `is.na()` and set their age group to "Missing age":
 
 ```{r render = reactable_10_rows}
 yaounde_age %>%  
@@ -254,7 +256,6 @@ As before, using the `flu_linelist` data, make a new column, called `age_group`,
 # Complete the code with your answer:
 Q_age_group_nas <- 
   flu_linelist %>% 
-  mutate(age_group = ______________________________)
 ```
 
 ```{r include = FALSE}
@@ -278,7 +279,6 @@ Recode "f", "m" and `NA` to "Female", "Male" and "Missing gender" respectively. 
 # Complete the code with your answer:
 Q_gender_recode <- 
   flu_linelist %>% 
-  mutate(gender = ___________________________________)
 ```
 
 ```{r include = FALSE}
@@ -345,8 +345,7 @@ Using the `flu_linelist` data, modify the existing column `outcome` by replacing
 ```{r eval = FALSE}
 # Complete the code with your answer:
 Q_recode_recovery <- 
-  flu_linelist %>% 
-  mutate(age_group = ______________________________)
+  flu_linelist 
 ```
 
 ```{r include = FALSE}
@@ -374,7 +373,7 @@ Sometimes {styler} does a better job at reformatting. Sometimes the built-in ref
 
 LHS conditions in `case_when()` formulas can have multiple parts. Let's see an example of this.
 
-But first, we will inspire ourselves from what we learnt in the `mutate()` lesson and recreate the BMI variable. This involves first converting the `height_cm` variable to meters. Then using the BMI's formula we compute the BMI with the `weight_kg` and `height_m` variables.
+But first, we will inspire ourselves from what we learnt in the `mutate()` lesson and recreate the BMI variable. This involves first converting the `height_cm` variable to meters, then calculating BMI.
 
 ```{r}
 yaounde_BMI <-
@@ -386,22 +385,22 @@ yaounde_BMI <-
 yaounde_BMI
 ```
 
-Now if we want to use the BMI as a health indicator, we need to think about what the BMI values represent.
+Recall that following BMI categories:
 
--   A healthy BMI is defined between 18,5 and 25: the person has a normal weight.
+-   A healthy BMI is a weight between 18.5 and 25: the person has a normal weight.
 
--   If the BMI is inferior to 18,5 the person is considered too thin.
+-   If the BMI is inferior to 18.5, the person is considered underweight.
 
--   If the BMI is between 25 and 30 then the person is considered overweight.
+-   If the BMI is between 25 and 30, the person is considered overweight.
 
--   If the BMI is above 30 then the person is considered obese.
+-   If the BMI is above 30, the person is considered obese.
 
 The condition `BMI >= 18.5 & BMI <= 25` to define `Normal weight` is a compound condition because it has *two* comparators: `>=` and `<=`.
 
 ```{r}
 yaounde_BMI <-
   yaounde_BMI %>%
-  mutate(BMI_classification = case_when(BMI < 18.5 ~'Too thin',
+  mutate(BMI_classification = case_when(BMI < 18.5 ~'Underweight',
                                         BMI >= 18.5 & BMI <= 25 ~ 'Normal weight',
                                         BMI > 25 & BMI <= 30 ~ 'Overweight',
                                         BMI > 30 ~ 'Obese'))
@@ -415,14 +414,14 @@ yaounde_BMI %>%
   tabyl(BMI_classification)
 ```
 
-But you can see that the levels of BMI are defined in alphabetical order from Normal weight to Too thin, instead of from lightest (Too thin) to heaviest (Obese). Remember that if you want to have a certain order you can make `BMI_classification` a factor using `mutate()` and define its levels.
+But you can see that the levels of BMI are defined in alphabetical order from Normal weight to Underweight, instead of from lightest (Underweight) to heaviest (Obese). Remember that if you want to have a certain order you can make `BMI_classification` a factor using `mutate()` and define its levels.
 
 ```{r eval = FALSE}
 yaounde_BMI %>%
   mutate(BMI_classification = factor(BMI_classification, levels=c("Obese",
                                                                   "Overweight",
                                                                   "Normal weight",
-                                                                  "Too thin"))) %>%
+                                                                  "Underweight"))) %>%
   tabyl(BMI_classification)
 ```
 
@@ -430,13 +429,13 @@ With compound conditions, you should remember to input the variable name *everyt
 
 ```{r eval = FALSE}
 yaounde_BMI %>%
-  mutate(BMI_classification = case_when(BMI < 18.5 ~'Too thin',
-                                        # the variable name was forgotten
+  mutate(BMI_classification = case_when(BMI < 18.5 ~'Underweight',
                                         BMI >= 18.5 & <= 25 ~ 'Normal weight',
-                                         # the variable name was included
-                                        BMI > 25 & BMI <= 30 ~ 'Overweight',
+                                        BMI > 25 & <= 30 ~ 'Overweight',
                                         BMI > 30 ~ 'Obese'))
 ```
+
+The definitions for the "Normal weight" and "Overweight" categories are mistaken. Do you see the problem? Try to run the code to spot the error.
 
 ::: practice
 With the `flu_linelist` data, make a new column, called `adolescent`, that has the value "Yes" for people in the 10-19 age group, and "No" for everyone else.
@@ -445,7 +444,6 @@ With the `flu_linelist` data, make a new column, called `adolescent`, that has t
 # Complete the code with your answer:
 Q_adolescent_grouping <- 
   flu_linelist %>% 
-  mutate(adolescent = ______________________________)
 ```
 
 ```{r include = FALSE}
@@ -660,7 +658,6 @@ Oh no! Osma in row 4 is now misclassed as "Possible COVID" even though she has t
 So now you see why you sometimes need to think deeply about the order of your `case_when()` conditions. It is a minor point, but it can bite you at unexpected times. Even experienced analysts tend to make mistakes that can be traced to improper arrangement of `case_when()` statements.
 
 ::: challenge
-
 In reality, there *is* still another solution to avoid misclassifying the person with cough and anosmia/ageusia. That is to add `symp_anosmia_or_ageusia != "Yes"` (not equal to "Yes") to the conditions for "Possible COVID". Can you think of why this works?
 
 ```{r}
@@ -669,8 +666,7 @@ yaounde_symptoms_slice %>%
     symp_cough == "Yes" & symp_anosmia_or_ageusia != "Yes" ~ "Possible COVID",
     symp_anosmia_or_ageusia == "Yes" ~ "Probable COVID"))
 ```
-
-::: 
+:::
 
 ::: practice
 With the `flu_linelist` dataset, create a new column called `follow_up_priority` that implements the following schema:

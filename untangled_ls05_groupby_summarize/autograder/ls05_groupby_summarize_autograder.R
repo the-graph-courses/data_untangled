@@ -661,7 +661,6 @@ Q_count_bedridden_age_categories <-
   cat(out)
 }
 
-
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_median_age_by_neighborhood_agecategory_sex  ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

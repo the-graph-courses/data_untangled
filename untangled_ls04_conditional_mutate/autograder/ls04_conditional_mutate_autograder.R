@@ -98,7 +98,7 @@ HINT.
 Your answer should look this: 
 
 Q_age_group <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(age_group = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -110,6 +110,62 @@ Q_age_group <-
   flu_linelist %>% 
   mutate(age_group = case_when(age < 50 ~ "Below 50", 
                                    age >= 50 ~ "50 and above"))' -> out
+  cat(out)
+}
+
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## ~  Q_age_group_percentage ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.CHECK_Q_age_group_percentage <-
+  function() {
+    
+    .problem_number <<- .NUM_Q_age_group_percentage
+    
+    correct_answer <- 
+      .flu_linelist %>% 
+      mutate(age_group_percentage = case_when(age < 60 ~ "Below 60", 
+                                              age >= 60 ~ "60 and above")) %>% 
+      tabyl(age_group_percentage) %>% 
+      filter(age_group_percentage == "Below 60") %>% 
+      pull(percent) * 100
+      
+    
+    .autograder <<-
+      function(){
+        if(!exists("Q_age_group_percentage"))
+          .na("You have not yet defined the answer object, `Q_age_group_percentage`.")
+        if (!is.numeric(Q_age_group_percentage))
+          .na("Invalid answer. Your answer should be a number")
+        if (between(Q_age_group_percentage, correct_answer + 1, correct_answer - 1))
+          .pass()
+        else
+          .fail()
+      }
+    .run_autograder()
+  }
+
+.HINT_Q_age_group_percentage <- function(){
+  '
+HINT
+  Ideally, write a case_when that contains the conditions `age < 60`, then call janitor::tabyl() on your created variable.
+' -> out
+  cat(out)
+}
+
+
+.SOLUTION_Q_age_group_percentage <- function(){
+  '
+SOLUTION
+Q_age_group_percentage <- 
+  flu_linelist %>% 
+      mutate(age_group_percentage = case_when(age < 60 ~ "Below 60", 
+                                              age >= 60 ~ "60 and above")) %>% 
+      tabyl(age_group_percentage) %>% 
+      filter(age_group_percentage == "Below 60") %>% 
+      pull(percent) * 100' -> out
   cat(out)
 }
 
@@ -152,7 +208,7 @@ HINT.
 Your answer should look this: 
 
 Q_age_group_nas <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(age_group = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -206,7 +262,7 @@ HINT.
 Your answer should look this: 
 
 Q_gender_recode <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(gender = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -260,7 +316,7 @@ HINT.
 Your answer should look this: 
 
 Q_recode_recovery <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(outcome = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -315,7 +371,7 @@ HINT.
 Your answer should look this: 
 
 Q_adolescent_grouping <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(recruit = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -373,7 +429,7 @@ HINT.
 Your answer should look this: 
 
 Q_age_province_grouping <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(recruit = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -433,7 +489,7 @@ HINT.
 Your answer should look this: 
 
 Q_priority_groups <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(follow_up_priority = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -488,7 +544,7 @@ HINT.
 Your answer should look this: 
 
 Q_age_group_if_else <- 
-  flulinelist %>% 
+  flu_linelist %>% 
   mutate(age_group = if_else(outcome = FORMULA_HERE))' -> out
   cat(out)
 }

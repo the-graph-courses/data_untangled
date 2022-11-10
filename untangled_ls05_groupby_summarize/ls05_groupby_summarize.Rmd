@@ -76,25 +76,24 @@ See the first lesson in this chapter for more information about this dataset.
 
 A summary statistic is a single value (such as a mean or median) that describes a variable (typically a column in your dataset).
 
-![](images/what_is_a_summary_statistic.png){width="300"}
+![](images/what_is_a_summary_statistic.png){width="363"}
 
 Summary statistics can describe the center, spread or range of a variable, or the counts and positions of values within that variable. Some common summary statistics are shown in the diagram below:
 
-![](images/summary_stats_examples.png){width="300"}
+![](images/summary_stats_examples.png){width="495"}
 
 Computing summary statistics is a very common operation in most data analysis workflows, so it will be important to become fluent in extracting them from your datasets. And for this task, there is no better tool than the {dplyr} function `summarize()`! So let's see how to use this powerful function.
 
 # Introducing `dplyr::summarize()`
 
-To get started, it is best to first consider how to get simple summary statistics *without* using `summarize()`, then we will consider why you *should* actually use it.
+To get started, it is best to first consider how to get simple summary statistics *without* using `summarize()`, then we will consider why you *should* actually use `summarize()`.
 
-Imagine you were asked to find the mean age of respondents in the `yao` data frame. How might you do this?
+Imagine you were asked to find the mean age of respondents in the `yao` data frame. How might you do this in base R?
 
 First, recall that the dollar sign function, `$`, allows you to extract a data frame column to a vector:
 
-```{r}
-yao$age %>% 
-  head(10) # first 10 ages
+```{r eval = F}
+yao$age # extract the `age` column from `yao`
 ```
 
 To obtain the mean, you simply pass this `yao$age` vector into the `mean()` function:
@@ -105,16 +104,16 @@ mean(yao$age)
 
 And that's it! You now have a simple summary statistic. Extremely easy, right?
 
-So why do we need `summarize()` to get summary statistics if the process is already so simple without it. We'll come back to this question soon.
+So why do we need `summarize()` to get summary statistics if the process is already so simple without it?We'll come back to the *why* question soon. First let's see *how* to obtain summary statistics with `summarize()`.
 
-First let's see *how* to obtain summary statistics with `summarize()`; we will then tackle the *why*. Going back to the the previous example, the correct syntax to get the mean age with `summarize()` would be:
+Going back to the previous example, the correct syntax to get the mean age with `summarize()` would be:
 
 ```{r}
 yao %>% 
   summarize(mean_age = mean(age))
 ```
 
-The 'anatomy' of this syntax is shown below. You simply need the name of the new column (e.g. `mean_age`), the summary function (e.g. `mean()`), and the column to summarize (e.g. `age`).
+The anatomy of this syntax is shown below. You simply need to input name of the new column (e.g. `mean_age`), the summary function (e.g. `mean()`), and the column to summarize (e.g. `age`).
 
 ![*Fig.* Basic syntax for the `summarize()` function.](images/summarize_syntax.png)
 
@@ -128,7 +127,7 @@ yao %>%
             median_age = median(age))
 ```
 
-Nice and simple!
+Nice!
 
 ------------------------------------------------------------------------
 
@@ -199,20 +198,19 @@ yao %>%
   group_by(sex)
 ```
 
-Hmm. Apparently nothing happened. The one thing you *might* notice is a new section in the header that tells you the grouped-by variable (sex) and the number of groups (2):
+Hmm. Apparently nothing happened. The one thing you *might* notice is a new section in the header that tells you the grouped-by variable---sex---and the number of groups---2:
 
       # A tibble: 971 × 10
     👉# Groups:   sex [2]👈
 
-But apart from this header, the data frame appears unchanged.
+Apart from this header however, the data frame appears unchanged.
 
-Now watch what happens when we chain the `group_by()` with the `summarize()` call we used in the previous section:
+But watch what happens when we chain the `group_by()` with the `summarize()` call we used in the previous section:
 
 ```{r}
 yao %>% 
   group_by(sex) %>% 
-  summarize(mean_age = mean(age),
-            median_age = median(age))
+  summarize(mean_age = mean(age))
 ```
 
 You get a different summary statistic for each group! The statistics for women are in one row and those for men are in another. (From this output data frame, you can tell that, for example, the mean age for female respondents is 29.5, while that for male respondents is 28.4)
@@ -232,7 +230,7 @@ yao %>%
             min_weight = min(weight_kg))
 ```
 
-Great! With just a few code lines you are able to extract quite a bit of information.
+Great! With just a few code lines you are able to extract quite a lot of information.
 
 ------------------------------------------------------------------------
 
@@ -265,7 +263,7 @@ The output tells us that across all women in the sample, 256 work days were miss
 
 So hopefully now you see why `summarize()` is so powerful. In combination with `group_by()`, it lets you obtain highly informative grouped summaries of your datasets with very few lines of code.
 
-Producing such summaries is a very important part of most data analysis workflows, so this learning is likely to come in handy soon!
+Producing such summaries is a very important part of most data analysis workflows, so this skill is likely to come in handy soon!
 
 ::: vocab
 **`summarize()` produces "Pivot Tables**"
@@ -888,7 +886,7 @@ Additionally, you have discovered one of the marvels of {dplyr}, the possibility
 
 `group_by()` combined with `summarize()` is a one of the most common grouping manipulations.
 
-![Fig: summarize() and group_by()](images/custom_dplyr_groupby_summarize.png){alt="Fig: summarize() and its use combined with group_by()." width="400"} 
+![Fig: summarize() and group_by()](images/custom_dplyr_groupby_summarize.png){alt="Fig: summarize() and its use combined with group_by()." width="400"}
 
 However, you can also combine `group_by()` with many of the other {dplyr} verbs: this is what we will cover in our next lesson. See you soon !
 
