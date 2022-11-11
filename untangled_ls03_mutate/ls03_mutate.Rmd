@@ -144,7 +144,7 @@ Q_weight_to_g <-
 ```
 :::
 
-Hopefully you now see that the mutate function is quite user-friendly. In theory, we could end the lesson here, because you now know how to use `mutate()` 😃. But of course, the devil will be in the details---the interesting thing is not `muxtate()` itself but what goes *inside* the `mutate()` call.
+Hopefully you now see that the mutate function is quite user-friendly. In theory, we could end the lesson here, because you now know how to use `mutate()` 😃. But of course, the devil will be in the details---the interesting thing is not `mutate()` itself but what goes *inside* the `mutate()` call.
 
 The rest of the lesson will go through a few use cases for the `mutate()` verb. In the process, we'll touch on several new functions you have not yet encountered.
 
