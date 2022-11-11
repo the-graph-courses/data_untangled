@@ -15,61 +15,60 @@ pacman::p_load(praise,
     neighborhood, is_smoker, is_pregnant, occupation,
     treatment_combinations, symptoms, n_days_miss_work, n_bedridden_days,
     highest_education, igg_result)
-
-.CHECK_Q_weight_summary <- function() invisible(NULL)
-.HINT_Q_weight_summary<- function() invisible(NULL)
-
-.CHECK_Q_height_summary <- function() invisible(NULL)
-.HINT_Q_height_summary<- function() invisible(NULL)
-
-.CHECK_Q_height_by_smoking_status<- function() invisible(NULL)
-.HINT_Q_height_by_smoking_status<- function() invisible(NULL)
-
-.CHECK_Q_min_max_height_by_sex<- function() invisible(NULL)
-.HINT_Q_min_max_height_by_sex<- function() invisible(NULL)
-
-.CHECK_Q_sum_bedridden_days<- function() invisible(NULL)
-.HINT_Q_sum_bedridden_days<- function() invisible(NULL)
-
-.CHECK_Q_weight_by_sex_treatments <- function() invisible(NULL)
-.HINT_Q_weight_by_sex_treatments <- function() invisible(NULL)
-
-.CHECK_Q_bedridden_by_age_sex_iggresult<- function() invisible(NULL)
-.HINT_Q_bedridden_by_age_sex_iggresult<- function() invisible(NULL)
-
-.CHECK_Q_occupation_summary <- function() invisible(NULL)
-.HINT_Q_occupation_summary <- function() invisible(NULL)
-
-.CHECK_Q_symptoms_adults <- function() invisible(NULL)
-.HINT_Q_symptoms_adults <- function() invisible(NULL)
-
-.CHECK_Q_count_iggresults_stratified_by_sex_agecategories <- function() invisible(NULL)
-.HINT_Q_count_iggresults_stratified_by_sex_agecategories <- function() invisible(NULL)
-
-.CHECK_Q_count_bedridden_age_categories <- function() invisible(NULL)
-.HINT_Q_count_bedridden_age_categories <- function() invisible(NULL)
-
-.CHECK_Q_median_age_by_neighborhood_agecategory_sex <- function() invisible(NULL)
-.HINT_Q_median_age_by_neighborhood_agecategory_sex <- function() invisible(NULL)
+# 
+# .CHECK_Q_weight_summary <- function() invisible(NULL)
+# .HINT_Q_weight_summary<- function() invisible(NULL)
+# 
+# .CHECK_Q_height_summary <- function() invisible(NULL)
+# .HINT_Q_height_summary<- function() invisible(NULL)
+# 
+# .CHECK_Q_weight_by_smoking_status<- function() invisible(NULL)
+# .HINT_Q_weight_by_smoking_status<- function() invisible(NULL)
+# 
+# .CHECK_Q_min_max_height_by_sex<- function() invisible(NULL)
+# .HINT_Q_min_max_height_by_sex<- function() invisible(NULL)
+# 
+# .CHECK_Q_sum_bedridden_days<- function() invisible(NULL)
+# .HINT_Q_sum_bedridden_days<- function() invisible(NULL)
+# 
+# .CHECK_Q_weight_by_sex_treatments <- function() invisible(NULL)
+# .HINT_Q_weight_by_sex_treatments <- function() invisible(NULL)
+# 
+# .CHECK_Q_bedridden_by_age_sex_iggresult<- function() invisible(NULL)
+# .HINT_Q_bedridden_by_age_sex_iggresult<- function() invisible(NULL)
+# 
+# .CHECK_Q_occupation_summary <- function() invisible(NULL)
+# .HINT_Q_occupation_summary <- function() invisible(NULL)
+# 
+# .CHECK_Q_symptoms_adults <- function() invisible(NULL)
+# .HINT_Q_symptoms_adults <- function() invisible(NULL)
+# 
+# .CHECK_Q_count_iggresults_stratified_by_sex_agecategories <- function() invisible(NULL)
+# .HINT_Q_count_iggresults_stratified_by_sex_agecategories <- function() invisible(NULL)
+# 
+# .CHECK_Q_count_bedridden_age_categories <- function() invisible(NULL)
+# .HINT_Q_count_bedridden_age_categories <- function() invisible(NULL)
+# 
+# .CHECK_Q_median_age_by_neighborhood_agecategory_sex <- function() invisible(NULL)
+# .HINT_Q_median_age_by_neighborhood_agecategory_sex <- function() invisible(NULL)
 
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 12)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 11)   # Put total number of questions as `times` argument
 
 .NUM_Q_weight_summary <- 1
 .NUM_Q_height_summary <- 2
-.NUM_Q_height_by_smoking_status <- 3
+.NUM_Q_weight_by_smoking_status <- 3
 .NUM_Q_min_max_height_by_sex <- 4
 .NUM_Q_sum_bedridden_days <- 5
 .NUM_Q_weight_by_sex_treatments <- 6
 .NUM_Q_bedridden_by_age_sex_iggresult <- 7
 .NUM_Q_occupation_summary <- 8
-.NUM_Q_symptoms_adults <- 9
-.NUM_Q_count_iggresults_stratified_by_sex_agecategories <- 10
-.NUM_Q_count_bedridden_age_categories <- 11
-.NUM_Q_median_age_by_neighborhood_agecategory_sex <- 12
+.NUM_Q_count_iggresults_stratified_by_sex_agecategories <- 9
+.NUM_Q_count_bedridden_age_categories <- 10
+.NUM_Q_median_age_by_neighborhood_agecategory_sex <- 11
 
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -145,8 +144,8 @@ Q_weight_summary <-
     
     .problem_number <<- .NUM_Q_height_summary
     correct_answer <- .yao %>%
-      summarize(min_height_kg = min(height_kg),
-                max_height_kg = max(height_kg))
+      summarize(min_height_cm = min(height_cm),
+                max_height_cm = max(height_cm))
     
     .autograder <<-
       function(){
@@ -154,10 +153,10 @@ Q_weight_summary <-
           .na("You have not yet defined the answer object, `Q_height_summary`.")
         if (!is.data.frame(Q_height_summary))
           .na("Invalid answer. Your answer should be a data frame.")
-        if (!"min_height_kg" %in% names(Q_height_summary))
-          .fail("Your answer should have a column called 'mean_height_kg'.")
-        if (!"max_height_kg" %in% names(Q_height_summary))
-          .fail("Your answer should have a column called 'median_height_kg'.")
+        if (!"min_height_cm" %in% names(Q_height_summary))
+          .fail("Your answer should have a column called 'min_height_cm'.")
+        if (!"max_height_cm" %in% names(Q_height_summary))
+          .fail("Your answer should have a column called 'max_height_cm'.")
         
         if (isTRUE(all_equal(Q_height_summary, correct_answer)))
           .pass()
@@ -175,8 +174,8 @@ Your answer should look this:
 
 Q_height_summary <- 
   yao %>% 
-  summarize(min_height_kg = FORMULA_HERE,
-            max_height_kg = FORMULA_HERE)' -> out
+  summarize(min_height_cm = FORMULA_HERE,
+            max_height_cm = FORMULA_HERE)' -> out
   cat(out)
 }
 
@@ -185,33 +184,33 @@ Q_height_summary <-
 SOLUTION
 Q_height_summary <- 
   yao %>%
-      summarize(min_height_kg = mean(height_kg),
-                max_height_kg = median(height_kg))' -> out
+      summarize(min_height_cm = min(height_cm),
+                max_height_cm = max(height_cm))' -> out
   cat(out)
 }
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## ~  Q_height_by_smoking_status ----
+## ~  Q_weight_by_smoking_status ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.CHECK_Q_height_by_smoking_status <-
+.CHECK_Q_weight_by_smoking_status <-
   function() {
     
-    .problem_number <<- .NUM_Q_height_by_smoking_status
+    .problem_number <<- .NUM_Q_weight_by_smoking_status
     correct_answer <- .yao %>% 
       group_by(is_smoker) %>% 
       summarise(weight_mean = mean(weight_kg))
     
     .autograder <<-
       function(){
-        if(!exists("Q_height_by_smoking_status"))
-          .na("You have not yet defined the answer object, `Q_height_by_smoking_status`.")
-        if (!is.data.frame(Q_height_by_smoking_status))
+        if(!exists("Q_weight_by_smoking_status"))
+          .na("You have not yet defined the answer object, `Q_weight_by_smoking_status`.")
+        if (!is.data.frame(Q_weight_by_smoking_status))
           .na("Invalid answer. Your answer should be a data frame.")
-        if (!"weight_mean" %in% names(Q_height_by_smoking_status))
+        if (!"weight_mean" %in% names(Q_weight_by_smoking_status))
           .fail("Your answer should have a column called 'weight_mean'.")
         
-        if (isTRUE(all_equal(Q_height_by_smoking_status, correct_answer)))
+        if (isTRUE(all_equal(Q_weight_by_smoking_status, correct_answer)))
           .pass()
         
         else
@@ -220,22 +219,22 @@ Q_height_summary <-
     .run_autograder()
   }
 
-.HINT_Q_height_by_smoking_status <- function(){
+.HINT_Q_weight_by_smoking_status <- function(){
   '
 HINT.
 Your answer should look this: 
 
-Q_height_by_smoking_status <- 
+Q_weight_by_smoking_status <- 
   yao %>% 
   group_by(VARIABLE) %>%
   summarize(weight_mean = FORMULA_HERE)' -> out
   cat(out)
 }
 
-.SOLUTION_Q_height_by_smoking_status <- function(){
+.SOLUTION_Q_weight_by_smoking_status <- function(){
   '
 SOLUTION
-Q_height_by_smoking_status <- 
+Q_weight_by_smoking_status <- 
   yao %>% 
   group_by(is_smoker) %>% 
   summarise(weight_mean = mean(weight_kg))' -> out
@@ -312,6 +311,11 @@ Q_min_max_height_by_sex <-
       group_by(sex) %>% 
       summarise(total_bedridden_days = sum(n_bedridden_days, na.rm = T))
     
+    forgot_na <-   .yao %>% 
+      group_by(sex) %>% 
+      summarise(total_bedridden_days = sum(n_bedridden_days))
+    
+    
     .autograder <<-
       function(){
         if(!exists("Q_sum_bedridden_days"))
@@ -320,6 +324,10 @@ Q_min_max_height_by_sex <-
           .na("Invalid answer. Your answer should be a data frame.")
         if (!"total_bedridden_days" %in% names(Q_sum_bedridden_days))
           .fail("Your answer should have a column called 'total_bedridden_days'.")
+        
+        if (isTRUE(all_equal(Q_sum_bedridden_days, forgot_na)))
+          .fail("Wrong. You may have forgotten to exclude NAs, with `na.rm = T`")
+        
         
         if (isTRUE(all_equal(Q_sum_bedridden_days, correct_answer)))
           .pass()
@@ -361,7 +369,7 @@ Q_sum_bedridden_days <-
     
     .problem_number <<- .NUM_Q_weight_by_sex_treatments
     correct_answer <- .yao %>% 
-      group_by(treatment_combinations) %>% 
+      group_by(sex, treatment_combinations) %>% 
       summarise(mean_weight_kg = mean(weight_kg, na.rm = T))
     
     .autograder <<-
@@ -389,17 +397,18 @@ Your answer should look this:
 
 Q_weight_by_sex_treatments <- 
   yao %>% 
-  group_by(VARIABLE) %>%
+  group_by(VARIABLE1, VARIABLE2) %>%
   summarize(mean_weight_kg = FORMULA_HERE)' -> out
   cat(out)
 }
 
 .SOLUTION_Q_weight_by_sex_treatments <- function(){
   '
-SOLUTION
+SOLUTION:
+  
 Q_weight_by_sex_treatments <- 
   yao %>% 
-  group_by(treatment_combinations) %>%
+  group_by(sex, treatment_combinations) %>%
   summarise(mean_weight_kg = mean(weight_kg, na.rm = T))' -> out
   cat(out)
 }
@@ -416,6 +425,12 @@ Q_weight_by_sex_treatments <-
       group_by(age_category_3, sex, igg_result) %>% 
       summarise(mean_n_bedridden_days = mean(n_bedridden_days, na.rm = T))
     
+    
+    forgot_nas <- 
+      .yao %>%
+      group_by(age_category_3, sex, igg_result) %>% 
+      summarise(mean_n_bedridden_days = mean(n_bedridden_days))
+    
     .autograder <<-
       function(){
         if(!exists("Q_bedridden_by_age_sex_iggresult"))
@@ -424,6 +439,10 @@ Q_weight_by_sex_treatments <-
           .na("Invalid answer. Your answer should be a data frame.")
         if (!"mean_n_bedridden_days" %in% names(Q_bedridden_by_age_sex_iggresult))
           .fail("Your answer should have a column called 'mean_n_bedridden_days'.")
+        
+        if (isTRUE(all_equal(Q_bedridden_by_age_sex_iggresult, forgot_nas)))
+          .fail("It seems you forgot to remove the NAs!")
+        
         
         if (isTRUE(all_equal(Q_bedridden_by_age_sex_iggresult, correct_answer)))
           .pass()
@@ -441,7 +460,7 @@ Your answer should look this:
 
 Q_bedridden_by_age_sex_iggresult <- 
   yao %>% 
-  group_by(VARIABLE) %>%
+  group_by(VARIABLES) %>%
   summarize(mean_n_bedridden_days = FORMULA_HERE)' -> out
   cat(out)
 }
@@ -510,58 +529,58 @@ Q_occupation_summary <-
             mean_n_days_miss_work = mean(n_days_miss_work, na.rm=TRUE))' -> out
   cat(out)
 }
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## ~  Q_symptoms_adults  ----
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.CHECK_Q_symptoms_adults <-
-  function() {
-    
-    .problem_number <<- .NUM_Q_symptoms_adults
-    correct_answer <- .yao %>% 
-      group_by(symptoms) %>% 
-      summarise(sum_adults = sum(age_category_3 == "Adult"))
-    
-    .autograder <<-
-      function(){
-        if(!exists("Q_symptoms_adults"))
-          .na("You have not yet defined the answer object, `Q_symptoms_adults`.")
-        if (!is.data.frame(Q_symptoms_adults))
-          .na("Invalid answer. Your answer should be a data frame.")
-        if (!"sum_adults" %in% names(Q_symptoms_adults))
-          .fail("Your answer should have a column called 'sum_adults'.")
-        
-        if (isTRUE(all_equal(Q_symptoms_adults, correct_answer)))
-          .pass()
-        
-        else
-          .fail()
-      }
-    .run_autograder()
-  }
-
-.HINT_Q_symptoms_adults <- function(){
-  '
-HINT.
-Your answer should look this: 
-
-Q_symptoms_adults <- 
-  yao %>% 
-  group_by(VARIABLE) %>%
-  summarize(sum_adults = FORMULA_HERE)' -> out
-  cat(out)
-}
-
-.SOLUTION_Q_symptoms_adults <- function(){
-  '
-SOLUTION
-Q_symptoms_adults <- 
-  yao %>% 
-  group_by(symptoms) %>% 
-      summarise(sum_adults = sum(age_category_3 == "Adult"))' -> out
-  cat(out)
-}
+# 
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ## ~  Q_symptoms_adults  ----
+# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 
+# .CHECK_Q_symptoms_adults <-
+#   function() {
+#     
+#     .problem_number <<- .NUM_Q_symptoms_adults
+#     correct_answer <- .yao %>% 
+#       group_by(symptoms) %>% 
+#       summarise(sum_adults = sum(age_category_3 == "Adult"))
+#     
+#     .autograder <<-
+#       function(){
+#         if(!exists("Q_symptoms_adults"))
+#           .na("You have not yet defined the answer object, `Q_symptoms_adults`.")
+#         if (!is.data.frame(Q_symptoms_adults))
+#           .na("Invalid answer. Your answer should be a data frame.")
+#         if (!"sum_adults" %in% names(Q_symptoms_adults))
+#           .fail("Your answer should have a column called 'sum_adults'.")
+#         
+#         if (isTRUE(all_equal(Q_symptoms_adults, correct_answer)))
+#           .pass()
+#         
+#         else
+#           .fail()
+#       }
+#     .run_autograder()
+#   }
+# 
+# .HINT_Q_symptoms_adults <- function(){
+#   '
+# HINT.
+# Your answer should look this: 
+# 
+# Q_symptoms_adults <- 
+#   yao %>% 
+#   group_by(VARIABLE) %>%
+#   summarize(sum_adults = FORMULA_HERE)' -> out
+#   cat(out)
+# }
+# 
+# .SOLUTION_Q_symptoms_adults <- function(){
+#   '
+# SOLUTION
+# Q_symptoms_adults <- 
+#   yao %>% 
+#   group_by(symptoms) %>% 
+#       summarise(sum_adults = sum(age_category_3 == "Adult"))' -> out
+#   cat(out)
+# }
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_count_iggresults_stratified_by_sex_agecategories  ----

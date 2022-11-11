@@ -284,19 +284,15 @@ The output data frame should look like this:
 | NA         |             |
 
 ```{r eval = FALSE}
-Q_height_by_smoking_status <- 
+Q_weight_by_smoking_status <- 
   yao %>% 
   ________________________
   ________________________
 ```
 
 ```{r include = FALSE}
-yao %>% 
-  group_by(is_smoker) %>% 
-  summarise(weight_mean = mean(weight_kg))
-  
-.CHECK_Q_height_by_smoking_status()
-.HINT_Q_height_by_smoking_status()
+.CHECK_Q_weight_by_smoking_status()
+.HINT_Q_weight_by_smoking_status()
 ```
 :::
 
@@ -318,11 +314,6 @@ Q_min_max_height_by_sex <-
 ```
 
 ```{r include = FALSE}
-yao %>% 
-  group_by(sex) %>% 
-  summarise(min_height_cm = min(height_cm), 
-            max_height_cm = max(height_cm))
-  
 .CHECK_Q_min_max_height_by_sex()
 .HINT_Q_min_max_height_by_sex()
 ```
@@ -346,10 +337,6 @@ Q_sum_bedridden_days <-
 ```
 
 ```{r include = FALSE}
-yao %>% 
-  group_by(sex) %>% 
-  summarise(total_bedridden_days = sum(n_bedridden_days, na.rm = T))
-  
 .CHECK_Q_sum_bedridden_days()
 .HINT_Q_sum_bedridden_days()
 ```
@@ -401,13 +388,13 @@ Q_weight_by_sex_treatments <-
 .HINT_Q_weight_by_sex_treatments()
 ```
 
-Using the `yao` data frame, group your data by age category (`age_category_3`), gender (`sex`), and IgG results (`igg_results`) using `group_by`. Then, using `summarize()` and the relevant summary function, calculate the mean number of bedridden days (`n_bedridden_days`) for each group.
+Using the `yao` data frame, group your data by age category (`age_category_3`), gender (`sex`), and IgG results (`igg_result`) using `group_by`. Then, using `summarize()` and the relevant summary function, calculate the mean number of bedridden days (`n_bedridden_days`) for each group.
 
 Your output should be a data frame with four columns named as shown below:
 
-| age_category | sex | igg_result | mean_n\_bedridden_days |
-|--------------|-----|------------|------------------------|
-|              |     |            |                        |
+| age_category_3 | sex | igg_result | mean_n\_bedridden_days |
+|----------------|-----|------------|------------------------|
+|                |     |            |                        |
 
 ```{r, eval = FALSE}
 Q_bedridden_by_age_sex_iggresult <- 
@@ -513,7 +500,10 @@ yao %>%
 ```
 
 ::: practice
-Group your `yao` data frame by the respondents' occupation (`occupation`) and use `summarize()` to count the different occupations (think of the `n()` function) and calculate, by occupation, the mean number of work days missed (`n_days_miss_work`).
+Group your `yao` data frame by the respondents' occupation (`occupation`) and use `summarize()` to create columns that show: 
+
+-   how many individuals there are with each occupation (think of the `n()` function) 
+-   the mean number of work days missed (`n_days_miss_work`) by those in that occupation
 
 Your output should be a data frame with three columns named as shown below:
 
@@ -609,6 +599,9 @@ yao %>%
 ```
 
 ::: practice
+
+PLEASE SKIP THIS QUESTION. WE DECIDED IT IS BETTER HANDLED WITH A FILTER() STATEMENT. A future edition of the course will leave this out.
+
 Group your `yao` data frame by the respondents' symptoms (`symptoms`) and count how many respondents have these symptoms, **only within the adult respondents** (i.e. within the `sum()` function, set a condition on the `age_category_3` variable).
 
 Your output should be a data frame with two columns named as shown below:
@@ -618,15 +611,16 @@ Your output should be a data frame with two columns named as shown below:
 |          |            |
 
 ```{r, eval = FALSE}
-Q_symptoms_adults <- 
-  yao %>%
-  ____________________________
+# Q_symptoms_adults <- 
+#   yao %>%
+#   ____________________________
 ```
 
 ```{r, include = FALSE}
-.CHECK_Q_symptoms_adults()
-.HINT_Q_symptoms_adults()
+# .CHECK_Q_symptoms_adults()
+# .HINT_Q_symptoms_adults()
 ```
+
 :::
 
 ## dplyr::count()
@@ -658,7 +652,7 @@ yao %>%
 ::: practice
 The `count()` verb gives you key information about your dataset in a very quick manner. Let's look at our IgG results stratified by age category and sex in one line of code.
 
-Using the `yao` data frame, count the different combinations of gender (`sex`), age categories (`age_category_3`) and IgG results (`igg_results`).
+Using the `yao` data frame, count the different combinations of gender (`sex`), age categories (`age_category_3`) and IgG results (`igg_result`).
 
 Your output should be a data frame with four columns named as shown below:
 
@@ -799,7 +793,10 @@ Using the `yao` data frame, let's calculate the median age when grouping by neig
 
 Note, we want all possible combinations of these three variables (not just those present in our data).
 
-Pay attention to two data wrangling imperatives! - convert your grouping variables to factors beforehand using `mutate()` - calculate your statistic, the median, while removing any `NA` values.
+Pay attention to two data wrangling imperatives! 
+
+-   convert your grouping variables to factors beforehand using `mutate()` 
+-   calculate your statistic, the median, while removing any `NA` values.
 
 Your output should be a data frame with four columns named as shown below:
 
