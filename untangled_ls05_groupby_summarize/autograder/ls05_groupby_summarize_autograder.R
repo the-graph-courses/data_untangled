@@ -56,7 +56,7 @@ pacman::p_load(praise,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 11)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 12)   # Put total number of questions as `times` argument
 
 .NUM_Q_weight_summary <- 1
 .NUM_Q_height_summary <- 2
@@ -66,9 +66,10 @@ pacman::p_load(praise,
 .NUM_Q_weight_by_sex_treatments <- 6
 .NUM_Q_bedridden_by_age_sex_iggresult <- 7
 .NUM_Q_occupation_summary <- 8
-.NUM_Q_count_iggresults_stratified_by_sex_agecategories <- 9
-.NUM_Q_count_bedridden_age_categories <- 10
-.NUM_Q_median_age_by_neighborhood_agecategory_sex <- 11
+.NUM_Q_symptoms_adults <- 9
+.NUM_Q_count_iggresults_stratified_by_sex_agecategories <- 10
+.NUM_Q_count_bedridden_age_categories <- 11
+.NUM_Q_median_age_by_neighborhood_agecategory_sex <- 12
 
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -529,58 +530,54 @@ Q_occupation_summary <-
             mean_n_days_miss_work = mean(n_days_miss_work, na.rm=TRUE))' -> out
   cat(out)
 }
-# 
-# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ## ~  Q_symptoms_adults  ----
-# ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# 
-# .CHECK_Q_symptoms_adults <-
-#   function() {
-#     
-#     .problem_number <<- .NUM_Q_symptoms_adults
-#     correct_answer <- .yao %>% 
-#       group_by(symptoms) %>% 
-#       summarise(sum_adults = sum(age_category_3 == "Adult"))
-#     
-#     .autograder <<-
-#       function(){
-#         if(!exists("Q_symptoms_adults"))
-#           .na("You have not yet defined the answer object, `Q_symptoms_adults`.")
-#         if (!is.data.frame(Q_symptoms_adults))
-#           .na("Invalid answer. Your answer should be a data frame.")
-#         if (!"sum_adults" %in% names(Q_symptoms_adults))
-#           .fail("Your answer should have a column called 'sum_adults'.")
-#         
-#         if (isTRUE(all_equal(Q_symptoms_adults, correct_answer)))
-#           .pass()
-#         
-#         else
-#           .fail()
-#       }
-#     .run_autograder()
-#   }
-# 
-# .HINT_Q_symptoms_adults <- function(){
-#   '
-# HINT.
-# Your answer should look this: 
-# 
-# Q_symptoms_adults <- 
-#   yao %>% 
-#   group_by(VARIABLE) %>%
-#   summarize(sum_adults = FORMULA_HERE)' -> out
-#   cat(out)
-# }
-# 
-# .SOLUTION_Q_symptoms_adults <- function(){
-#   '
-# SOLUTION
-# Q_symptoms_adults <- 
-#   yao %>% 
-#   group_by(symptoms) %>% 
-#       summarise(sum_adults = sum(age_category_3 == "Adult"))' -> out
-#   cat(out)
-# }
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## ~  Q_symptoms_adults  ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.CHECK_Q_symptoms_adults <-
+  function() {
+
+    .problem_number <<- .NUM_Q_symptoms_adults
+    correct_answer <- .yao %>%
+      group_by(symptoms) %>%
+      summarise(sum_adults = sum(age_category_3 == "Adult"))
+
+    .autograder <<-
+      function(){
+        if(!exists("Q_symptoms_adults"))
+          .na("You have not yet defined the answer object, `Q_symptoms_adults`.")
+        if (!is.data.frame(Q_symptoms_adults))
+          .na("Invalid answer. Your answer should be a data frame.")
+        if (!"sum_adults" %in% names(Q_symptoms_adults))
+          .fail("Your answer should have a column called 'sum_adults'.")
+
+        if (isTRUE(all_equal(Q_symptoms_adults, correct_answer)))
+          .pass()
+
+        else
+          .fail()
+      }
+    .run_autograder()
+  }
+
+.HINT_Q_symptoms_adults <- function(){
+  '
+HINT.
+
+  The condition you need is `age_category_3 == "Adult"`' -> out
+  cat(out)
+}
+
+.SOLUTION_Q_symptoms_adults <- function(){
+  '
+SOLUTION
+Q_symptoms_adults <-
+  yao %>%
+  group_by(symptoms) %>%
+      summarise(sum_adults = sum(age_category_3 == "Adult"))' -> out
+  cat(out)
+}
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_count_iggresults_stratified_by_sex_agecategories  ----

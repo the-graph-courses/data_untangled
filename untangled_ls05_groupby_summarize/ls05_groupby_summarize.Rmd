@@ -500,9 +500,9 @@ yao %>%
 ```
 
 ::: practice
-Group your `yao` data frame by the respondents' occupation (`occupation`) and use `summarize()` to create columns that show: 
+Group your `yao` data frame by the respondents' occupation (`occupation`) and use `summarize()` to create columns that show:
 
--   how many individuals there are with each occupation (think of the `n()` function) 
+-   how many individuals there are with each occupation (think of the `n()` function)
 -   the mean number of work days missed (`n_days_miss_work`) by those in that occupation
 
 Your output should be a data frame with three columns named as shown below:
@@ -599,10 +599,7 @@ yao %>%
 ```
 
 ::: practice
-
-PLEASE SKIP THIS QUESTION. WE DECIDED IT IS BETTER HANDLED WITH A FILTER() STATEMENT. A future edition of the course will leave this out.
-
-Group your `yao` data frame by the respondents' symptoms (`symptoms`) and count how many respondents have these symptoms, **only within the adult respondents** (i.e. within the `sum()` function, set a condition on the `age_category_3` variable).
+Group your `yao` data frame by the respondents' symptoms (`symptoms`) and use the `sum()` function to count how many adults have each symptom combination.
 
 Your output should be a data frame with two columns named as shown below:
 
@@ -611,16 +608,16 @@ Your output should be a data frame with two columns named as shown below:
 |          |            |
 
 ```{r, eval = FALSE}
-# Q_symptoms_adults <- 
-#   yao %>%
-#   ____________________________
+Q_symptoms_adults <-
+  yao %>%
+  group_by(GROUPED VARIABLE HERE) %>% 
+  summarise(sum_adults = sum(HERE, INPUT A CONDITION TO MATCH ADULTS))
 ```
 
 ```{r, include = FALSE}
-# .CHECK_Q_symptoms_adults()
-# .HINT_Q_symptoms_adults()
+.CHECK_Q_symptoms_adults()
+.HINT_Q_symptoms_adults()
 ```
-
 :::
 
 ## dplyr::count()
@@ -793,9 +790,9 @@ Using the `yao` data frame, let's calculate the median age when grouping by neig
 
 Note, we want all possible combinations of these three variables (not just those present in our data).
 
-Pay attention to two data wrangling imperatives! 
+Pay attention to two data wrangling imperatives!
 
--   convert your grouping variables to factors beforehand using `mutate()` 
+-   convert your grouping variables to factors beforehand using `mutate()`
 -   calculate your statistic, the median, while removing any `NA` values.
 
 Your output should be a data frame with four columns named as shown below:
