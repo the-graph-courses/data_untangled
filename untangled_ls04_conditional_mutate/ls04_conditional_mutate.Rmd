@@ -196,7 +196,7 @@ Q_age_group <-
 # (This is to discourage you from looking at the solution before answering the question.)
 ```
 
-Out of the entire sample of individuals in the `flu_linelist` dataset, what percentage are below 60? (Repeat the above procedure but with the `60` cutoff, then call `tabyl()` on the age group variable.)
+Out of the entire sample of individuals in the `flu_linelist` dataset, what percentage are confirmed to be below 60? (Repeat the above procedure but with the `60` cutoff, then call `tabyl()` on the age group variable. Use the `percent` column, not the `valid_percent` column.)
 
 ```{r eval = FALSE}
 # Enter your answer as a number without quotes:
