@@ -360,7 +360,6 @@ Q_recode_recovery <-
 
 ::: pro-tip
 **Avoiding long code lines**
-
 As you start to write increasingly complex `case_when()` statements, it will become helpful to use line breaks to avoid long lines of code.
 
 To assist with creating line breaks, you can use the {styler} package. Install it with `pacman::p_load(styler)`. Then to reformat any piece of code, highlight the code, click the "Addins" button in RStudio, then click on "Style selection":
@@ -388,25 +387,25 @@ yaounde_BMI <-
 yaounde_BMI
 ```
 
-Recall that following BMI categories:
-
--   A healthy BMI is a weight between 18.5 and 25: the person has a normal weight.
+Recall the following BMI categories:
 
 -   If the BMI is inferior to 18.5, the person is considered underweight.
 
--   If the BMI is between 25 and 30, the person is considered overweight.
+-   A normal BMI is greater than or equal to 18.5 and less than 25.
 
--   If the BMI is above 30, the person is considered obese.
+-   An overweight BMI is greater than or equal to 25 and less than 30.
 
-The condition `BMI >= 18.5 & BMI <= 25` to define `Normal weight` is a compound condition because it has *two* comparators: `>=` and `<=`.
+-   An obese BMI is BMI is greater than or equal to 30.
+
+The condition `BMI >= 18.5 & BMI < 25` to define `Normal weight` is a compound condition because it has *two* comparators: `>=` and `<`.
 
 ```{r}
 yaounde_BMI <-
   yaounde_BMI %>%
   mutate(BMI_classification = case_when(BMI < 18.5 ~'Underweight',
-                                        BMI >= 18.5 & BMI <= 25 ~ 'Normal weight',
-                                        BMI > 25 & BMI <= 30 ~ 'Overweight',
-                                        BMI > 30 ~ 'Obese'))
+                                        BMI >= 18.5 & BMI < 25 ~ 'Normal weight',
+                                        BMI >= 25 & BMI < 30 ~ 'Overweight',
+                                        BMI >= 30 ~ 'Obese'))
 yaounde_BMI
 ```
 
@@ -428,17 +427,21 @@ yaounde_BMI %>%
   tabyl(BMI_classification)
 ```
 
+::: watch-out
+
 With compound conditions, you should remember to input the variable name *everytime* there is a comparator. R learners often forget this and will try to run code that looks like this:
 
 ```{r eval = FALSE}
 yaounde_BMI %>%
   mutate(BMI_classification = case_when(BMI < 18.5 ~'Underweight',
-                                        BMI >= 18.5 & <= 25 ~ 'Normal weight',
-                                        BMI > 25 & <= 30 ~ 'Overweight',
-                                        BMI > 30 ~ 'Obese'))
+                                        BMI >= 18.5 & < 25 ~ 'Normal weight',
+                                        BMI >= 25 & < 30 ~ 'Overweight',
+                                        BMI >= 30 ~ 'Obese'))
 ```
 
 The definitions for the "Normal weight" and "Overweight" categories are mistaken. Do you see the problem? Try to run the code to spot the error.
+
+:::
 
 ::: practice
 With the `flu_linelist` data, make a new column, called `adolescent`, that has the value "Yes" for people in the 10-19 (at least 10 and less than 20) age group, and "No" for everyone else.

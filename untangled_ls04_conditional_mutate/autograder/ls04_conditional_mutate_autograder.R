@@ -381,8 +381,8 @@ Q_adolescent_grouping <-
     .problem_number <<- .NUM_Q_age_province_grouping
     correct_answer <- .flu_linelist %>% 
       mutate(recruit = case_when(
-        province == "Jiangsu" & (age >= 30 & age <= 59) ~ "Recruit to Jiangsu study",
-        province == "Zhejiang" & (age >= 30 & age <= 59) ~ "Recruit to Zhejiang study",
+        province == "Jiangsu" & (age >= 30 & age < 60) ~ "Recruit to Jiangsu study",
+        province == "Zhejiang" & (age >= 30 & age < 60) ~ "Recruit to Zhejiang study",
         TRUE ~ "Do not recruit"
       ))
     
@@ -420,8 +420,8 @@ SOLUTION
 Q_age_province_grouping <- 
   flu_linelist %>% 
       mutate(recruit = case_when(
-        province == "Jiangsu" & (age >= 30 & age <= 59) ~ "Recruit to Jiangsu study",
-        province == "Zhejiang" & (age >= 30 & age <= 59) ~ "Recruit to Zhejiang study",
+        province == "Jiangsu" & (age >= 30 & age < 60) ~ "Recruit to Jiangsu study",
+        province == "Zhejiang" & (age >= 30 & age < 60) ~ "Recruit to Zhejiang study",
         TRUE ~ "Do not recruit"
       ))' -> out
   cat(out)
