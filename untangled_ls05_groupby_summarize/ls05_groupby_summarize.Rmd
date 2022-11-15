@@ -19,7 +19,7 @@ library(knitr)
 source(here::here("global/functions/misc_functions.R"))
 
 ## default render
-knitr::opts_chunk$set(class.source = "tgc-code-block")
+knitr::opts_chunk$set(class.source = "tgc-code-block", render = normal_print)
 
 ## autograders
 suppressMessages(source(here::here("autograder/ls05_groupby_summarize_autograder.R")))
@@ -74,7 +74,7 @@ See the first lesson in this chapter for more information about this dataset.
 
 # What are summary statistics?
 
-A summary statistic is a single value (such as a mean or median) that describes a variable (typically a column in your dataset).
+A summary statistic is a single value (such as a mean or median) that describes a sequence of values (typically a column in your dataset).
 
 ![](images/what_is_a_summary_statistic.png){width="363"}
 
