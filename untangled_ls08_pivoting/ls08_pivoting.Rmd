@@ -24,7 +24,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("autograder/ls02_filter_autograder.R")))
+suppressMessages(source(here::here("autograder/ls08_pivoting_autograder.R")))
 ```
 
 # Intro
@@ -49,144 +49,129 @@ if(!require(pacman)) install.packages("pacman")
 pacman::p_load(tidyverse, outbreaks, janitor, rio, here, knitr)
 ```
 
-# Datasets
 
-We will see many different ones. So we will introduce them as we go along. But here is a brief overview:
+# What do wide and long mean?
 
--   Worldwide, number of infant deaths (under 1 years old), per country, per year
+The terms wide and long are best understood in the context of example datasets. Let's take a look at some now.
 
--   Worldwide, number of births, per country, per year
+Imagine that you have three patients from whom you collect blood pressure data on three days.
 
--   European-scale, number of births, per country, per year
+You can record the data in a wide format like this:
 
--   Worldwide, number of malaria cases, per country, per year
+![Fig: wide dataset for a timeseries of patients.](images/wide_patients.png){width="500"}
 
--   Worldwide, number of HIV cases, per country, per year
 
-So many datasets! Now let's learn about their formats:
+Or you could record the data in a long format as so :
 
-# What do "wide" and "long" mean?
+![Fig: long dataset for a timeseries of patients.](images/long_patients.png){width="200"}
 
-"Wide" data means that each data entry is a unique observation unit. This observation is the subject of further measurements or information collection. A unique observation unit can be a person, a country, a laboratory sample etc.
+Take a minute to study the two datasets to make sure you understand the relationship between them. 
 
-"Long" data means that each data entry is a data collection event. If the same observation unit had data collected in three ways, then it will have three data entries (3 rows).
+In the wide dataset, each observational unit (each patient) occupies only one row. And each measurement. (blood pressure day 1, blood pressure day 2...) is in a separate column. 
 
-Based on this explanation, "wide" and "long" formats are the **same dataset** if **data collection only occurred once for each unique observation unit.**
-
-# Some examples
-
-Let's see an example of "wide" vs "long" data format for the same dataset. Imagine we are handling a timeseries of patients whose blood pressure you have recorded everyday.
-
-You can record the data in a "wide" format like this:
-
-![Fig: "wide" dataset for a timeseries of patients.](images/wide_patients.png){width="500"}
-
-Each unique observation unit (each patient) has only one row. The events (different measuring days) occupy different columns. You could say that the **focus** is on the unique observations(the patients).
+In the long dataset, on the other hand, each observational unit (each patient) occupies multiple rows, with one row for each measurement. 
 
 ------------------------------------------------------------------------
 
-Or you could record the data in a "long" format as so :
+Here is another example with mock data, in which the observational units are countries:
 
-![Fig: "long" dataset for a timeseries of patients.](images/long_patients.png){width="200"}
+![Fig: long dataset where the unique observation unit is a country.](images/long_country.png){width="200"} 
 
-Here the unique days of recording (3 different events) define the data entries (the rows) of the data set. There are multiple rows per patient (the units of observation). Here the **focus** is on the time points / the events, the days.
+![Fig: the equivalent wide dataset](images/wide_country.png){width="300"}
 
-------------------------------------------------------------------------
-
-Of course, the different collection ways do not have to be events / time points. They can be localizations (different neighborhoods, different cities) or any other variables which can stratify (divide into subgroups) the main units of observations.
-
-![Fig: "wide" dataset where the unique observation unit is a lab sample and the different collection ways are different sampling sites.](images/wide_samples.png){width="200"}
-
-![Fig: "long" dataset where the unique observation unit is a lab sample and the different collection ways are different sampling sites.](images/long_samples.png){width="200"}
 
 ------------------------------------------------------------------------
 
-Likewise, the unit of observation does not have to a patient. It can be a country (as presented [here](https://tavareshugo.github.io/r-intro-tidyverse-gapminder/09-reshaping/index.html)), or any other entity.
+The examples above are both time-series datasets, because the measurements are repeated across time (day 1, day 2 and so on). But the concepts of long and wide are relevant to other kinds of data too, not just time series data. 
 
-![Fig: "long" dataset where the unique observation unit is a country.](images/long_country.png){width="200"} ![Fig: "wide" dataset where the unique observation unit is a country.](images/wide_country.png){width="300"}
+Consider the example below, showing the number of patients in different units of three hospitals: 
 
-------------------------------------------------------------------------
+![Fig: wide dataset, where each hospital is an observational unit](images/wide_wards.jpg)
+
+![Fig: the equivalent long dataset](images/long_wards.jpg)
+
+
+::: vocab
+
+The "observational units", sometimes called "statistical units" of a dataset are the primary entities or items described by the columns in that dataset. 
+
+For example, for the 
+
+:::
 
 ::: practice
-Let's load the number of Nipah cases in different regions of malaysia.
-
+Consider the mock dataset created below: 
 ```{r}
-nipah <- outbreaks::nipah_malaysia %>% as_tibble()
-nipah
+temperatures <- 
+  data.frame(
+    country = c("Sweden", "Denmark", "Norway"),
+    avgtemp.1994 = 1:3,
+    avgtemp.1995 = 3:5,
+    avgtemp.1996 = 5:7)
+temperatures
 ```
 
-Is this a wide or long data format?
+Is this data in a wide or long format?
 
 ```{r, eval = FALSE}
-# Q_nipah_type <- "_____"
-#   
+# Enter the string wide or the string long
+# Assign your answer to the object Q_data_type
+# Then run the CHECK function below
+Q_data_type <- "_____"
 ```
 
 ```{r, include = FALSE}
-# .CHECK_Q_nipah_type()
-# .HINT_Q_nipah_type()
+.CHECK_Q_data_type() # Check your answer by running this function
+.HINT_Q_data_type()
+
+# To obtain the solution, run the line below
+.SOLUTION_Q_data_type()
+# Each question has a solution function similar to this.
+# Where HINT is replaced with SOLUTION in the function name.
+# But you will need to type out the function name on your own.
+# This is to discourage you from looking at the solution before answering the question.
 ```
 
-What is your unique observational unit ?
-
-```{r, eval = FALSE}
-# Q_nipah_observations <- "_____"
-#   
-```
-
-```{r, include = FALSE}
-# .CHECK_Q_nipah_observations()
-# .HINT_Q_nipah_observationse()
-```
 :::
 
 # When should you use wide vs long data?
 
-The truth is: it really depends on what you want to do ! The wide format is great for *displaying data* because it's easy to visually compare values of unique observations unit this way. Long data is best for a majority of data analysis tasks such as grouping, plotting.
+The truth is: it really depends on what you want to do! The wide format is great for *displaying data* because it's easy to visually compare values this way. Long data is best for some data analysis tasks, like grouping and plotting.
 
-It will be essential for you to know how to switch from one to the other easily.
-
-Switching from the "wide" to the "long" format (or the other way around) is called **pivoting**.
+It will therefore be essential for you to know how to switch from one format to the other easily. Switching from the wide to the long format, or the other way around, is called **pivoting**.
 
 # Pivoting wide to long
 
-Many datasets you'll find in online data hubs and services will come in a wide format. The reason for this is that the wide format is a common way of inputing/entering data into tables during data collection.
+To practice pivoting from a wide to a long format, we'll consider data from [Gapminder](https://www.gapminder.org) on the **number of infant deaths** in specific countries over several years.
 
-Let's have a look at Gapminder's open source data about the **Number of infant deaths (under 1 years old)**. [Check out Gapminder: an awesome resource](https://www.gapminder.org) !
+::: side-note
+[Gapminder](https://www.gapminder.org) is a good source of clean, rich health-relevant datasets. You are encouraged to peruse their collections. 
+:::
 
-And here is how we went to find this dataset:
-
-![Fig: Navigating open-source datasets on Gapminder. Here we searched for "Number of infant deaths."](images/gapminder_select_data.png){width="600"}
-
-Let's read in the CSV we downloaded from Gapminder. We are going to select the years between 2010 and 2015 to keep it simple.
+Below, we read in and view this data on infant deaths.
 
 ```{r}
-infant_deaths_wide <- 
-  read_csv(here("data/gapminder_infant_deaths.csv")) %>%
-  select(country, x2010:x2015)
-
+infant_deaths_wide <- read_csv(here("data/gapminder_infant_deaths.csv"))
 infant_deaths_wide
 ```
 
-Following our example above, we observe that each row corresponds to a unique observation unit: a country. The different events of data collection per country are different years: they are spread across different columns. Hence this dataset is in a "wide" format.
+We observe that each observational unit (each country) occupies only one row, with the repeated measurements spread out across multiple columns. Hence this dataset is in a wide format.
 
-The numbers in each box of country x year dataset are the counts of infant deaths for that country and for that year. As an example, in 2010, there were 74600 infant deaths recorded for Afghanistan.
+To convert to a long format, we can use a convenient function `pivot_longer`. Within `pivot_longer` we define, using the `cols` argument, which columns we want to pivot:
 
-If we wanted to convert the data format to "long" format then we can use a convenient function `pivot_longer` :
 
 ```{r}
 infant_deaths_wide %>% 
   pivot_longer(cols = x2010:x2015)
 ```
 
-Within `pivot_longer` we define, using the `cols` argument, which columns we want to pivot.
+Very easy! 
 
-We observe that the "long" format dataset now has each country occupying 5 rows (one per year between 2010 and 2015). The years have been pivoted into a single variable (`names`) instead of each representing their own variable (`x2010:x2015`). All the numbers in the country x years dataset were pivoted into their own variable (`values`). The infant deaths used to be in matrix format (2D: 2 dimensions), now they are in vector format (1D: 1 dimension).
+We can observe that the resulting long format dataset has each country occupying 5 rows (one per year between 2010 and 2015). The years are indicated in the variable `names`, and all the death count values occupy a single variable, `values`. The infant deaths used to be in matrix format (2 dimensions; 2D), now they are in a vector format (1 dimension; 1D).
 
-This long dataset will be much more handy for most data analysis functions. Intuitively, manipulating 1D is always easier than manipulating 2D. More on this later !
+This long dataset will be much more handy for many data analysis procedures. 
 
-::: side-note
-However, as good data analysts, you might be cringing at the new names of your variables: `names` and `values` are generic and do not represent our data at all ! No worries, you can give custom column names:
+As a good data analyst, you may find the default names of the variables, `names` and `values`, to be unsatisfactory; they do not adequately describe what the variables contain. No worries, you can give custom column names, using the arguments `names_to` and `values_to`:
 
 ```{r}
 infant_deaths_wide %>% 
@@ -195,14 +180,13 @@ infant_deaths_wide %>%
                values_to = "deaths_count")
 ```
 
-The `cols` argument defining the variables chosen for pivot are the same. However `names_to` allows to define the variable name of the 1-D vector now regrouping your multiple pivoted columns. As you are pivoting years, it makes sense to call their variable `year`. We apply the same reasoning for the number of infant deaths pivoted from a matrix to a sole column: we name the variable embodying this column `deaths_counts`.
-:::
-
 ::: pro-tip
-One could argument that the "long" format is more informative than the "wide" format. Why? Because of these column names. In the "wide" format, unless the CSV is named `count_infant_deaths` (or something alike) or unless someone tells you "these are the counts of infant deaths per country and per year", you have no idea what those numbers represent.
+
+In this example, one might argue that the new long format is more informative than the original wide format. Why? Because of the informative column name "deaths_count". In the wide format, unless the CSV is named `count_infant_deaths` or something similar, or someone tells you "these are the counts of infant deaths per country and per year", you have no idea what the numbers in the cells represent.
+
 :::
 
-You may be a bit frustrated by the weird `x` in front of your years. Here is how you would remove it using `parse_number()` function:
+You may also want to remove the `x` in front of each year. This can be achieved with the handy `parse_number()` function from the {readr} package, which extracts numbers from strings:
 
 ```{r}
 infant_deaths_wide %>% 
@@ -212,9 +196,9 @@ infant_deaths_wide %>%
   mutate(year = parse_number(year))
 ```
 
-We will see more on this function in the lessons dedicated to strings. But as a brief explanation: it extracts numbers from strings.
+Great! Now, we have a clean, long dataset.
 
-For later, let's store this "long" format dataset of the count of infant deaths per country and per year:
+For later use, let's now store this data:
 
 ```{r}
 infant_deaths_long <- 
@@ -225,126 +209,86 @@ infant_deaths_long <-
 ```
 
 ::: practice
-For this practice question, we will use the `euro_births_wide` dataset from [Eurostat](https://ec.europa.eu/eurostat/databrowser/view/tps00204/default/table). It contains data on births in 50 European countries: the crude birth rate per thousand people, collected on an annual basis.
+For this practice question, you will use the `euro_births_wide` dataset from [Eurostat](https://ec.europa.eu/eurostat/databrowser/view/tps00204/default/table). It shows the annual number of births in 50 European countries:
 
 ```{r}
 euro_births_wide <- 
   read_csv(here("data/euro_births_wide.csv"))
-euro_births_wide
+head(euro_births_wide)
 ```
 
-What is the unique observational unit? Your answer should be a string giving the name of the variable.
+The data is in a wide format. Convert it to a long format, with the following column names: "country", "year" and "births_count"
 
 ```{r, eval = FALSE}
-# Q_euro_births_unique_observational_unit <- "_____"
-#   
+Q_euro_births_long <- 
+  euro_births_wide %>% # complete the code with your answer
 ```
 
 ```{r, include = FALSE}
-# .CHECK_Q_euro_births_unique_observational_unit()
-# .HINT_Q_euro_births_unique_observational_unit()
-```
-
-What variable defines the data collection in multiple ways (i.e. the potential stratification variable) ? Your answer should be a string giving the name of the variable.
-
-```{r, eval = FALSE}
-# Q_euro_births_multiple_ways <- "_____"
-#   
-```
-
-```{r, include = FALSE}
-# .CHECK_Q_euro_births_multiple_ways()
-# .HINT_Q_euro_births_multiple_ways()
-```
-
-The data is in a "wide" format. Convert it to a "long" format.
-
-```{r, eval = FALSE}
-# Q_euro_births_long_format <- 
-#   euro_births_wide %>%
-#   pivot_longer(___________)
-  
-```
-
-```{r, include = FALSE}
-# .CHECK_Q_euro_births_long_format()
-# .HINT_Q_euro_births_long_format()
+.CHECK_Q_euro_births_long()
+.HINT_Q_euro_births_long()
 ```
 :::
 
 # Pivoting long to wide
 
-Wide data often comes from external sources as we have seen above. Long data, on the other hand, is likely to be created by *you* in the course of your data wrangling. Let's see an example:
+Now you know how to pivot from wide to long data with `pivot_longer()`. To go from long to wide data, you can use the fittingly-named `pivot_wider()` function.
 
-We will use yet another dataset: patient records from an Ebola outbreak in Sierra Leone in 2014.
+Before we consider how to use this function though, lets consider the question "where does long data come from?".
+
+Wide data often comes from external sources, as we have seen above. Long data, on the other hand, is likely to be created by *you* in the course of your data wrangling, especially in the course of `group_by()`-`summarize()` manipulations. Let's see an example.
+
+We will use a dataset of patient records from an Ebola outbreak in Sierra Leone in 2014. Below we extract this data from the {outbreaks} package and perform some simple manipulations on it.
 
 ```{r}
-ebola <- outbreaks::ebola_sierraleone_2014 %>% as_tibble()
+ebola <- 
+  outbreaks::ebola_sierraleone_2014 %>% 
+  as_tibble() %>% 
+  mutate(year = lubridate::year(date_of_onset)) %>% # extract the year from the date
+  select(id, district, year)
+
 ebola
 ```
 
-Here each row corresponds to a unique unit of observation: one ebola patients. The data is in a "wide" format.
-
-You may want to count how many cases there were in each year across districts. For this, you would apply the `summary()` functions on your datasets:
+Now, consider the the following grouped summary of the `ebola` dataset, which counts the number of patients recorded in each district in each year:
 
 ```{r}
-ebola_summary <- 
+cases_per_district_per_year <- 
   ebola %>% 
-  summary()
+  group_by(district) %>% 
+  count(year)
 
-ebola_summary
+cases_per_district_per_year
 ```
 
-A summary is considered a long format because it no longer has the structure one row = one observation unit.
+Do you notice that the output appears to be long data?
 
-Let's see an example where you keep a wide format, but you can the unique observation unit. This occurs when we count the number of patients in each district.
+Each district occupies multiple rows, with one row for each measurement (each year). 
 
-```{r}
-ebola_district_counts <- 
-  ebola %>% 
-  count(district)
+***
 
-ebola_district_counts
-```
+Now, what if we wanted to switch `cases_per_district_per_year` back to a wide format? 
 
-Now, one row = one observation, so we are still in a wide format, but the unique observation units are now the districts and not the patients themselves.
 
-Let's now explore another, somewhat similar, data wrangling manipulation which will change your data format from "wide" to "long": grouping by multiple variables then counting number of recorded patients within groups.
 
-```{r}
-ebola_yearly_counts <- 
-  ebola %>% 
-  mutate(year = lubridate::year(date_of_onset)) %>% 
-  group_by(district, year) %>% 
-  count()
-
-ebola_yearly_counts
-```
-
-Here we start with extracting the year information (year of the date) from the variable `date_of_onset`. For this we use a useful function `year()` from the package {lubridate}, which you will see in more details in further lessons. We then group by `district` and `year` to count the number of patients recorded per district and per year.
-
-Because of this nested grouping, we are generating a long format dataset: we do not have one row = one unique observation. Both districts and years take up multiple rows. Each district takes up 2 rows (because their count is calculated for 2 years: 14 x 2 = 28) and each year takes up 14 rows (because their count is calculated over 14 districts: 2 x 14 = 28).
-
-This is a perfect illustration of how one data wrangling manipulation will preserve a wide format, while another will generate a long format.
-
-What if we wanted to switch `ebola_yearly_counts` back to a wide format ? There is an easy function for this: `pivot_wider()` (similar to `pivot_longer()`).
+There is an easy function for this: `pivot_wider()` (similar to `pivot_longer()`).
 
 Let's switch our data back to a wide format:
 
 ```{r}
-ebola_yearly_counts %>% 
+cases_per_district_per_year %>% 
   pivot_wider(values_from = n, 
               names_from = year)
 ```
 
 `pivot_wider()` has two important arguments: `values_from` and `names_from`. `values_from` defines which values will become the core of the wide data format (in other words: which 1D vector will become a 2D matrix). `names_from` identifies which variable to use to define column names in the wide format.
 
-To explain with our dataset `ebola_yearly_counts`. We define our observation unit as the districts. So to have a wide format, we need the variable `years` to become two columns: `2014` and `2015`, the unique values of the variable. We define this in `pivot_wider()` with `names_from`. This would then create a dataframe in the format districts x years, in other words, a matrix. You need to fill the matrix with values, hence the argument `values_from`, which indicates we want to fill the matrix with count values.
+To explain with our dataset `cases_per_district_per_year`. We define our observation unit as the districts. So to have a wide format, we need the variable `years` to become two columns: `2014` and `2015`, the unique values of the variable. We define this in `pivot_wider()` with `names_from`. This would then create a dataframe in the format districts x years, in other words, a matrix. You need to fill the matrix with values, hence the argument `values_from`, which indicates we want to fill the matrix with count values.
 
 Now, imagine we wanted to see the years as our unique observation unit. We would do exactly the same, but our 2nd dimension to the wide format would be the `districts`:
 
 ```{r}
-ebola_yearly_counts %>% 
+cases_per_district_per_year %>% 
   pivot_wider(values_from = n, 
               names_from = district)
 ```

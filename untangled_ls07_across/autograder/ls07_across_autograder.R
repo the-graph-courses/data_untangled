@@ -10,39 +10,6 @@ pacman::p_load(here,
 
 # adapt to questions of this lesson
 
-.CHECK_Q_febrile_disease_symptoms <- function() invisible(NULL)
-.HINT_Q_febrile_disease_symptoms <- function() invisible(NULL)
-
-.CHECK_Q_febrile_disease_symptoms <- function() invisible(NULL)
-.HINT_Q_febrile_disease_symptoms <- function() invisible(NULL)
-
-.CHECK_Q_febrile_disease_symptoms_to_lower <- function() invisible(NULL)
-.HINT_Q_febrile_disease_symptoms_to_lower <- function() invisible(NULL)
-
-.CHECK_Q_febrile_disease_symptoms_to_numeric <- function() invisible(NULL)
-.HINT_Q_febrile_disease_symptoms_to_numeric <- function() invisible(NULL)
-
-.CHECK_Q_diet_to_grams <- function() invisible(NULL)
-.HINT_Q_diet_to_grams <- function() invisible(NULL)
-
-.CHECK_Q_febrile_disease_symptoms_to_CHECKeric_new_variables <- function() invisible(NULL)
-.HINT_Q_febrile_disease_symptoms_to_HINTeric_new_variables <- function() invisible(NULL)
-
-.CHECK_Q_diet_FAO_mean <- function() invisible(NULL)
-.HINT_Q_diet_FAO_mean <- function() invisible(NULL)
-
-.CHECK_Q_febrile_disease_symptoms_count <- function() invisible(NULL)
-.HINT_Q_febrile_disease_symptoms_count <- function() invisible(NULL)
-
-.CHECK_Q_yaounde_median <- function() invisible(NULL) 
-.HINT_Q_yaounde_median <- function() invisible(NULL) 
-
-.CHECK_Q_diet_food_composition_mean_sd <- function() invisible(NULL) 
-.HINT_Q_diet_food_composition_mean_sd <- function() invisible(NULL) 
-
-.CHECK_Q_febrile_diseases_mean_blood_composition <- function() invisible(NULL)
-.HINT_Q_febrile_diseases_mean_blood_composition <- function() invisible(NULL)
-
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  DATA ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
