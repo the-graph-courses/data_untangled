@@ -643,7 +643,7 @@ yaounde_symptoms_slice %>%
     ))
 ```
 
-This `case_when()` statement can be read in simple terms as 'If the person has anosmia/ageusia, input "Probable COVID", and otherwise, if the person has cough AND fever, input "Possible COVID"'.
+This `case_when()` statement can be read in simple terms as 'If the person has anosmia/ageusia, input "Probable COVID", and otherwise, if the person has cough, input "Possible COVID"'.
 
 Now, spend some time looking through the output data frame, especially the last three individuals. The individual in row 2 meets the criterion for "Possible COVID" because they have cough (`symp_cough` == "Yes"), and the individual in row 3 meets the criterion for "Probable COVID" because they have anosmia/ageusia (`symp_anosmia_or_ageusia == "Yes"`).
 
