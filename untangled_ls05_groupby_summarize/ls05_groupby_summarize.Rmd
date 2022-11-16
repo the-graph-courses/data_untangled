@@ -890,6 +890,8 @@ The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
 
+Thank you to [Alice Osmaston](https://thegraphcourses.org/members/alice){target="_blank"} and [Saifeldin Shehata](https://thegraphcourses.org/members/saif){target="_blank"} for their comments and review.
+
 # References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:

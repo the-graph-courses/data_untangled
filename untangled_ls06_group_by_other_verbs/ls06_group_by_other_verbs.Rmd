@@ -150,13 +150,13 @@ yao_sex_weight %>%
 :::
 
 ::: practice
-With an `arrange()` call, sort the `sarcopenia` data first by sex and then by grip strength. (If done correctly, the first row should be of a woman with a grip strength of 1.3 kg)
+With an `arrange()` call, sort the `sarcopenia` data first by sex and then by grip strength. (If done correctly, the first row should be of a woman with a grip strength of 1.3 kg). To make the arrangement clear, you should first `select()` the sex and grip strength variables.
 
 ```{r eval = FALSE}
 # Complete the code with your answer:
 Q_grip_strength_arranged <- 
   sarcopenia %>% 
-  select(______________________________) %>%
+  select(______________________________) %>% 
   arrange(______________________________)
 ```
 
@@ -165,19 +165,19 @@ Q_grip_strength_arranged <-
 .CHECK_Q_grip_strength_arranged()
 .HINT_Q_grip_strength_arranged()
 
-# To get the solution, run the line below!
+# To get the solution, run the line below
 .SOLUTION_Q_grip_strength_arranged()
 # Each question has a solution function similar to this.
-# (Where HINT is replaced with SOLUTION in the function name.)
-# But you will need to type out the function name on your own.
-# (This is to discourage you from looking at the solution before answering the question.)
+# Where HINT is replaced with SOLUTION in the function name.
+# But you will need to type out the function name for the remaining solutions on your own.
+# This is to discourage you from looking at the solution before answering the question.
 ```
 :::
 
 ::: practice
-The `sarcopenia` dataset contains a column, `age_group`, which stores age groups as a string (the age groups are "Sixties", "Seventies" and "Eighties"). Convert this variable to a factor with the levels in the right order (ascending order of age). (Hint: Look back on the `case_when()` lesson if you do not see how to relevel a factor.)
+The `sarcopenia` dataset contains a column, `age_group`, which stores age groups as a string (the age groups are "Sixties", "Seventies" and "Eighties"). Convert this variable to a factor with the levels in the right order (first "Sixties" then "Seventies" and so on). (Hint: Look back on the `case_when()` lesson if you do not see how to relevel a factor.)
 
-Then, with a nested `arrange()` call, arrange the data first by `age_group` (younger individuals first) and then by `height_meters` (shorter individuals first).
+Then, with a nested `arrange()` call, arrange the data first by the newly-created `age_group` factor variable and then by `height_meters`, with shorter individuals first.
 
 ```{r eval = FALSE}
 # Complete the code with your answer:
@@ -267,9 +267,7 @@ Group the `sarcopenia` data frame by age group and sex, then filter for the high
 ```{r eval = FALSE}
 # Complete the code with your answer:
 Q_max_skeletal_muscle_index <- 
-  sarcopenia %>% 
-  group_by(______________________________) %>%
-  filter(______________________________)
+  sarcopenia 
 ```
 
 ```{r include = FALSE}

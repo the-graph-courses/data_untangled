@@ -167,7 +167,9 @@ infant_deaths_wide %>%
 
 Very easy! 
 
-We can observe that the resulting long format dataset has each country occupying 5 rows (one per year between 2010 and 2015). The years are indicated in the variable `names`, and all the death count values occupy a single variable, `values`. The infant deaths used to be in matrix format (2 dimensions; 2D), now they are in a vector format (1 dimension; 1D).
+We can observe that the resulting long format dataset has each country occupying 5 rows (one per year between 2010 and 2015). The years are indicated in the variable `names`, and all the death count values occupy a single variable, `values`. 
+
+A useful way to think about this transformation is that the infant deaths values used to be in matrix format (2 dimensions; 2D), but they are now in a vector format (1 dimension; 1D).
 
 This long dataset will be much more handy for many data analysis procedures. 
 
@@ -186,7 +188,7 @@ In this example, one might argue that the new long format is more informative th
 
 :::
 
-You may also want to remove the `x` in front of each year. This can be achieved with the handy `parse_number()` function from the {readr} package, which extracts numbers from strings:
+You may also want to remove the `x` in front of each year. This can be achieved with the convenient `parse_number()` function from the {readr} package (part of the tidyverse), which extracts numbers from strings:
 
 ```{r}
 infant_deaths_wide %>% 
@@ -196,7 +198,7 @@ infant_deaths_wide %>%
   mutate(year = parse_number(year))
 ```
 
-Great! Now, we have a clean, long dataset.
+Great! Now we have a clean, long dataset.
 
 For later use, let's now store this data:
 
@@ -232,60 +234,60 @@ Q_euro_births_long <-
 
 # Pivoting long to wide
 
-Now you know how to pivot from wide to long data with `pivot_longer()`. To go from long to wide data, you can use the fittingly-named `pivot_wider()` function.
+Now you know how to pivot from wide to long with `pivot_longer()`. How about going the other way, from long to wide? For this, you can use the fittingly-named `pivot_wider()` function.
 
-Before we consider how to use this function though, lets consider the question "where does long data come from?".
+But before we consider how to use this function, let's first consider *where* you're likely to run into long data.
 
-Wide data often comes from external sources, as we have seen above. Long data, on the other hand, is likely to be created by *you* in the course of your data wrangling, especially in the course of `group_by()`-`summarize()` manipulations. Let's see an example.
+Wide data often comes from external sources, as we have seen above. Long data, on the other hand, is likely to be created by *you* while data wrangling, especially in the course of `group_by()`-`summarize()` manipulations. 
 
-We will use a dataset of patient records from an Ebola outbreak in Sierra Leone in 2014. Below we extract this data from the {outbreaks} package and perform some simple manipulations on it.
+Let's see an example now.
+
+We will use a dataset of patient records from an Ebola outbreak in Sierra Leone in 2014. Below we extract this data from the {outbreaks} package and perform some simplifying manipulations on it.
 
 ```{r}
 ebola <- 
   outbreaks::ebola_sierraleone_2014 %>% 
   as_tibble() %>% 
   mutate(year = lubridate::year(date_of_onset)) %>% # extract the year from the date
-  select(id, district, year)
+  select(patient_id = id, district, year_of_onset = year) # select and rename
 
 ebola
 ```
 
-Now, consider the the following grouped summary of the `ebola` dataset, which counts the number of patients recorded in each district in each year:
+Each row corresponds to one patient, and we have each patient's id number, their district and the year in which they contracted ebola.
+
+Now, consider the following grouped summary of the `ebola` dataset, which counts the number of patients recorded in each district in each year:
 
 ```{r}
 cases_per_district_per_year <- 
   ebola %>% 
   group_by(district) %>% 
-  count(year)
+  count(year_of_onset) %>% 
+  ungroup()
 
 cases_per_district_per_year
 ```
 
-Do you notice that the output appears to be long data?
+Indeed, the output of this grouped operation is a quintessentially "long" dataset! Each observational unit (each district) occupies multiple rows, with one row for each measurement (each year). 
 
-Each district occupies multiple rows, with one row for each measurement (each year). 
+So, as you now see, long data often is often an output of grouped summaries, among other data manipulations. 
 
-***
+Now, let's see how to convert such long data into a wide format with `pivot_wider()`.
 
-Now, what if we wanted to switch `cases_per_district_per_year` back to a wide format? 
-
-
-
-There is an easy function for this: `pivot_wider()` (similar to `pivot_longer()`).
-
-Let's switch our data back to a wide format:
+The code is quite straightforward:
 
 ```{r}
 cases_per_district_per_year %>% 
   pivot_wider(values_from = n, 
-              names_from = year)
+              names_from = year_of_onset)
 ```
 
-`pivot_wider()` has two important arguments: `values_from` and `names_from`. `values_from` defines which values will become the core of the wide data format (in other words: which 1D vector will become a 2D matrix). `names_from` identifies which variable to use to define column names in the wide format.
+As you can see, `pivot_wider()` has two important arguments: `values_from` and `names_from`. The `values_from` argument defines which values will become the core of the wide data format (in other words: which 1D vector will become a 2D matrix). In our case, these values were in the `n` variable. And `names_from` identifies which variable to use to define column names in the wide format. In our case, this was the `year_of_onset` variable.
 
-To explain with our dataset `cases_per_district_per_year`. We define our observation unit as the districts. So to have a wide format, we need the variable `years` to become two columns: `2014` and `2015`, the unique values of the variable. We define this in `pivot_wider()` with `names_from`. This would then create a dataframe in the format districts x years, in other words, a matrix. You need to fill the matrix with values, hence the argument `values_from`, which indicates we want to fill the matrix with count values.
 
-Now, imagine we wanted to see the years as our unique observation unit. We would do exactly the same, but our 2nd dimension to the wide format would be the `districts`:
+::: side-note
+
+You might also want to have the *years* be your primary observational/statistical unit, with each year occupying one row. This can be carried out similarly to the above example, but the `district` variable will be instead be provided as an argument to `names_from`.
 
 ```{r}
 cases_per_district_per_year %>% 
@@ -293,36 +295,26 @@ cases_per_district_per_year %>%
               names_from = district)
 ```
 
-Here our unique observation units (our rows) are now the years (2014, 2015). Our 2nd dimension (our columns) are the districts. Our matrix input are the count values organized in the format years x districts.
+Here the unique observation units (our rows) are now the years (2014, 2015). 
 
-That's it! We'll see more complex examples in the next lesson...
+:::
 
 ::: practice
-Above, using Gapminder's data on the number of infant deaths, we transformed the wide format dataset `infant_deaths_wide` into the long format dataset `infant_deaths_long`. Now, using `pivot_wider()`, let's switch it back to its wide format again. We want the unique observation unit to be the countries and to have a countries x years matrix, filled with the death counts.
+
+The `population` dataset from the `tidyr` package shows the populations of 219 countries over time.
+
+Pivot this data into a wide format. Your answer should have 20 columns and 219 rows.
 
 ```{r, eval = FALSE}
-# Q_infant_death_wide_countries <- 
-#   infant_death_long %>%
-#   pivot_wider(___________)
+Q_population_widen <- 
+  tidyr::population
 ```
 
 ```{r, include = FALSE}
-# .CHECK_Q_infant_death_wide_countries()
-# .HINT_Q_infant_death_wide_countries()
+.CHECK_Q_population_widen()
+.HINT_Q_population_widen()
 ```
 
-Using again `pivot_wider()` and again `infant_death_long`, let's switch it back to its wide format but this time we want the unique observation unit to be the years and to have a years x countries matrix, filled with the death counts.
-
-```{r, eval = FALSE}
-# Q_infant_death_wide_years <- 
-#   infant_death_long %>%
-#   pivot_wider(___________)
-```
-
-```{r, include = FALSE}
-# .CHECK_Q_infant_death_wide_years()
-# .HINT_Q_infant_death_wide_years()
-```
 :::
 
 ------------------------------------------------------------------------
@@ -345,11 +337,11 @@ infant_deaths_long %>%
   filter(deaths_count == max(deaths_count))
 ```
 
-Easy right? We can easily see that Afghanistan had its maximal infant death count in 2010.
+Easy right? We can easily see, for example, that Afghanistan had its highest infant death count in 2010, and the United Arab Emirates had its highest death count in 2011.
 
 ------------------------------------------------------------------------
 
-If you wanted to do the same thing with wide data, you would need some weird functions like `rowwise()`:
+If you wanted to do the same thing with wide data, it would be much more difficult. You could try an approach like this with `rowwise()`:
 
 ```{r}
 infant_deaths_wide %>% 
@@ -357,11 +349,13 @@ infant_deaths_wide %>%
   mutate(max_count = max(x2010, x2011, x2012, x2013, x2014, x2015))
 ```
 
-Okay it works, but we still don't know which year is attached to that value in `max_count`. We would have to take that value and index it back to its respective year column... what a hassle! There are solutions to find this but all are very painful. Why make your life complicated when you can just pivot to long format and use the beauty of `group_by()` and `filter()`?
+This works, but we still don't know which year is attached to that value in `max_count`. We would have to take that value and index it back to its respective year column... what a hassle! There are solutions to find this but all are very painful. Why make your life complicated when you can just pivot to long format and use the beauty of `group_by()` and `filter()`?
 
-Here we use a special {dplyr} function: `rowwise()`. `rowwise()` is a function which allows further operations to be applied on the rows rather than on the columns. As you can see, here `mutate()` creating a maximum value column, takes the maximum of each row (not the maximum of each column.
 
 ::: side-note
+
+Here we used a special {dplyr} function: `rowwise()`. `rowwise()` is a function which allows further operations to be applied on the rows rather than on the columns. It is equivalent to creating one group for each row (`group_by(row_number())`).
+
 Without `rowwise()` you would get this :
 
 ```{r}
@@ -369,28 +363,38 @@ infant_deaths_wide %>%
   mutate(max_count = max(x2010, x2011, x2012, x2013, x2014, x2015))
 ```
 
-The max count over all columns.
+The maximum count over all columns.
+
 :::
 
 ::: practice
-Using the Eurostat dataset, `euro_births_wide`, wrangle to have the maximal birth count over all years, per country. (like above, you should think of pivoting, then using `group_by()` and `filter()`)
+
+For this practice question, you will perform a grouped filter on the long format `population` dataset from the `tidyr` package. Use `group_by()` and `filter()` to obtain a dataset that shows the maximum population recorded for each country, and the year in which that maximum population was recorded.
+
 
 ```{r, eval = FALSE}
-# Q_euro_births_max <- "_____"
-#   
+Q_population_max <- 
+  population 
 ```
 
 ```{r, include = FALSE}
-# .CHECK_Q_euro_births_max()
-# .HINT_Q_euro_births_max()
+.CHECK_Q_population_max()
+.HINT_Q_population_max()
+
+
+# Solution: temporarily putting it here
+population %>% 
+  group_by(country) %>% 
+  filter(population == max(population)) %>% 
+  ungroup()
 ```
 :::
 
 ## Summarizing grouped data
 
-Like filtering, most summarizing operations will be difficult to do on wide data. If we pause and think why it is so hard to filter or summarize on wide data, we realize that it is because the wide data prevents us from grouping our data. A data format where each row is a unique observation unit is a data format where each group is a unique observation unit. A long format allows to group data.
+Like filtering, most summarizing operations are also difficult to perform on wide data. If we pause and think why it is so hard to filter or summarize on wide data, we realize that it is because the wide data prevents us from grouping our data. 
 
-For example, if you want to ask: **For each country, between 2015 and 2021, what was the mean number of infant deaths and the standard deviation (variation) in deaths ?**
+For example, considering again the `infant_deaths_long` dataset, if you want to ask: **For each country, what was the mean number of infant deaths and the standard deviation (variation) in deaths ?**
 
 With long data it is simple:
 
@@ -401,7 +405,7 @@ infant_deaths_long %>%
             sd_deaths = sd(deaths_count))
 ```
 
-With wide data, on the other hand, finding the mean is doable...
+With wide data, on the other hand, finding the mean is less intuitive...
 
 ```{r}
 infant_deaths_wide %>% 
@@ -410,110 +414,28 @@ infant_deaths_wide %>%
                            x2013, x2014, x2015, na.rm = T)/6) 
 ```
 
-But standard deviation would be more difficult.
+And finding the standard deviation would be very difficult. (We can't think of any way to achieve this, actually.)
 
 ::: practice
-Using the Eurostat dataset, `euro_births_wide`, wrangle to have the mean number and variation (standard deviation) of birth over all years, per country. (like above, you should think of pivoting, then using `group_by()` and `summarize()`)
+For this practice question, you will again work with the long format `population` dataset from the `tidyr` package. 
+
+Use `group_by()` and `summarize()` to obtain, for each country, the maximum reported population, the minimum reported population, and the mean reported population across the years available in the data. Your data should have four columns, "country", "max_population", "min_population" and "mean_population".
 
 ```{r, eval = FALSE}
-# Q_euro_births_mean_sd <- "_____"
-#   
+Q_population_summaries <- 
+  population
 ```
 
 ```{r, include = FALSE}
-# .CHECK_Q_euro_births_mean_sd()
-# .HINT_Q_euro_births_mean_sd()
-```
-:::
+.CHECK_Q_population_summaries()
+.HINT_Q_population_summaries()
 
-## Joining datasets
-
-Joining related datasets is often easier with long data.
-
-To illustrate this, let us load another dataset: the number of children born each year (also another jewel dataset from Gapminder!).
-
-```{r}
-infant_births_wide <- 
-    read_csv(here("data/gapminder_new_births.csv"))
-
-infant_births_wide
-```
-
-The dataset looks very similar to the one about infant deaths, only this time, we are viewing the counts of births.
-
-You may want to join this information on births with the number of deaths. With this joint dataset, we could calculate the infant mortality rate for each year
-
-With long data these operations are easy. First pivot new data to long:
-
-```{r}
-infant_births_long <- 
-  infant_births_wide %>% 
-  pivot_longer(cols = x2010:x2015, 
-               values_to = "births_count", 
-               names_to = "year")
-
-infant_births_long
-```
-
-Then join using `left_join()`:
-
-```{r}
-infant_deaths_long %>% 
-  left_join(infant_births_long)
-```
-
-The mortality rate is the number of deaths on the number of births. You can easily calculate the mortality rate for each year using `mutate()`.
-
-```{r}
-infant_deaths_long %>% 
-  left_join(infant_births_long) %>% 
-  mutate(infant_mortality_rate = deaths_count/births_count, 
-         infant_mortality_rate_per_cent = infant_mortality_rate * 100)
-```
-
-::: practice
-Continuing the use of Gapminder, we will load in 2 more datasets that you will then join together.
-
-The first is a count of HIV cases per year and per country.
-
-```{r}
-hiv_counts <- 
-    read_csv(here("data/gapminder_hiv.csv"))
-
-hiv_counts
-```
-
-The second is a count of malaria cases per year and per country.
-
-```{r}
-malaria_counts <- 
-    read_csv(here("data/gapminder_malaria.csv"))
-
-malaria_counts
-```
-
-We are going to join these two datasets together after pivoting them into long format.
-
-```{r, eval = FALSE}
-# Q_malaria_hiv_comparison <- 
-#   hiv_counts_long %>%
-#   left_join(malaria_counts_long)
-```
-
-```{r, include = FALSE}
-# .CHECK_Q_malaria_hiv_comparison()
-# .HINT_Q_malaria_hiv_comparison()
-```
-
-After joinging them, filter for the country of Vietnam and for the year 2000. In 2000, did Vietnam have more cases of malaria or HIV ? Your answer should be a string (either "malaria" or "HIV").
-
-```{r, eval = FALSE}
-# Q_Vietnam_2000 <- "_______"
-```
-
-```{r, include = FALSE}
-# .CHECK_Q_Vietnam_2000()
-# .HINT_Q_Vietnam_2000()
+# Solution. temporarily placing here
+population %>% 
+  group_by(country) %>% 
+  summarise(max_population = max(population), 
+            min_population = min(population), 
+            mean_population = mean(population))
 ```
 :::
 
