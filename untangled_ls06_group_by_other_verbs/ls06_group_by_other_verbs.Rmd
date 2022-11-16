@@ -177,14 +177,12 @@ Q_grip_strength_arranged <-
 ::: practice
 The `sarcopenia` dataset contains a column, `age_group`, which stores age groups as a string (the age groups are "Sixties", "Seventies" and "Eighties"). Convert this variable to a factor with the levels in the right order (first "Sixties" then "Seventies" and so on). (Hint: Look back on the `case_when()` lesson if you do not see how to relevel a factor.)
 
-Then, with a nested `arrange()` call, arrange the data first by the newly-created `age_group` factor variable and then by `height_meters`, with shorter individuals first.
+Then, with a nested `arrange()` call, arrange the data first by the newly-created `age_group` factor variable (younger individuals first) and then by `height_meters`, with shorter individuals first.
 
 ```{r eval = FALSE}
 # Complete the code with your answer:
 Q_age_group_height <- 
-  sarcopenia %>% 
-  mutate(age_group = factor(________________________________)) %>%
-  arrange(______________________________)
+  sarcopenia 
 ```
 
 ```{r include = FALSE}
@@ -333,14 +331,12 @@ yao %>%
 The output shows that the person in the first row is 20th heaviest *woman in the 45 to 64 age group*.
 
 ::: practice
-With the `sarcopenia` data, group by `age_group`, then in a new variable called `grip_strength_rank`, compute the per-age-group rank of each individual's grip strength.
+With the `sarcopenia` data, group by `age_group`, then in a new variable called `grip_strength_rank`, compute the per-age-group rank of each individual's grip strength. (To compute the rank, use `mutate()` and the `rank()` function with its default ties method.)
 
 ```{r eval = FALSE}
 # Complete the code with your answer:
 Q_rank_grip_strength <- 
-  sarcopenia %>% 
-  group_by(______________________________) %>%
-  mutate(______________________________)
+  sarcopenia
 ```
 
 ```{r include = FALSE}
@@ -403,7 +399,8 @@ yao_modified %>%
 
 `group_by()` is a marvelous tool for arranging, mutating, filtering based on the groups within a single or multiple variables.
 
-![Fig: arrange() and group_by()](images/custom_dplyr_groupby_arrange.png){alt="Fig: arrange() and its use combined with group_by()." width="400"} ![Fig: mutate() and group_by()](images/custom_dplyr_groupby_mutate.png){alt="Fig: mutate() and its use combined with group_by()." width="400"}
+![Fig: arrange() and group_by()](images/custom_dplyr_groupby_arrange.png){alt="Fig: arrange() and its use combined with group_by()." width="400"}
+![Fig: mutate() and group_by()](images/custom_dplyr_groupby_mutate.png){alt="Fig: mutate() and its use combined with group_by()." width="400"}
 
 ![Fig: filter() and group_by()](images/custom_dplyr_groupby_filter.png){alt="Fig: filter() and its use combined with group_by()." width="400"}
 

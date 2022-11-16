@@ -56,7 +56,7 @@ pacman::p_load(praise,
         if (!is.data.frame(Q_grip_strength_arranged))
           .na("Invalid answer. Your answer should be a data frame.")
         
-        if (isTRUE(all_equal(Q_grip_strength_arranged, correct_answer)))
+        if (isTRUE(all_equal(Q_grip_strength_arranged, correct_answer, ignore_row_order = F)))
           .pass()
         
         else
@@ -202,7 +202,7 @@ Q_max_skeletal_muscle_index <-
     .problem_number <<- .NUM_Q_rank_grip_strength
     correct_answer <- .sarcopenia %>%
       group_by(age_group) %>%
-      summarize(grip_strength_rank = rank(grip_strength_kg))
+      mutate(grip_strength_rank = rank(grip_strength_kg))
     
     
     .autograder <<-
@@ -229,7 +229,7 @@ Your answer should look this:
 Q_rank_grip_strength <- 
   sarcopenia %>% 
   group_by(VARIABLE) %>%
-  summarize(grip_strength_rank = FORMULA)' -> out
+  mutate(grip_strength_rank = FORMULA)' -> out
   cat(out)
 }
 
@@ -239,6 +239,6 @@ SOLUTION
 Q_rank_grip_strength <- 
   sarcopenia %>%
   group_by(age_group) %>%
-  summarize(grip_strength_rank = rank(grip_strength_kg))' -> out
+  mutate(grip_strength_rank = rank(grip_strength_kg))' -> out
   cat(out)
 }
