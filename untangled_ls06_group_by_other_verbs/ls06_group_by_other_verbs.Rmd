@@ -399,8 +399,7 @@ yao_modified %>%
 
 `group_by()` is a marvelous tool for arranging, mutating, filtering based on the groups within a single or multiple variables.
 
-![Fig: arrange() and group_by()](images/custom_dplyr_groupby_arrange.png){alt="Fig: arrange() and its use combined with group_by()." width="400"}
-![Fig: mutate() and group_by()](images/custom_dplyr_groupby_mutate.png){alt="Fig: mutate() and its use combined with group_by()." width="400"}
+![Fig: arrange() and group_by()](images/custom_dplyr_groupby_arrange.png){alt="Fig: arrange() and its use combined with group_by()." width="400"} ![Fig: mutate() and group_by()](images/custom_dplyr_groupby_mutate.png){alt="Fig: mutate() and its use combined with group_by()." width="400"}
 
 ![Fig: filter() and group_by()](images/custom_dplyr_groupby_filter.png){alt="Fig: filter() and its use combined with group_by()." width="400"}
 

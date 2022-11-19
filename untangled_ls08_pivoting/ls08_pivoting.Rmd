@@ -29,17 +29,19 @@ suppressMessages(source(here::here("autograder/ls08_pivoting_autograder.R")))
 
 # Intro
 
-Pivoting: it's a verb from our every day life used to describe the movement of an object or a person. Well datasets can pivot too ! Today we are going to see why pivoting them is tool for efficient and high-level.
+Pivoting or reshaping is a data manipulation technique that involves re-orienting the rows and columns of a dataset. This is sometimes required to make data easier to analyze, or to make data easier to understand.
+
+In this lesson, we will cover how to effectively pivot data using `pivot_longer()` and `pivot_wider()` from the `tidyr` package. 
 
 # Learning Objectives
 
--   You will understand what a wide data format is, and what a long data format is
+-   You will understand what wide data format is, and what long data format is.
 
 -   You will know how to pivot long data to wide data using `pivot_long()`
 
 -   You will know how to pivot wide data to long data using `pivot_wider()`
 
--   You have the intuition why the long data format is easier for plotting and wrangling
+-   You will understand why the long data format is easier for plotting and wrangling in R.
 
 # Packages
 
@@ -48,7 +50,6 @@ Pivoting: it's a verb from our every day life used to describe the movement of a
 if(!require(pacman)) install.packages("pacman")
 pacman::p_load(tidyverse, outbreaks, janitor, rio, here, knitr)
 ```
-
 
 # What do wide and long mean?
 
@@ -60,47 +61,47 @@ You can record the data in a wide format like this:
 
 ![Fig: wide dataset for a timeseries of patients.](images/wide_patients.png){width="500"}
 
-
 Or you could record the data in a long format as so :
 
 ![Fig: long dataset for a timeseries of patients.](images/long_patients.png){width="200"}
 
-Take a minute to study the two datasets to make sure you understand the relationship between them. 
+Take a minute to study the two datasets to make sure you understand the relationship between them.
 
-In the wide dataset, each observational unit (each patient) occupies only one row. And each measurement. (blood pressure day 1, blood pressure day 2...) is in a separate column. 
+In the wide dataset, each observational unit (each patient) occupies only one row. And each measurement. (blood pressure day 1, blood pressure day 2...) is in a separate column.
 
-In the long dataset, on the other hand, each observational unit (each patient) occupies multiple rows, with one row for each measurement. 
+In the long dataset, on the other hand, each observational unit (each patient) occupies multiple rows, with one row for each measurement.
 
 ------------------------------------------------------------------------
 
 Here is another example with mock data, in which the observational units are countries:
 
-![Fig: long dataset where the unique observation unit is a country.](images/long_country.png){width="200"} 
+![Fig: long dataset where the unique observation unit is a country.](images/long_country.png){width="200"}
 
 ![Fig: the equivalent wide dataset](images/wide_country.png){width="300"}
 
-
 ------------------------------------------------------------------------
 
-The examples above are both time-series datasets, because the measurements are repeated across time (day 1, day 2 and so on). But the concepts of long and wide are relevant to other kinds of data too, not just time series data. 
+The examples above are both time-series datasets, because the measurements are repeated across time (day 1, day 2 and so on). But the concepts of long and wide are relevant to other kinds of data too, not just time series data.
 
-Consider the example below, showing the number of patients in different units of three hospitals: 
+Consider the example below, showing the number of patients in different units of three hospitals:
 
 ![Fig: wide dataset, where each hospital is an observational unit](images/wide_wards.jpg)
 
 ![Fig: the equivalent long dataset](images/long_wards.jpg)
 
+In the wide dataset, again, each observational unit (each hospital) occupies only one row, with the repeated measurements for that unit (number of patients in different rooms) spread across two columns.
+
+In the long dataset, each observational unit is spread over multiple lines.
 
 ::: vocab
+The "observational units", sometimes called "statistical units" of a dataset are the primary entities or items described by the columns in that dataset.
 
-The "observational units", sometimes called "statistical units" of a dataset are the primary entities or items described by the columns in that dataset. 
-
-For example, for the 
-
+For example, for the first example, the observation unit was a patient, for the second example, a country, and, for the third example, a hospital.
 :::
 
 ::: practice
-Consider the mock dataset created below: 
+Consider the mock dataset created below:
+
 ```{r}
 temperatures <- 
   data.frame(
@@ -114,24 +115,23 @@ temperatures
 Is this data in a wide or long format?
 
 ```{r, eval = FALSE}
-# Enter the string wide or the string long
+# Enter the string "wide" or the string "long"
 # Assign your answer to the object Q_data_type
-# Then run the CHECK function below
 Q_data_type <- "_____"
+# Then run the provided CHECK function
 ```
 
 ```{r, include = FALSE}
-.CHECK_Q_data_type() # Check your answer by running this function
+.CHECK_Q_data_type()
 .HINT_Q_data_type()
 
 # To obtain the solution, run the line below
 .SOLUTION_Q_data_type()
 # Each question has a solution function similar to this.
 # Where HINT is replaced with SOLUTION in the function name.
-# But you will need to type out the function name on your own.
+# But you will need to type out the function names for the remaining functions on your own.
 # This is to discourage you from looking at the solution before answering the question.
 ```
-
 :::
 
 # When should you use wide vs long data?
@@ -145,12 +145,12 @@ It will therefore be essential for you to know how to switch from one format to 
 To practice pivoting from a wide to a long format, we'll consider data from [Gapminder](https://www.gapminder.org) on the **number of infant deaths** in specific countries over several years.
 
 ::: side-note
-[Gapminder](https://www.gapminder.org) is a good source of clean, rich health-relevant datasets. You are encouraged to peruse their collections. 
+[Gapminder](https://www.gapminder.org) is a good source of rich, health-relevant datasets. You are encouraged to peruse their collections.
 :::
 
-Below, we read in and view this data on infant deaths.
+Below, we read in and view this data on infant deaths:
 
-```{r}
+```{r message = F}
 infant_deaths_wide <- read_csv(here("data/gapminder_infant_deaths.csv"))
 infant_deaths_wide
 ```
@@ -159,21 +159,20 @@ We observe that each observational unit (each country) occupies only one row, wi
 
 To convert to a long format, we can use a convenient function `pivot_longer`. Within `pivot_longer` we define, using the `cols` argument, which columns we want to pivot:
 
-
 ```{r}
 infant_deaths_wide %>% 
   pivot_longer(cols = x2010:x2015)
 ```
 
-Very easy! 
+Very easy!
 
-We can observe that the resulting long format dataset has each country occupying 5 rows (one per year between 2010 and 2015). The years are indicated in the variable `names`, and all the death count values occupy a single variable, `values`. 
+We can observe that the resulting long format dataset has each country occupying 5 rows (one per year between 2010 and 2015). The years are indicated in the variable `names`, and all the death count values occupy a single variable, `values`.
 
 A useful way to think about this transformation is that the infant deaths values used to be in matrix format (2 dimensions; 2D), but they are now in a vector format (1 dimension; 1D).
 
-This long dataset will be much more handy for many data analysis procedures. 
+This long dataset will be much more handy for many data analysis procedures.
 
-As a good data analyst, you may find the default names of the variables, `names` and `values`, to be unsatisfactory; they do not adequately describe what the variables contain. No worries, you can give custom column names, using the arguments `names_to` and `values_to`:
+As a good data analyst, you may find the default names of the variables, `names` and `values`, to be unsatisfactory; they do not adequately describe what the variables contain. Not to worry; you can give custom column names, using the arguments `names_to` and `values_to`:
 
 ```{r}
 infant_deaths_wide %>% 
@@ -182,10 +181,8 @@ infant_deaths_wide %>%
                values_to = "deaths_count")
 ```
 
-::: pro-tip
-
-In this example, one might argue that the new long format is more informative than the original wide format. Why? Because of the informative column name "deaths_count". In the wide format, unless the CSV is named `count_infant_deaths` or something similar, or someone tells you "these are the counts of infant deaths per country and per year", you have no idea what the numbers in the cells represent.
-
+::: side-note
+Notice that the long format is more informative than the original wide format. Why? Because of the informative column name "deaths_count". In the wide format, unless the CSV is named something like  `count_infant_deaths`, or someone tells you "these are the counts of infant deaths per country and per year", you have no idea what the numbers in the cells represent.
 :::
 
 You may also want to remove the `x` in front of each year. This can be achieved with the convenient `parse_number()` function from the {readr} package (part of the tidyverse), which extracts numbers from strings:
@@ -213,13 +210,13 @@ infant_deaths_long <-
 ::: practice
 For this practice question, you will use the `euro_births_wide` dataset from [Eurostat](https://ec.europa.eu/eurostat/databrowser/view/tps00204/default/table). It shows the annual number of births in 50 European countries:
 
-```{r}
+```{r message = F}
 euro_births_wide <- 
   read_csv(here("data/euro_births_wide.csv"))
 head(euro_births_wide)
 ```
 
-The data is in a wide format. Convert it to a long format, with the following column names: "country", "year" and "births_count"
+The data is in a wide format. Convert it to a long format data frame that has the following column names: "country", "year" and "births_count"
 
 ```{r, eval = FALSE}
 Q_euro_births_long <- 
@@ -236,11 +233,11 @@ Q_euro_births_long <-
 
 Now you know how to pivot from wide to long with `pivot_longer()`. How about going the other way, from long to wide? For this, you can use the fittingly-named `pivot_wider()` function.
 
-But before we consider how to use this function, let's first consider *where* you're likely to run into long data.
+But before we consider how to use this function to manipulate long data, let's first consider *where* you're likely to run into long data.
 
-Wide data often comes from external sources, as we have seen above. Long data, on the other hand, is likely to be created by *you* while data wrangling, especially in the course of `group_by()`-`summarize()` manipulations. 
+While wide data tends to come from external sources (as we have seen above), long data on the other hand, is likely to be created by *you* while data wrangling, especially in the course of `group_by()`-`summarize()` manipulations.
 
-Let's see an example now.
+Let's see an example of this now.
 
 We will use a dataset of patient records from an Ebola outbreak in Sierra Leone in 2014. Below we extract this data from the {outbreaks} package and perform some simplifying manipulations on it.
 
@@ -254,7 +251,7 @@ ebola <-
 ebola
 ```
 
-Each row corresponds to one patient, and we have each patient's id number, their district and the year in which they contracted ebola.
+Each row corresponds to one patient, and we have each patient's id number, their district and the year in which they contracted Ebola.
 
 Now, consider the following grouped summary of the `ebola` dataset, which counts the number of patients recorded in each district in each year:
 
@@ -268,9 +265,9 @@ cases_per_district_per_year <-
 cases_per_district_per_year
 ```
 
-Indeed, the output of this grouped operation is a quintessentially "long" dataset! Each observational unit (each district) occupies multiple rows, with one row for each measurement (each year). 
+The output of this grouped operation is a quintessentially "long" dataset! Each observational unit (each district) occupies multiple rows (two rows per district, to be exact), with one row for each measurement (each year).
 
-So, as you now see, long data often is often an output of grouped summaries, among other data manipulations. 
+So, as you now see, long data often can arrive as an output of grouped summaries, among other data manipulations.
 
 Now, let's see how to convert such long data into a wide format with `pivot_wider()`.
 
@@ -284,10 +281,8 @@ cases_per_district_per_year %>%
 
 As you can see, `pivot_wider()` has two important arguments: `values_from` and `names_from`. The `values_from` argument defines which values will become the core of the wide data format (in other words: which 1D vector will become a 2D matrix). In our case, these values were in the `n` variable. And `names_from` identifies which variable to use to define column names in the wide format. In our case, this was the `year_of_onset` variable.
 
-
 ::: side-note
-
-You might also want to have the *years* be your primary observational/statistical unit, with each year occupying one row. This can be carried out similarly to the above example, but the `district` variable will be instead be provided as an argument to `names_from`.
+You might also want to have the *years* be your primary observational/statistical unit, with each year occupying one row. This can be carried out similarly to the above example, but the `district` variable will be provided as an argument to `names_from`, instead of `year_of_onset`.
 
 ```{r}
 cases_per_district_per_year %>% 
@@ -295,12 +290,10 @@ cases_per_district_per_year %>%
               names_from = district)
 ```
 
-Here the unique observation units (our rows) are now the years (2014, 2015). 
-
+Here the unique observation units (our rows) are now the years (2014, 2015).
 :::
 
 ::: practice
-
 The `population` dataset from the `tidyr` package shows the populations of 219 countries over time.
 
 Pivot this data into a wide format. Your answer should have 20 columns and 219 rows.
@@ -314,20 +307,19 @@ Q_population_widen <-
 .CHECK_Q_population_widen()
 .HINT_Q_population_widen()
 ```
-
 :::
 
 ------------------------------------------------------------------------
 
 # Why is long data better for analysis?
 
-Above we mentioned that long data is best for a majority of data analysis tasks. Now we can justify why.
+Above we mentioned that long data is best for a majority of data analysis tasks. Now we can justify why. In the sections below, we will go through a few common operations that you will need to do with long data, in each case you will observe that similar manipulations on wide data would be quite tricky.
 
 ## Filtering grouped data
 
-First, let's talk about filtering grouped data. Some filter operations are difficult to do on wide data.
+First, let's talk about filtering grouped data, which is very easy to do on long data, but difficult on wide data.
 
-Here is an example taking the infant deaths dataset. We want to answer the following question: **For each country, which year had the highest number of child deaths?**
+Here is an example with the infant deaths dataset. Imagine that we want to answer the following question: **For each country, which year had the highest number of child deaths?**
 
 This is how we would do so with the long format of the data :
 
@@ -349,12 +341,10 @@ infant_deaths_wide %>%
   mutate(max_count = max(x2010, x2011, x2012, x2013, x2014, x2015))
 ```
 
-This works, but we still don't know which year is attached to that value in `max_count`. We would have to take that value and index it back to its respective year column... what a hassle! There are solutions to find this but all are very painful. Why make your life complicated when you can just pivot to long format and use the beauty of `group_by()` and `filter()`?
-
+This almost works---we have, for each country, we have the maximum number of child deaths reported---but we still don't know which year is attached to that value in `max_count`. We would have to take that value and index it back to its respective year column somehow... what a hassle! There are solutions to find this but all are very painful. Why make your life complicated when you can just pivot to long format and use the beauty of `group_by()` and `filter()`?
 
 ::: side-note
-
-Here we used a special {dplyr} function: `rowwise()`. `rowwise()` is a function which allows further operations to be applied on the rows rather than on the columns. It is equivalent to creating one group for each row (`group_by(row_number())`).
+Here we used a special {dplyr} function: `rowwise()`. `rowwise()` allows further operations to be applied *per-row* . It is equivalent to creating one group for each row (`group_by(row_number())`).
 
 Without `rowwise()` you would get this :
 
@@ -363,14 +353,12 @@ infant_deaths_wide %>%
   mutate(max_count = max(x2010, x2011, x2012, x2013, x2014, x2015))
 ```
 
-The maximum count over all columns.
+...the maximum count over ALL rows in the dataset.
 
 :::
 
 ::: practice
-
 For this practice question, you will perform a grouped filter on the long format `population` dataset from the `tidyr` package. Use `group_by()` and `filter()` to obtain a dataset that shows the maximum population recorded for each country, and the year in which that maximum population was recorded.
-
 
 ```{r, eval = FALSE}
 Q_population_max <- 
@@ -380,21 +368,12 @@ Q_population_max <-
 ```{r, include = FALSE}
 .CHECK_Q_population_max()
 .HINT_Q_population_max()
-
-
-# Solution: temporarily putting it here
-population %>% 
-  group_by(country) %>% 
-  filter(population == max(population)) %>% 
-  ungroup()
 ```
 :::
 
 ## Summarizing grouped data
 
-Like filtering, most summarizing operations are also difficult to perform on wide data. If we pause and think why it is so hard to filter or summarize on wide data, we realize that it is because the wide data prevents us from grouping our data. 
-
-For example, considering again the `infant_deaths_long` dataset, if you want to ask: **For each country, what was the mean number of infant deaths and the standard deviation (variation) in deaths ?**
+Grouped summaries are also difficult to perform on wide data. For example, considering again the `infant_deaths_long` dataset, if you want to ask: **For each country, what was the mean number of infant deaths and the standard deviation (variation) in deaths ?**
 
 With long data it is simple:
 
@@ -417,7 +396,7 @@ infant_deaths_wide %>%
 And finding the standard deviation would be very difficult. (We can't think of any way to achieve this, actually.)
 
 ::: practice
-For this practice question, you will again work with the long format `population` dataset from the `tidyr` package. 
+For this practice question, you will again work with the long format `population` dataset from the `tidyr` package.
 
 Use `group_by()` and `summarize()` to obtain, for each country, the maximum reported population, the minimum reported population, and the mean reported population across the years available in the data. Your data should have four columns, "country", "max_population", "min_population" and "mean_population".
 
@@ -429,13 +408,6 @@ Q_population_summaries <-
 ```{r, include = FALSE}
 .CHECK_Q_population_summaries()
 .HINT_Q_population_summaries()
-
-# Solution. temporarily placing here
-population %>% 
-  group_by(country) %>% 
-  summarise(max_population = max(population), 
-            min_population = min(population), 
-            mean_population = mean(population))
 ```
 :::
 
@@ -452,7 +424,7 @@ infant_deaths_long %>%
   geom_col(aes(x = year, y = deaths_count))
 ```
 
-The plotting works because we can give the variable `year` for the x-axis. In the long format, `year` is a variable variable of its own. In the wide format, each year is a column and your counts are a matrix, not a vector. Plots need vectors of data!
+The plotting works because we can give the variable `year` for the x-axis. In the long format, `year` is a variable variable of its own. In the wide format, each there would be no such variable to pass to the x axis.
 
 ------------------------------------------------------------------------
 
@@ -466,7 +438,13 @@ infant_deaths_long %>%
   geom_point()
 ```
 
-Once again, the reason is the same, we need to tell the plot what to use as an x-axis and a y-axis and it is necessary to have these variables in their own column (as organized in the long format).
+Once again, the reason is the same, we need to tell the plot what to use as an x-axis and a y-axis and it is necessary to have these variables in their own columns (as organized in the long format).
+
+# Pivoting can be hard
+
+We have mostly looked at very simple examples of pivoting here, but in the wild,  pivoting can be very difficult to do accurately. This is because the data you are working with may not have all the information necessary for a successful pivot, or the data may contain errors that prevent you from pivoting correctly. 
+
+When you run into such cases, we recommend looking at the [official documentation](https://tidyr.tidyverse.org/articles/pivot.html) of pivoting from the `tidyr` team, as it is quite rich in examples. You could also post your questions about pivoting on forums like Stack Overflow.
 
 # Wrap Up ! {.unnumbered}
 
@@ -477,3 +455,5 @@ You have now explored different datasets and how they are either in a long or wi
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("kendavidn", "lolovanco"))`
+
+# Wrap Up

@@ -55,82 +55,6 @@ SOLUTION
   cat(out)
 }
 
-
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## ~  Q_euro_births_long ----
-##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.CHECK_Q_euro_births_long <-
-  function() {
-    
-    .problem_number <<- 2
-    
-    .euro_births_wide <- read_csv(here("data/euro_births_wide.csv"))
-    
-    correct_answer <- 
-      .euro_births_wide %>% 
-      pivot_longer(2:8, 
-                   names_to = "year", 
-                   values_to = "births_count") %>% 
-     mutate(year = readr::parse_number(year))
-    
-   
-    
-    .autograder <<-
-      function() {
-        if (!exists("Q_euro_births_long"))
-          .na("You have not yet defined the answer object, `Q_euro_births_long`.")
-        
-        if (!is.data.frame(Q_euro_births_long))
-          .na("Invalid answer. Your answer should be a data frame")
-        
-        if (ncol(Q_euro_births_long) != 3)
-          .wrong("Wrong. Your answer should have three columns.")
-        
-        if (! all(names(Q_euro_births_long) %in% names(correct_answer)) )
-          .wrong(paste0("Wrong. Your answer should have the following columns:", 
-                        paste0(names(correct_answer), collapse = ", ")
-                        ))
-        
-        parsed_answer <- Q_euro_births_long %>% mutate(year = readr::parse_number(year))
-        
-        if (isTRUE(all_equal(parsed_answer,
-                             correct_answer)))
-          .pass()
-        
-        else
-          .fail()
-      }
-    .run_autograder()
-  }
-
-.HINT_Q_euro_births_long <- function() {
-  '
-HINT.
-  
-  Your code should look like this:
-  
-  euro_births_wide %>% 
-      pivot_longer(COLS_TO_PIVOT, 
-                   names_to = NAMES_COL_NAME, 
-                   values_to = VALUES_COL_NAME)' -> out
-  cat(out)
-}
-
-.SOLUTION_Q_euro_births_long <- function() {
-  '
-SOLUTION
-  euro_births_wide %>% 
-      pivot_longer(2:8, 
-                   names_to = "year", 
-                   values_to = "births_count")
-' -> out
-  cat(out)
-}
-
-
-
-
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_euro_births_long ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,16 +128,16 @@ SOLUTION
 
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## ~  Q_infant_deaths_wide ----
+## ~  Q_population_widen ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.CHECK_Q_infant_deaths_wide <-
+.CHECK_Q_population_widen <-
   function() {
     
     .problem_number <<- 3
     
     
-    correct_answer <- 
+    .Q_population_widen <- 
       tidyr::population %>% 
       pivot_wider(names_from = year, 
                   values_from = population)
@@ -221,24 +145,22 @@ SOLUTION
     
     .autograder <<-
       function() {
-        if (!exists("Q_infant_deaths_wide"))
-          .na("You have not yet defined the answer object, `Q_infant_deaths_wide`.")
+        if (!exists("Q_population_widen"))
+          .na("You have not yet defined the answer object, `Q_population_widen`.")
         
-        if (!is.data.frame(Q_infant_deaths_wide))
+        if (!is.data.frame(Q_population_widen))
           .na("Invalid answer. Your answer should be a data frame")
         
-        if (ncol(Q_infant_deaths_wide) != 3)
-          .wrong("Wrong. Your answer should have three columns.")
+        if (!ncol(Q_population_widen) == ncol(.Q_population_widen))
+          .wrong(glue::glue("Wrong. Your answer should have {ncol(.Q_population_widen)} columns."))
         
-        if (! all(names(Q_infant_deaths_wide) %in% names(correct_answer)) )
+        if (! all(names(Q_population_widen) %in% names(.Q_population_widen)) )
           .wrong(paste0("Wrong. Your answer should have the following columns:", 
-                        paste0(names(correct_answer), collapse = ", ")
+                        paste0(names(.Q_population_widen), collapse = ", ")
           ))
         
-        parsed_answer <- Q_infant_deaths_wide %>% mutate(year = readr::parse_number(year))
-        
-        if (isTRUE(all_equal(parsed_answer,
-                             correct_answer)))
+        if (isTRUE(all_equal(Q_population_widen,
+                             .Q_population_widen)))
           .pass()
         
         else
@@ -247,29 +169,163 @@ SOLUTION
     .run_autograder()
   }
 
-.HINT_Q_infant_deaths_wide <- function() {
+.HINT_Q_population_widen <- function() {
   '
 HINT.
   
   Your code should look like this:
   
-  euro_births_wide %>% 
-      pivot_longer(COLS_TO_PIVOT, 
-                   names_to = NAMES_COL_NAME, 
-                   values_to = VALUES_COL_NAME)' -> out
+  tidyr::population %>% 
+      pivot_wider(names_from = COLUMN_CONTAINING_FUTURE_COLUMN_NAMES,
+                   values_from = COLUMN_CONTAINING_THE_VALUES_TO_BE_PIVOTED)' -> out
   cat(out)
 }
 
-.SOLUTION_Q_infant_deaths_wide <- function() {
+.SOLUTION_Q_population_widen <- function() {
   '
 SOLUTION
-  euro_births_wide %>% 
-      pivot_longer(2:8, 
-                   names_to = "year", 
-                   values_to = "births_count")
-' -> out
+  
+  tidyr::population %>% 
+      pivot_wider(names_from = year,
+                   values_from = population)' -> out
   cat(out)
 }
 
 
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## ~  Q_population_max ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.CHECK_Q_population_max <-
+  function() {
+    
+    .problem_number <<- 4
+    
+    
+    .Q_population_max <- 
+      tidyr::population %>% 
+      pivot_wider(names_from = year, 
+                  values_from = population)
+    
+    
+    .autograder <<-
+      function() {
+        if (!exists("Q_population_max"))
+          .na("You have not yet defined the answer object, `Q_population_max`.")
+        
+        if (!is.data.frame(Q_population_max))
+          .na("Invalid answer. Your answer should be a data frame")
+        
+        if (!nrow(Q_population_max) == nrow(.Q_population_max))
+          .wrong(glue::glue("Wrong. Your answer should have {nrow(.Q_population_max)} rows"))
+        
+        if (! all(names(Q_population_max) %in% names(.Q_population_max)) )
+          .wrong(paste0("Wrong. Your answer should have the following columns:", 
+                        paste0(names(.Q_population_max), collapse = ", ")
+          ))
+        
+        if (isTRUE(all_equal(Q_population_max,
+                             .Q_population_max)))
+          .pass()
+        
+        else
+          .fail()
+      }
+    .run_autograder()
+  }
+
+.HINT_Q_population_max <- function() {
+  '
+HINT.
+  
+  Your code should look like this:
+  
+  tidyr::population %>% 
+    group_by(country) %>% 
+    FILTER_FOR_THE_MAX_POPULATION_PER_GROUP
+    ungroup()' -> out
+  cat(out)
+}
+
+.SOLUTION_Q_population_max <- function() {
+  '
+SOLUTION
+  
+  tidyr::population %>% 
+    group_by(country) %>% 
+    filter(population == max(population)) %>% 
+    ungroup()' -> out
+  cat(out)
+}
+
+
+
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## ~  Q_population_summaries ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.CHECK_Q_population_summaries <-
+  function() {
+    
+    .problem_number <<- 5
+    
+    .Q_population_summaries <- 
+      population %>% 
+      group_by(country) %>% 
+      summarise(max_population = max(population), 
+                min_population = min(population), 
+                mean_population = mean(population))
+    
+    
+    .autograder <<-
+      function() {
+        if (!exists("Q_population_summaries"))
+          .na("You have not yet defined the answer object, `Q_population_summaries`.")
+        
+        if (!is.data.frame(Q_population_summaries))
+          .na("Invalid answer. Your answer should be a data frame")
+        
+        if (!nrow(Q_population_summaries) == nrow(.Q_population_summaries))
+          .wrong(glue::glue("Wrong. Your answer should have {nrow(.Q_population_summaries)} rows"))
+        
+        if (! all(names(Q_population_summaries) %in% names(.Q_population_summaries)) )
+          .wrong(paste0("Wrong. Your answer should have the following columns:", 
+                        paste0(names(.Q_population_summaries), collapse = ", ")
+          ))
+        
+        if (isTRUE(all_equal(Q_population_summaries,
+                             .Q_population_summaries)))
+          .pass()
+        
+        else
+          .fail()
+      }
+    .run_autograder()
+  }
+
+.HINT_Q_population_summaries <- function() {
+  '
+HINT.
+  
+  Your code should look like this:
+  
+  population %>% 
+  group_by(country) %>% 
+  summarise(max_population = , 
+            min_population = , 
+            mean_population = )' -> out
+  cat(out)
+}
+
+.SOLUTION_Q_population_summaries <- function() {
+  '
+SOLUTION
+  
+  population %>% 
+  group_by(country) %>% 
+  summarise(max_population = max(population), 
+            min_population = min(population), 
+            mean_population = mean(population))' -> out
+  cat(out)
+}
 
