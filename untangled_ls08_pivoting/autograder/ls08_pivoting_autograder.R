@@ -9,12 +9,11 @@ pacman::p_load(here,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 4)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 5)   # Put total number of questions as `times` argument
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_data_type ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .CHECK_Q_data_type <-
   function() {
     
@@ -30,7 +29,7 @@ pacman::p_load(here,
         if (!is.character(Q_data_type))
           .na("Invalid answer. Your answer should be a single character string")
         
-        if (isTRUE(all_equal(tolower(trimws(Q_data_type)),
+        if (isTRUE(identical(tolower(trimws(Q_data_type)),
                              correct_answer)))
           .pass()
         
@@ -64,9 +63,9 @@ SOLUTION
     
     .problem_number <<- 2
     
-    .euro_births_wide <- read_csv(here("data/euro_births_wide.csv"))
+    .euro_births_wide <- suppressMessages(read_csv(here("data/euro_births_wide.csv")))
     
-    correct_answer <- 
+    .Q_euro_births_long <<- 
       .euro_births_wide %>% 
       pivot_longer(2:8, 
                    names_to = "year", 
@@ -82,17 +81,13 @@ SOLUTION
           .na("Invalid answer. Your answer should be a data frame")
         
         if (ncol(Q_euro_births_long) != 3)
-          .wrong("Wrong. Your answer should have three columns.")
+          .fail("Wrong. Your answer should have three columns.")
         
-        if (! all(names(Q_euro_births_long) %in% names(correct_answer)) )
-          .wrong(paste0("Wrong. Your answer should have the following columns:", 
-                        paste0(names(correct_answer), collapse = ", ")
-          ))
+        if (!all(names(Q_euro_births_long) %in% names(.Q_euro_births_long)) )
+          .fail("Wrong. Your answer should have the following columns: country, year and births_count")
         
-        parsed_answer <- Q_euro_births_long %>% mutate(year = readr::parse_number(year))
-        
-        if (isTRUE(all_equal(parsed_answer,
-                             correct_answer)))
+        if (isTRUE(all_equal(.Q_euro_births_long,
+                             Q_euro_births_long, ignore_col_order = T, ignore_row_order = T)))
           .pass()
         
         else
@@ -130,7 +125,6 @@ SOLUTION
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_population_widen ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 .CHECK_Q_population_widen <-
   function() {
     
@@ -152,15 +146,15 @@ SOLUTION
           .na("Invalid answer. Your answer should be a data frame")
         
         if (!ncol(Q_population_widen) == ncol(.Q_population_widen))
-          .wrong(glue::glue("Wrong. Your answer should have {ncol(.Q_population_widen)} columns."))
+          .fail(glue::glue("Wrong. Your answer should have {ncol(.Q_population_widen)} columns."))
         
         if (! all(names(Q_population_widen) %in% names(.Q_population_widen)) )
-          .wrong(paste0("Wrong. Your answer should have the following columns:", 
-                        paste0(names(.Q_population_widen), collapse = ", ")
+          .fail(paste0("Wrong. Your answer should have the following columns:", 
+                       paste0(names(.Q_population_widen), collapse = ", ")
           ))
         
-        if (isTRUE(all_equal(Q_population_widen,
-                             .Q_population_widen)))
+        if (isTRUE(suppressMessages(all_equal(Q_population_widen,
+                                              .Q_population_widen, ignore_col_order = T, ignore_row_order = T))))
           .pass()
         
         else
@@ -204,8 +198,9 @@ SOLUTION
     
     .Q_population_max <- 
       tidyr::population %>% 
-      pivot_wider(names_from = year, 
-                  values_from = population)
+      group_by(country) %>% 
+      filter(population == max(population)) %>% 
+      ungroup()
     
     
     .autograder <<-
@@ -217,15 +212,15 @@ SOLUTION
           .na("Invalid answer. Your answer should be a data frame")
         
         if (!nrow(Q_population_max) == nrow(.Q_population_max))
-          .wrong(glue::glue("Wrong. Your answer should have {nrow(.Q_population_max)} rows"))
+          .fail(glue::glue("Wrong. Your answer should have {nrow(.Q_population_max)} rows"))
         
         if (! all(names(Q_population_max) %in% names(.Q_population_max)) )
-          .wrong(paste0("Wrong. Your answer should have the following columns:", 
-                        paste0(names(.Q_population_max), collapse = ", ")
+          .fail(paste0("Wrong. Your answer should have the following columns:", 
+                       paste0(names(.Q_population_max), collapse = ", ")
           ))
         
         if (isTRUE(all_equal(Q_population_max,
-                             .Q_population_max)))
+                             .Q_population_max, ignore_col_order = T, ignore_row_order = T)))
           .pass()
         
         else
@@ -286,15 +281,15 @@ SOLUTION
           .na("Invalid answer. Your answer should be a data frame")
         
         if (!nrow(Q_population_summaries) == nrow(.Q_population_summaries))
-          .wrong(glue::glue("Wrong. Your answer should have {nrow(.Q_population_summaries)} rows"))
+          .fail(glue::glue("Wrong. Your answer should have {nrow(.Q_population_summaries)} rows"))
         
         if (! all(names(Q_population_summaries) %in% names(.Q_population_summaries)) )
-          .wrong(paste0("Wrong. Your answer should have the following columns:", 
-                        paste0(names(.Q_population_summaries), collapse = ", ")
+          .fail(paste0("Wrong. Your answer should have the following columns:", 
+                       paste0(names(.Q_population_summaries), collapse = ", ")
           ))
         
         if (isTRUE(all_equal(Q_population_summaries,
-                             .Q_population_summaries)))
+                             .Q_population_summaries, ignore_col_order = T, ignore_row_order = T)))
           .pass()
         
         else
