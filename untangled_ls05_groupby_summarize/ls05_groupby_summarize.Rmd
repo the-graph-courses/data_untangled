@@ -324,10 +324,10 @@ Use `group_by()`, `summarize()`, and the `sum()` function to calculate the total
 
 Your output should be a data frame with two columns named as shown below:
 
-| neighborhood | total_bedridden_days |
-|--------------|----------------------|
-| Female       |                      |
-| Male         |                      |
+| sex    | total_bedridden_days |
+|--------|----------------------|
+| Female |                      |
+| Male   |                      |
 
 ```{r eval = FALSE}
 Q_sum_bedridden_days <- 
