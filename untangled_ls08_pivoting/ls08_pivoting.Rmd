@@ -45,7 +45,7 @@ In this lesson, we will cover how to effectively pivot data using `pivot_longer(
 
 # Packages
 
-```{r warning = F, message = F, echo = F}
+```{r warning = F, message = F}
 # Load packages 
 if(!require(pacman)) install.packages("pacman")
 pacman::p_load(tidyverse, outbreaks, janitor, rio, here, knitr)
@@ -59,11 +59,11 @@ Imagine that you have three patients from whom you collect blood pressure data o
 
 You can record the data in a wide format like this:
 
-![Fig: wide dataset for a timeseries of patients.](images/wide_patients.png){width="500"}
+![Fig: wide dataset for a timeseries of patients.](images/wide_patients.jpg){width="500"}
 
 Or you could record the data in a long format as so :
 
-![Fig: long dataset for a timeseries of patients.](images/long_patients.png){width="200"}
+![Fig: long dataset for a timeseries of patients.](images/long_patients.jpg){width="200"}
 
 Take a minute to study the two datasets to make sure you understand the relationship between them.
 
@@ -96,7 +96,7 @@ In the long dataset, each observational unit is spread over multiple lines.
 ::: vocab
 The "observational units", sometimes called "statistical units" of a dataset are the primary entities or items described by the columns in that dataset.
 
-For example, for the first example, the observation unit was a patient, for the second example, a country, and, for the third example, a hospital.
+In the first example, the observational/statistical units were patients; in the second example, countries, and in the third example, hospitals.
 :::
 
 ::: practice
@@ -455,5 +455,3 @@ You have now explored different datasets and how they are either in a long or wi
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("kendavidn", "lolovanco"))`
-
-# Wrap Up
