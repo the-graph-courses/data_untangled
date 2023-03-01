@@ -49,6 +49,8 @@ pacman::p_load(praise,
       select(sex_male_1_female_0, grip_strength_kg) %>%
       arrange(sex_male_1_female_0, grip_strength_kg)
     
+    Q_grip_strength_arranged <- .Last.value
+    
     .autograder <<-
       function(){
         if(!exists("Q_grip_strength_arranged"))

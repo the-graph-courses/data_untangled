@@ -1,5 +1,5 @@
 ---
-title: 'Grouping with other verbs'
+title: 'Lesson notes | Grouped filter, mutate and arrange'
 output:
   html_document:
     number_sections: true

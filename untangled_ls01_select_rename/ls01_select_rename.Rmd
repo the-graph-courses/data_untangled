@@ -1,5 +1,5 @@
 ---
-title: 'Selecting and renaming columns'
+title: 'Lesson notes | Selecting and renaming columns'
 output:
   html_document:
     number_sections: true

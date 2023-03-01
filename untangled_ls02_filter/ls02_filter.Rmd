@@ -1,5 +1,5 @@
 ---
-title: 'Filtering rows'
+title: 'Lesson notes | Filtering rows'
 output:
   html_document:
     number_sections: true

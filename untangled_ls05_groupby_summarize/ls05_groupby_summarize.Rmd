@@ -1,5 +1,5 @@
 ---
-title: 'Grouping and summarizing'
+title: 'Lesson notes | Grouping and summarizing data'
 output:
   html_document:
     number_sections: true
