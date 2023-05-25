@@ -45,7 +45,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_weight_height)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_weight_height, .Q_weight_height))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_weight_height, .Q_weight_height))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -77,7 +77,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_cols_16_22)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_cols_16_22, .Q_cols_16_22))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_cols_16_22, .Q_cols_16_22))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -110,7 +110,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_symp_to_sequel)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_symp_to_sequel, .Q_symp_to_sequel))) return(c(value = 1, message = paste("Correct!", praise()) ))
+        if (isTRUE(all.equal(Q_symp_to_sequel, .Q_symp_to_sequel))) return(c(value = 1, message = paste("Correct!", praise()) ))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -144,7 +144,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_educ_consult)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_educ_consult, .Q_educ_consult))) return(c(value = 1, message = paste("Correct!", praise()) ))
+        if (isTRUE(all.equal(Q_educ_consult, .Q_educ_consult))) return(c(value = 1, message = paste("Correct!", praise()) ))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -178,7 +178,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_starts_with_is )) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_starts_with_is , .Q_starts_with_is ))) return(c(value = 1, message = paste("Correct!", praise()) ))
+        if (isTRUE(all.equal(Q_starts_with_is , .Q_starts_with_is ))) return(c(value = 1, message = paste("Correct!", praise()) ))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -212,7 +212,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_rearrange)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_rearrange, .Q_rearrange))) return(c(value = 1, message = paste("Correct!", praise()) ))
+        if (isTRUE(all.equal(Q_rearrange, .Q_rearrange))) return(c(value = 1, message = paste("Correct!", praise()) ))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }

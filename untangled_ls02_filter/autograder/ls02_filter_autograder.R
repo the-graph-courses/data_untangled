@@ -43,7 +43,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_is_pregnant)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all_equal(Q_is_pregnant, .Q_is_pregnant))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_is_pregnant, .Q_is_pregnant))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -115,7 +115,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_under_18)) return(c(value = -1, message = "Your result should be a data frame."))
         
-        if (isTRUE(all_equal(Q_under_18, .Q_under_18))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_under_18, .Q_under_18))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -148,7 +148,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_tsinga_messa)) return(c(value = -1, message = "Your result should be a data frame."))
         
-        if (isTRUE(all_equal(Q_tsinga_messa, .Q_tsinga_messa))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_tsinga_messa, .Q_tsinga_messa))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -184,7 +184,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_male_positive)) return(c(value = -1, message = "Your result should be a data frame."))
         
-        if (isTRUE(all_equal(Q_male_positive, .Q_male_positive))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_male_positive, .Q_male_positive))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -222,12 +222,12 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_child_primary)) return(c(value = -1, message = "Your result should be a data frame."))
         
-        if (isTRUE(all_equal(Q_child_primary, .Q_child_primary_wrong_operator))) return(c(value = 0, message = paste("Wrong. You should use the `|` operator.",
+        if (isTRUE(all.equal(Q_child_primary, .Q_child_primary_wrong_operator))) return(c(value = 0, message = paste("Wrong. You should use the `|` operator.",
                                                                                 "We actually want children OR anyone with a 'Primary' highest_education",
                                                                                 "(despite it saying 'and' in the question). Think for some time about this.", 
                                                                                 "It is quite counterintuitive!")))
         
-        if (isTRUE(all_equal(Q_child_primary, .Q_child_primary))) return(c(value = 1, message = paste("Correct!", 
+        if (isTRUE(all.equal(Q_child_primary, .Q_child_primary))) return(c(value = 1, message = paste("Correct!", 
                                                                                                       "We actually want children OR anyone with a 'Primary' highest_education",
                                                                                                       "(despite it saying 'and' in the question).", 
                                                                                                       "It is quite counterintuitive!")))
@@ -264,7 +264,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_not_tsinga_messa)) return(c(value = -1, message = "Your result should be dataframe."))
         
-        if (isTRUE(all_equal(Q_not_tsinga_messa, .Q_not_tsinga_messa))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_not_tsinga_messa, .Q_not_tsinga_messa))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -299,7 +299,7 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_na_smoker)) return(c(value = -1, message = "Your result should be dataframe."))
         
-        if (isTRUE(all_equal(Q_na_smoker, .Q_na_smoker))) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_na_smoker, .Q_na_smoker))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -335,10 +335,10 @@ pacman::p_load(praise)
       function(){
         if (!is.data.frame(Q_drop_resp_under_20))
           return(c(value = -1, message = "Invalid. Your result should be dataframe."))
-        if (isTRUE(all_equal(Q_drop_resp_under_20, .Q_drop_resp_under_20_wrong_forgot_na))) 
+        if (isTRUE(all.equal(Q_drop_resp_under_20, .Q_drop_resp_under_20_wrong_forgot_na))) 
           return(c(value = 0, message = "Wrong. Remember to also keep those with NA values."))
         
-        if (isTRUE(all_equal(Q_drop_resp_under_20, .Q_drop_resp_under_20))) 
+        if (isTRUE(all.equal(Q_drop_resp_under_20, .Q_drop_resp_under_20))) 
           return(c(value = 1, message = paste("Correct!", praise())))
         
         else
@@ -375,7 +375,7 @@ pacman::p_load(praise)
 #       function(){
 #         if (!is.data.frame(Q_is_pregnant0)) return(c(value = -1, message = "Your result should be a data frame."))
 #         
-#         if (isTRUE(all_equal(Q_is_pregnant0, .Q_is_pregnant0))) return(c(value = 1, message = paste("Correct!", praise())))
+#         if (isTRUE(all.equal(Q_is_pregnant0, .Q_is_pregnant0))) return(c(value = 1, message = paste("Correct!", praise())))
 #         
 #         return(c(value = 0, message = "Wrong. Please try again."))
 #       }
