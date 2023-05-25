@@ -23,7 +23,7 @@ source(here("global/functions/misc_functions.R"))
 knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
 
 # autograders
-mute(here("autograder/ls01_select_rename_autograder.R"))
+mute(here("lessons/ls01_select_rename_autograder.R"))
 ```
 
 
@@ -86,7 +86,8 @@ yaounde %>% select(age, sex, igg_result)
 -   Select the weight and height variables in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
-# For this first question we'll provide the answer. Your code should be 
+# For this first question we'll provide the answer. Your code should be:
+
 Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
 # Run that line, then run the CHECK and HINT functions below
 
@@ -95,8 +96,7 @@ Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
 
 # Now, to obtain the solution, run the line below!
 .SOLUTION_Q_weight_height()
-# Each question has a solution function similar to this.
-# (Where HINT is replaced with SOLUTION in the function name.)
+# Each question has a solution function similar to this (.SOLUTION_Q_xxx_xxx())
 # But you will need to type out the function name on your own.
 # (This is to discourage you from looking at the solution before answering the question.)
 ```

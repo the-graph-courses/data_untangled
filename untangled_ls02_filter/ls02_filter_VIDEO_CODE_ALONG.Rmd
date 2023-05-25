@@ -24,7 +24,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("autograder/ls02_filter_autograder.R")))
+suppressMessages(source(here::here("lessons/ls02_filter_autograder.R")))
 ```
 
 # Intro                                                                                                    
@@ -99,10 +99,16 @@ Filter the `yao` data frame to respondents who were pregnant during the survey.
 # Your answer should look like this:
 Q_is_pregnant<- yao %>% filter(is_pregnant == "Yes")
 # Run that line, then run the CHECK and HINT functions below
+```
 
+
+```{r, eval = F, echo = FALSE}
 .CHECK_Q_is_pregnant()
 .HINT_Q_is_pregnant()
+```
 
+
+```{r, eval = F, echo = FALSE}
 # Now, to obtain the solution, run the line below!
 .SOLUTION_Q_is_pregnant()
 # Each question has a solution function similar to this.
@@ -114,7 +120,11 @@ Q_is_pregnant<- yao %>% filter(is_pregnant == "Yes")
 How many respondents were female? (Use `filter()` and `nrow()`)
 
 ```{r, eval = F, echo = FALSE}
-Q_female_nrow <- "YOUR_ANSWER_HERE"
+Q_female_nrow <- yao ___________________-
+```
+
+
+```{r, eval = F, echo = FALSE}
 .CHECK_Q_female_nrow()
 .HINT_Q_female_nrow()
 ```
@@ -140,12 +150,12 @@ The `==` operator introduced above is an example of a "relational" operator, as 
 Let's see how to use these within `filter()`:
 
 ```{r}
-yao %>% filter(sex != "Male") ## keep rows where `sex` is not "Male"
-yao %>% filter(age < 6) ## keep respondents under 6
-yao %>% filter(age >= 70) ## keep respondents aged at least 70
+yao %>% filter(____________) ## keep rows where `sex` is not "Male"
+yao %>% filter(____________) ## keep respondents under 6
+yao %>% filter(____________) ## keep respondents aged at least 70
 
 ## keep respondents whose highest education is "Primary" or "Secondary"
-yao %>% filter(highest_education %in% c("Primary", "Secondary"))
+yao %>% filter(___________________________________)
 ```
 
 ::: practice
