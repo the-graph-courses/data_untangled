@@ -72,16 +72,12 @@ pacman::p_load(praise)
     .problem_number <<- .NUM_Q_cols_16_22
     
     .Q_cols_16_22 <- .yaounde %>% select(16, 22)
-    .Q_cols_22_16 <- .yaounde %>% select(22, 16)
-    
+
     .autograder <<- 
       function(){
         if (!is.data.frame(Q_cols_16_22)) return(c(value = -1, message = "Your result should be a dataframe."))
         
-        if (isTRUE(all.equal(Q_cols_16_22, .Q_cols_16_22) |
-                   all.equal(Q_cols_16_22, .Q_cols_22_16)
-                   
-                   )) return(c(value = 1, message = paste("Correct!", praise())))
+        if (isTRUE(all.equal(Q_cols_16_22, .Q_cols_16_22))) return(c(value = 1, message = paste("Correct!", praise())))
         
         return(c(value = 0, message = "Wrong. Please try again."))
       }
@@ -99,7 +95,6 @@ pacman::p_load(praise)
   yaounde %>% select(16, 22)" -> out
   cat(out)
 }
-
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_symp_to_sequel ----

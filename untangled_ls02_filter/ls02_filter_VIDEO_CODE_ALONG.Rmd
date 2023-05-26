@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r, eval = F, include = F}
-Hi GRAPH Courses student!! 
+Hi GRAPH Courses student!
   
 This is a CODE ALONG document where you can type code as you follow the lesson video. 
 
@@ -21,6 +21,8 @@ If you are not sure how to use our code-along documents, please watch this video
 
 
 ```{r, echo = F, message = F, warning = F}
+# SETUP CHUNK. Remember to run this whole chunk before continuing with the lesson.
+
 # Load packages 
 if(!require(pacman)) install.packages("pacman")
 pacman::p_load(rlang, tidyverse, knitr, here)
@@ -32,7 +34,7 @@ source(here("global/functions/misc_functions.R"))
 knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
 
 ## autograders
-suppressMessages(source(here::here("autograder/ls02_filter_autograder.R")))
+mute(here("autograder/ls02_filter_autograder.R"))
 ```
 
 # Data wrangling: filtering rows
@@ -100,10 +102,10 @@ while the single equals sign, `=`, is used for specifying values to arguments in
 Filter the `yao` data frame to respondents who were pregnant during the survey.
 
 ```{r, eval = F, echo = FALSE}
-# Since this is the first question, we'll give you the answer directly.
-# Your answer should look like this:
+# For this first practice question we'll provide the answer.
+# Run this chunk, then run the CHECK and HINT functions in the code chunks further down
 Q_is_pregnant<- yao %>% filter(is_pregnant == "Yes")
-# Run that line, then run the CHECK and HINT functions below
+Q_is_pregnant
 ```
 
 
@@ -125,7 +127,8 @@ Q_is_pregnant<- yao %>% filter(is_pregnant == "Yes")
 How many respondents were female? (Use `filter()` and `nrow()`)
 
 ```{r, eval = F, echo = FALSE}
-Q_female_nrow <- "YOUR_ANSWER_HERE"
+Q_female_nrow <- yao ______________________
+Q_female_nrow
 ```
 
 
@@ -172,9 +175,6 @@ yao %>% filter(___________________________________)
 ::: practice
 From `yao`, keep only respondents who were children (under 18).
 
-::: practice
-From `yao`, keep only respondents who were children (under 18).
-
 ```{r, eval = F, echo = FALSE}
 Q_under_18 <- yao _______________________
 ```
@@ -190,6 +190,7 @@ With `%in%`, keep only respondents who live in the "Tsinga" or "Messa" neighborh
 
 ```{r, eval = F, echo = FALSE}
 Q_tsinga_messa <- yao _______________________
+Q_tsinga_messa
 ```
 
 
@@ -241,6 +242,7 @@ Filter `yao` to only keep men who tested IgG positive.
 
 ```{r, eval = F, echo = FALSE}
 Q_male_positive <- yao %>% ____________________
+Q_male_positive
 ```
 
 
@@ -254,8 +256,7 @@ Filter `yao` to keep both children (under 18) and anyone whose highest education
 
 ```{r, eval = F, echo = FALSE}
 Q_child_primary <- yao %>% ____________________
-# Hint: although the question says "and", in reality you want to use the OR operator.
-# If this confuses you, spend more time thinking about it.
+Q_child_primary
 ```
 
 
@@ -316,10 +317,12 @@ From `yao`, drop respondents who live in the Tsinga or Messa neighborhoods.
 
 ```{r, eval = F, echo = FALSE}
 Q_not_tsinga_messa <- yao ____________
+Q_not_tsinga_messa
 ```
 
 
 ```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_not_tsinga_messa()
 .HINT_Q_not_tsinga_messa()
 ```
@@ -382,7 +385,13 @@ For tibbles, RStudio will highlight `NA` values bright red to distinguish them f
 From the `yao` dataset, keep all the respondents who had missing records for the report of their smoking status.
 
 ```{r, eval = F, echo = FALSE}
-Q_na_smoker <- "YOUR_ANSWER_HERE" 
+Q_na_smoker <- yao %>% _____________________
+Q_na_smoker
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_na_smoker()
 .HINT_Q_na_smoker()
 ```
@@ -406,9 +415,3 @@ Some material in this lesson was adapted from the following sources:
 Artwork was adapted from:
 
 -   Horst, A. (2021). *R & stats illustrations by Allison Horst*. <https://github.com/allisonhorst/stats-illustrations> (Original work published 2018)
-
-```{r, include = F}
-# knitr::purl(input = here::here("lessons/01_select_rename.Rmd"),
-#             output = here::here("lessons/01_select_rename.R"),
-#             documentation = 2)
-```

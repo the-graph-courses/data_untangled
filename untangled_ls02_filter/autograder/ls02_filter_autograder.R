@@ -28,7 +28,6 @@ pacman::p_load(praise)
 .NUM_Q_child_primary <- 6
 .NUM_Q_not_tsinga_messa <- 7
 .NUM_Q_na_smoker <- 8
-.NUM_Q_drop_resp_under_20 <- 9
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_is_pregnant ----

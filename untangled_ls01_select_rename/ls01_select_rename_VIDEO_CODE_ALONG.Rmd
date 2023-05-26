@@ -101,9 +101,10 @@ yaounde ____________________________ # Select age, sex and igg_result
 -   Select the weight and height variables in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
-# For this first practice question we'll provide the answer:
+# For this first practice question we'll provide the answer.
+# Run this chunk, then run the CHECK and HINT functions in the code chunks further down
 Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
-# Run that line, then run the CHECK and HINT functions below
+Q_weight_height
 ```
 
 
@@ -121,10 +122,11 @@ Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
 # (This is to discourage you from looking at the solution before answering the question.)
 ```
 
--   Select the 16th and 22nd columns in the `yaounde` data frame.
+-   Select the 16th and 22nd columns (in that order) in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
 Q_cols_16_22 <- "YOUR ANSWER HERE"
+Q_cols_16_22
 ```
 
 ```{r, eval = F, echo = FALSE}
@@ -170,6 +172,7 @@ yao _________________ # Select columns 1 to 4
 
 ```{r, eval = F, echo = FALSE}
 Q_symp_to_sequel <- yaounde ___________
+Q_symp_to_sequel
 ```
 
 
@@ -205,6 +208,7 @@ yao ________________________ # Drop `age`, `sex` and `igg_result`
 
 ```{r, eval = F, echo = FALSE}
 Q_educ_consult <- yaounde %>%  ____________
+Q_educ_consult
 ```
 
 
@@ -280,6 +284,7 @@ yaounde %>% select(ends_with("result"), everything())
 
 ```{r, eval = F, echo = FALSE}
 Q_starts_with_is <-  yaounde %>%  ____________
+Q_starts_with_is
 ```
 
 
@@ -293,6 +298,7 @@ Q_starts_with_is <-  yaounde %>%  ____________
 
 ```{r, eval = F, echo = FALSE}
 Q_rearrange <-  yaounde %>%  ____________
+Q_rearrange
 ```
 
 ```{r, eval = F, echo = FALSE}
