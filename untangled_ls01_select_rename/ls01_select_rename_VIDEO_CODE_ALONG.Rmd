@@ -274,13 +274,13 @@ yaounde %>% select(is_pregnant, everything())
 This helper can be combined with many others.
 
 ```{r, render = reactable_5_rows}
-# Bring columns that start with "is" to the front of the data frame
+# Bring columns that start with "result" to the front of the data frame
 yaounde %>% select(ends_with("result"), everything())
 ```
 
 
 ::: practice
--   Select all columns in the `yaounde` data frame that start with "is\_".
+-   Select all columns in the `yaounde` data frame that start with "is".
 
 ```{r, eval = F, echo = FALSE}
 Q_starts_with_is <-  yaounde %>%  ____________
@@ -294,7 +294,7 @@ Q_starts_with_is
 .HINT_Q_starts_with_is()
 ```
 
--   Move the columns that start with "is\_" to the beginning of the `yaounde` data frame.
+-   Move the columns that start with "is" to the beginning of the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
 Q_rearrange <-  yaounde %>%  ____________

@@ -171,7 +171,7 @@ pacman::p_load(praise)
   function() {
     .problem_number <<- .NUM_Q_starts_with_is
     
-    .Q_starts_with_is  <- .yaounde %>% select(starts_with("is_"))
+    .Q_starts_with_is  <- .yaounde %>% select(starts_with("is"))
     
     .autograder <<- 
       function(){
@@ -192,7 +192,7 @@ pacman::p_load(praise)
 
 .SOLUTION_Q_starts_with_is <- function(){ 
   'SOLUTION: 
-  yaounde %>% select(starts_with("is_"))' -> out
+  yaounde %>% select(starts_with("is"))' -> out
   cat(out)
 }
 
@@ -205,7 +205,7 @@ pacman::p_load(praise)
   function() {
     .problem_number <<- .NUM_Q_rearrange
     
-    .Q_rearrange <- .yaounde %>% select(starts_with("is_"), everything())
+    .Q_rearrange <- .yaounde %>% select(starts_with("is"), everything())
     
     .autograder <<- 
       function(){

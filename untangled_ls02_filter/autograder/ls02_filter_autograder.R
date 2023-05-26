@@ -18,7 +18,7 @@ pacman::p_load(praise)
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 9)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 8)   # Put total number of questions as `times` argument
 
 .NUM_Q_is_pregnant <- 1
 .NUM_Q_female_nrow <- 2
