@@ -1,5 +1,5 @@
 ---
-title: '\ '
+title: 'Filtering rows'
 output:
   html_document:
     number_sections: true
@@ -21,15 +21,15 @@ If you are not sure how to use our code-along documents, please watch this video
 
 
 ```{r, echo = F, message = F, warning = F}
-library(tidyverse)
-library(knitr)
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(rlang, tidyverse, knitr, here)
 
-## functions
-source(here::here("global/functions/misc_functions.R"))
+# Source functions 
+source(here("global/functions/misc_functions.R"))
 
-## default render
-registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
-knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
+# knitr settings
+knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
 
 ## autograders
 suppressMessages(source(here::here("lessons/ls02_filter_autograder.R")))

@@ -1,5 +1,5 @@
 ---
-title: '\ '
+title: 'Lesson notes | Selecting and renaming columns'
 output:
   html_document:
     number_sections: true
@@ -10,7 +10,7 @@ output:
 ---
 
 ```{r, eval = F, include = F}
-Hi GRAPH Courses student!! 
+Hi GRAPH Courses student! 
   
 This is a CODE ALONG document where you can type code as you follow the lesson video. 
 
@@ -80,19 +80,19 @@ yaounde
 By name:
 
 ```{r}
-yaounde %>% select(age)
+yaounde ________________ # Select age
 ```
 
 By position:
 
 ```{r}
-yaounde %>% select(3)
+yaounde _________________ # Select the 3rd column
 ```
 
-Variables:
+Multiple variables:
 
 ```{r}
-yaounde %>% select(age, sex, igg_result)
+yaounde ____________________________ # Select age, sex and igg_result
 ```
 
 ::: practice
