@@ -32,7 +32,7 @@ source(here("global/functions/misc_functions.R"))
 knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
 
 ## autograders
-suppressMessages(source(here::here("lessons/ls02_filter_autograder.R")))
+suppressMessages(source(here::here("autograder/ls02_filter_autograder.R")))
 ```
 
 # Data wrangling: filtering rows
