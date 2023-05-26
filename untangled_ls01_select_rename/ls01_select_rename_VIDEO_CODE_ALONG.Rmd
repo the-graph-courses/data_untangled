@@ -1,5 +1,5 @@
 ---
-title: 'Lesson notes | Selecting and renaming columns'
+title: '\ '
 output:
   html_document:
     number_sections: true
@@ -7,9 +7,17 @@ output:
     toc_float: true
     css: !expr here::here("global/style/style.css")
     highlight: kate
-editor_options: 
-  chunk_output_type: console
 ---
+
+```{r, eval = F, include = F}
+Hi GRAPH Courses student!! 
+  
+This is a CODE ALONG document where you can type code as you follow the lesson video. 
+
+We encourage you to do this; typing code with the teacher is the best way to learn the right syntax. 
+
+If you are not sure how to use our code-along documents, please watch this video: https://vimeo.com/767363677
+```
 
 ```{r, echo = F, message = F, warning = F}
 # Load packages 
@@ -26,16 +34,19 @@ knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block",
 mute(here("lessons/ls01_select_rename_autograder.R"))
 ```
 
+------------------------------------------------------------------------
 
-# Introduction
+<!-- # Data wrangling: selecting and renaming columns -->
 
-Today we will begin our exploration of the {dplyr} package! Our first verb on the list is `select` which allows to keep or drop variables from your dataframe. Choosing your variables is the first step in cleaning your data. 
+## Introduction
+
+Today we will begin our exploration of the {dplyr} package! Our first verb on the list is `select` which let you keep or drop variables from your dataframe. Choosing your variables is the first step in cleaning your data.
 
 ![Fig: the `select()` function.](images/custom_dplyr_select.png){width="408"}
 
 Let's go !
 
-# Learning objectives
+## Learning objectives
 
 -   You can keep or drop columns from a dataframe using the `dplyr::select()` function from the {dplyr} package.
 
@@ -45,38 +56,40 @@ Let's go !
 
 -   You can use `rename()` and `select()` to change column names.
 
-# The Yaounde COVID-19 dataset
+## The Yaounde COVID-19 dataset
 
-In this lesson, we analyse results from a COVID-19 serological survey conducted in Yaounde, Cameroon in late 2020. The survey estimated how many people had been infected with COVID-19 in the region, by testing for IgG and IgM antibodies. The full dataset can be obtained from [Zenodo](https://zenodo.org/record/5218965){target="_blank"}, and the paper can be viewed [here](https://www.nature.com/articles/s41467-021-25946-0){target="_blank"}.
+-   COVID-19 serological survey
 
-Spend some time browsing through this dataset. Each line corresponds to one patient surveyed. There are some demographic, socio-economic and COVID-related variables. The results of the IgG and IgM antibody tests are in the columns `igg_result` and `igm_result`.
+-   IgG and IgM antibodies
+
+-   The full dataset can be obtained from [Zenodo](https://zenodo.org/record/5218965){target="_blank"} ([5218965](https://zenodo.org/record/5218965))
+
+![Left: the Yaounde survey team. Right: an antibody test being administered.](images/yao_survey_team.png){alt="Left: the Yaounde survey team. Right: an antibody test being administered." width="450"}
 
 ```{r, message = F, render = reactable_5_rows}
 yaounde <- read_csv(here::here("data/yaounde_data.csv"))
 yaounde  
 ```
 
-![Left: the Yaounde survey team. Right: an antibody test being administered.](images/yao_survey_team.png){width="450"}
-
-# Introducing `select()`
-
-![Fig: the `select()` function. (Drawing adapted from Allison Horst).](images/final_dplyr_select.png){width="408"}
+## Introducing `select()`
 
 `dplyr::select()` lets us pick which columns (variables) to keep or drop.
 
-We can select a column **by name**:
+![Fig: the `select()` function. (Drawing adapted from Allison Horst).](images/final_dplyr_select.png){width="408"}
 
-```{r, render = reactable_5_rows}
-yaounde %>% select(age) 
+By name:
+
+```{r}
+yaounde %>% select(age)
 ```
 
-Or we can select a column **by position**:
+By position:
 
-```{r, render = reactable_5_rows}
-yaounde %>% select(3) # `age` is the 3rd column
+```{r}
+yaounde %>% select(3)
 ```
 
-To select **multiple variables**, we separate them with commas:
+Variables:
 
 ```{r}
 yaounde %>% select(age, sex, igg_result)
@@ -86,14 +99,19 @@ yaounde %>% select(age, sex, igg_result)
 -   Select the weight and height variables in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
-# For this first question we'll provide the answer. Your code should be:
-
+# For this first practice question we'll provide the answer:
 Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
 # Run that line, then run the CHECK and HINT functions below
+```
 
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_weight_height()
 .HINT_Q_weight_height()
+```
 
+```{r, eval = F, echo = FALSE}
 # Now, to obtain the solution, run the line below!
 .SOLUTION_Q_weight_height()
 # Each question has a solution function similar to this (.SOLUTION_Q_xxx_xxx())
@@ -104,7 +122,11 @@ Q_weight_height <- yaounde %>% select(weight_kg, height_cm)
 -   Select the 16th and 22nd columns in the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
-Q_cols_16_22 <- "YOUR ANSWER HERE" 
+Q_cols_16_22 <- "YOUR ANSWER HERE"
+```
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_cols_16_22()
 .HINT_Q_cols_16_22()
 ```
@@ -127,88 +149,98 @@ yao <-
 yao
 ```
 
-## Selecting column ranges with `:`
+### Selecting column ranges with `:`
 
 The `:` operator selects a **range of consecutive variables**:
 
 ```{r, render = reactable_5_rows}
-yao %>% select(age:occupation) # Select all columns from `age` to `occupation`
+yao ________________ # Select all columns from `age` to `occupation`
 ```
 
 We can also specify a range with column numbers:
 
 ```{r, render = reactable_5_rows}
-yao %>% select(1:4) # Select columns 1 to 4
+yao _________________ # Select columns 1 to 4
 ```
 
 ::: practice
 -   With the `yaounde` data frame, select the columns between `symptoms` and `sequelae`, inclusive. ("Inclusive" means you should also include `symptoms` and `sequelae` in the selection.)
 
 ```{r, eval = F, echo = FALSE}
-Q_symp_to_sequel <- "YOUR ANSWER HERE"  
+Q_symp_to_sequel <- yaounde ___________
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_symp_to_sequel()
 .HINT_Q_symp_to_sequel()
 ```
 :::
 
-## Excluding columns with `!`
+### Excluding columns with `!`
 
 The **exclamation point** negates a selection:
 
 ```{r, render = reactable_5_rows}
-yao %>% select(!age) # Select all columns except `age`
+yao _______________ # Select all columns except `age`
 ```
 
 To drop a range of consecutive columns, we use, for example,`!age:occupation`:
 
 ```{r, render = reactable_5_rows}
-yao %>% select(!age:occupation) # Drop columns from `age` to `occupation`
+yao ____________________ # Drop columns from `age` to `occupation`
 ```
 
 To drop several non-consecutive columns, place them inside `!c()`:
 
 ```{r, render = reactable_5_rows}
-yao %>% select(!c(age, sex, igg_result))
+yao ________________________ # Drop `age`, `sex` and `igg_result`
 ```
 
 ::: practice
 -   From the `yaounde` data frame, **remove** all columns between `highest_education` and `consultation`, inclusive.
 
 ```{r, eval = F, echo = FALSE}
-Q_educ_consult <- "YOUR ANSWER HERE" 
+Q_educ_consult <- yaounde %>%  ____________
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_educ_consult()
 .HINT_Q_educ_consult()
 ```
 :::
 
-# Helper functions for `select()`
+## Helper functions for `select()`
 
 `dplyr` has a number of helper functions to make selecting easier by using patterns from the column names. Let's take a look at some of these.
 
-## `starts_with()` and `ends_with()`
+### `starts_with()` and `ends_with()`
 
 These two helpers work exactly as their names suggest!
 
 ```{r, render = reactable_5_rows}
-yao %>% select(starts_with("is_")) # Columns that start with "is"
-yao %>% select(ends_with("_result")) # Columns that end with "result"
+yao %>% select(__________________) # Columns that start with "is"
+yao %>% select(__________________) # Columns that end with "result"
 ```
 
-## `contains()`
+### `contains()`
 
 `contains()` helps select columns that contain a certain string:
 
 ```{r, render = reactable_5_rows}
-yaounde %>% select(contains("drug")) # Columns that contain the string "drug"
+yaounde %>% select(____________________) # Columns that contain the string "drug"
 ```
 
-## `everything()`
+### `everything()`
 
 Another helper function, `everything()`, matches all variables that have not yet been selected.
 
 ```{r, render = reactable_5_rows}
 # First, `is_pregnant`, then every other column.
-yao %>% select(is_pregnant, everything())
+yao %>% select(____________________)
 ```
 
 It is often useful for establishing the order of columns.
@@ -236,15 +268,21 @@ yaounde %>% select(is_pregnant, everything())
 This helper can be combined with many others.
 
 ```{r, render = reactable_5_rows}
-# Bring columns that end with "result" to the front of the data frame
+# Bring columns that start with "is" to the front of the data frame
 yaounde %>% select(ends_with("result"), everything())
 ```
+
 
 ::: practice
 -   Select all columns in the `yaounde` data frame that start with "is\_".
 
 ```{r, eval = F, echo = FALSE}
-Q_starts_with_is <- "YOUR ANSWER HERE"  
+Q_starts_with_is <-  yaounde %>%  ____________
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_starts_with_is()
 .HINT_Q_starts_with_is()
 ```
@@ -252,13 +290,17 @@ Q_starts_with_is <- "YOUR ANSWER HERE"
 -   Move the columns that start with "is\_" to the beginning of the `yaounde` data frame.
 
 ```{r, eval = F, echo = FALSE}
-Q_rearrange <- "YOUR ANSWER HERE"  
+Q_rearrange <-  yaounde %>%  ____________
+```
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
 .CHECK_Q_rearrange()
 .HINT_Q_rearrange()
 ```
 :::
 
-# Change column names with `rename()`
+## Change column names with `rename()`
 
 ![Fig: the `rename()` function. (Drawing adapted from Allison Horst)](images/dplyr_rename.png)
 
@@ -267,15 +309,15 @@ Q_rearrange <- "YOUR ANSWER HERE"
 ```{r, render = reactable_5_rows}
 # Rename `age` and `sex` to `patient_age` and `patient_sex`
 yaounde %>% 
-  rename(patient_age = age, 
-         patient_sex = sex)
+  rename(___________________,
+         ___________________)
 ```
 
 ::: watch-out
 The fact that the new name comes first in the function (`rename(NEWNAME = OLDNAME)`) is sometimes confusing. You should get used to this with time.
 :::
 
-## Rename within `select()`
+### Rename within `select()`
 
 You can also rename columns while selecting them:
 
@@ -286,19 +328,19 @@ yaounde %>%
          patient_sex = sex)
 ```
 
-# Wrap Up ! {.unnumbered}
+## Wrap Up ! {.unnumbered}
 
 I hope this first lesson has allowed you to see how intuitive and useful the {dplyr} verbs are! This is the first of a series of basic data wrangling verbs: see you in the next lesson to learn more.
 
 ![Fig: Basic Data Wrangling Dplyr Verbs.](images/custom_dplyr_basic_1.png){width="400"}
 
-# Contributors {.unlisted .unnumbered}
+## Contributors {.unlisted .unnumbered}
 
 The following team members contributed to this lesson:
 
 `r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
 
-# References {.unlisted .unnumbered}
+## References {.unlisted .unnumbered}
 
 Some material in this lesson was adapted from the following sources:
 
@@ -309,4 +351,3 @@ Some material in this lesson was adapted from the following sources:
 Artwork was adapted from:
 
 -   Horst, A. (2021). *R & stats illustrations by Allison Horst*. <https://github.com/allisonhorst/stats-illustrations> (Original work published 2018)
-
