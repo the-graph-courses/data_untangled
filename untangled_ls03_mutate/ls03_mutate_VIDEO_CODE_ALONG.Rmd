@@ -168,11 +168,11 @@ yao_height %>%
 **PRACTICE TIME !**
 
 ::: practice
-The `sarcopenia` data frame has a variable `weight_kg`, which contains respondents' weights in kilograms. Create a new column, called `weight_grams`, with respondents' weights in grams. Store your answer in the `q_weight_to_g` object. (1 kg equals 1000 grams.)
+The `sarcopenia` data frame has a variable `weight_kg`, which contains respondents' weights in kilograms. Create a new column, called `weight_grams`, with respondents' weights in grams. Store your answer in the `Q_weight_to_g` object. (1 kg equals 1000 grams.)
 
 ```{r, eval = FALSE}
 # Complete the code with your answer:
-q_weight_to_g <- 
+Q_weight_to_g <- 
   sarcopenia %>% 
   _____________________
 ```
@@ -222,11 +222,11 @@ yao_height %>%
 **PRACTICE TIME !**
 
 ::: practice
-Add a variable called `respondent_id` to the `sarcopenia` data frame. The `respondent_id` variable should contain the row number for each row in the data frame. Store the result in the `q_sarcopenia_resp_id` object.
+Add a variable called `respondent_id` to the `sarcopenia` data frame. The `respondent_id` variable should contain the row number for each row in the data frame. Store the result in the `Q_sarcopenia_resp_id` object.
 
 ```{r, eval = FALSE}
 # Complete the code with your answer:
-q_sarcopenia_resp_id <- 
+Q_sarcopenia_resp_id <- 
   sarcopenia %>% 
   mutate(________________________)
 ```
@@ -309,7 +309,7 @@ With a female subset of the `sarcopenia` data frame, add a variable called `low_
 
 ```{r, eval = FALSE}
 # Complete the code with your answer:
-q_women_low_grip_strength <- 
+Q_women_low_grip_strength <- 
   sarcopenia %>% 
   filter(sex_male_1_female_0 == 0) %>% # first we filter the dataset to only women
   mutate(________________________)
@@ -324,7 +324,7 @@ q_women_low_grip_strength <-
 What percentage of women surveyed have a low grip strength according to the definition above? Enter your answer as a number without quotes (e.g. 43.3 or 12.2).
 
 ```{r, eval = FALSE}
-q_prop_women_low_grip_strength <- YOUR_ANSWER_HERE
+Q_prop_women_low_grip_strength <- YOUR_ANSWER_HERE
 ```
 
 ```{r, include = FALSE}
@@ -406,7 +406,7 @@ Calculate the ASM value for all individuals in the `sarcopenia` dataset.
 
 ```{r, eval = FALSE}
 # Complete the code with your answer:
-q_asm_calculation <- 
+Q_asm_calculation <- 
   sarcopenia %>% 
   mutate(asm = _______________________________________________)
 ```
@@ -457,7 +457,7 @@ This should go in a new column called `age_integer`
 
 ```{r, eval = FALSE}
 # Complete the code with your answer:
-q_age_integer <- 
+Q_age_integer <- 
   sarcopenia %>% 
   mutate(age_integer =  ________________________)
 ```
