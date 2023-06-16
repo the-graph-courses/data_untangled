@@ -63,8 +63,7 @@ yao <- yaounde %>%
   age, age_category_3, sex, weight_kg, height_cm,
   neighborhood, is_smoker, is_pregnant, occupation,
   treatment_combinations, symptoms, n_days_miss_work, n_bedridden_days,
-  highest_education, igg_result) %>%
-  rename(age_years = age)
+  highest_education, igg_result) 
 
 yao
 ```
@@ -170,6 +169,13 @@ Q_weight_summary <-
 ```{r, include = FALSE}
 .CHECK_Q_weight_summary()
 .HINT_Q_weight_summary()
+
+# To get the solution, run the line below!
+.SOLUTION_Q_weight_summary()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
 ```
 :::
 
@@ -286,15 +292,15 @@ The output data frame should look like this:
 | NA         |             |
 
 ```{r eval = FALSE}
-Q_height_by_smoking_status <- 
+Q_weight_by_smoking_status <- 
   yao %>% 
   ________________________
   ________________________
 ```
 
 ```{r include = FALSE}
-.CHECK_Q_height_by_smoking_status()
-.HINT_Q_height_by_smoking_status()
+.CHECK_Q_weight_by_smoking_status()
+.HINT_Q_weight_by_smoking_status()
 ```
 :::
 
@@ -378,7 +384,7 @@ yao %>%
 yao %>% 
   # let's put neighborhood before sex in the grouping
   group_by(________________________) %>% 
-  summarize(mean_age = mean(age_years))
+  summarize(mean_age = mean(age))
 ```
 
 ------------------------------------------------------------------------
@@ -414,7 +420,7 @@ Using the `yao` data frame, group your data by age category (`age_category_3`), 
 
 Your output should be a data frame with three columns named as shown below:
 
-| age_category | sex | igg_result | mean_n\_bedridden_days |
+| age_category | sex | igg_result | mean_n_bedridden_days |
 |--------------|-----|------------|------------------------|
 |              |     |            |                        |
 
@@ -460,7 +466,7 @@ Now let's consider grouping by two variables:
 yao %>%
   # we group by sex and neighborhood
   group_by(_____________________) %>% 
-  summarize(mean_age = mean(age_years))
+  summarize(mean_age = mean(age))
 ```
 
 The data is still grouped by the first variable in `group_by()`, sex !
@@ -479,7 +485,7 @@ The data is still grouped by the first variable in `group_by()`, sex !
 ```{r}
 yao %>% 
   group_by(sex, neighborhood) %>% 
-  summarize(mean_age = mean(age_years)) %>% 
+  summarize(mean_age = mean(age)) %>% 
   # let's select mean_age
   select(____________) # doesn't work as expected 
 ```
@@ -497,7 +503,7 @@ yao %>%
 ```{r}
 yao %>% 
   group_by(sex, neighborhood) %>% 
-  summarize(mean_age = mean(age_years)) %>% 
+  summarize(mean_age = mean(age)) %>% 
   # ungroup
   ____________
 ```
@@ -507,7 +513,7 @@ Now we can try selecting again:
 ```{r}
 yao %>% 
   group_by(sex, neighborhood) %>% 
-  summarize(mean_age = mean(age_years)) %>% 
+  summarize(mean_age = mean(age)) %>% 
   # ungroup
   ____________
   # select: it behaves normally !
@@ -554,7 +560,7 @@ Group your `yao` data frame by the respondents' occupation (`occupation`) and us
 
 Your output should be a data frame with three columns named as shown below:
 
-| occupation | count | mean_n\_days_miss_work |
+| occupation | count | mean_n_days_miss_work |
 |------------|-------|------------------------|
 |            |       |                        |
 
@@ -664,7 +670,7 @@ PRACTICE TIME !
 ::: practice
 The `count()` verb gives you key information about your dataset in a very quick manner. Let's look at our IgG results stratified by age category and sex in one line of code.
 
-Using the `yao` data frame, count the different combinations of gender (`sex`), age categories (`age_category_3`) and IgG results (`igg_results`).
+Using the `yao` data frame, count the different combinations of gender (`sex`), age categories (`age_category_3`) and IgG results (`igg_result`).
 
 Your output should be a data frame with three columns named as shown below:
 

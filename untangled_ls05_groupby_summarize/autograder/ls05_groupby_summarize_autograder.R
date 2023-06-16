@@ -56,7 +56,7 @@ pacman::p_load(praise,
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  INIT ----
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-.scores <- rep(-1, times = 12)   # Put total number of questions as `times` argument
+.scores <- rep(-1, times = 11)   # Put total number of questions as `times` argument
 
 .NUM_Q_weight_summary <- 1
 .NUM_Q_height_summary <- 2
@@ -66,10 +66,9 @@ pacman::p_load(praise,
 .NUM_Q_weight_by_sex_treatments <- 6
 .NUM_Q_bedridden_by_age_sex_iggresult <- 7
 .NUM_Q_occupation_summary <- 8
-.NUM_Q_symptoms_adults <- 9
-.NUM_Q_count_iggresults_stratified_by_sex_agecategories <- 10
-.NUM_Q_count_bedridden_age_categories <- 11
-.NUM_Q_median_age_by_neighborhood_agecategory_sex <- 12
+.NUM_Q_count_iggresults_stratified_by_sex_agecategories <- 9
+.NUM_Q_count_bedridden_age_categories <- 10
+.NUM_Q_median_age_by_neighborhood_agecategory_sex <- 11
 
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
