@@ -208,7 +208,7 @@ Out of the entire sample of individuals in the `flu_linelist` dataset, what perc
 
 
 ```{r eval = FALSE}
-# Enter your answer as a number without quotes:
+# Enter your answer as a WHOLE number without quotes:
 Q_age_group_percentage <- YOUR_ANSWER_HERE
 ```
 
