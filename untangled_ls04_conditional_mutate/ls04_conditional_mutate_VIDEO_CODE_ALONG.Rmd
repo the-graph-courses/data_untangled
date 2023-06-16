@@ -193,9 +193,19 @@ Q_age_group <-
 # Check your answer
 .CHECK_Q_age_group()
 .HINT_Q_age_group()
+
+
+
+# To get the solution, run the line below!
+.SOLUTION_Q_age_group()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
 ```
 
-What percentage of individuals in the dataset are below 60? (You can use the `tabyl()` function to compute this.)
+Out of the entire sample of individuals in the `flu_linelist` dataset, what percentage are confirmed to be below 60? (Repeat the above procedure but with the `60` cutoff, then call `tabyl()` on the age group variable. Use the `percent` column, not the `valid_percent` column.)
+
 
 ```{r eval = FALSE}
 # Enter your answer as a number without quotes:
@@ -249,9 +259,8 @@ yaounde_age %>%
 PRACTICE TIME !
 
 ::: practice
-As before, using the `flu_linelist` data, make a new column, called `age_group`, that has the value "Below 60" for people under 60 and "60 and above" for people aged 60 and up.
 
-**But this time, also set those with missing ages to "Missing age".**
+As before, using the `flu_linelist` data, make a new column, called `age_group`, that has the value "Below 60" for people under 60 and "60 and above" for people aged 60 and up. But this time, also set those with missing ages to "Missing age".
 
 ```{r eval = FALSE}
 # Complete the code with your answer:
@@ -429,7 +438,7 @@ With the `flu_linelist` data, make a new column, called `adolescent`, that has t
 # Complete the code with your answer:
 Q_adolescent_grouping <- 
   flu_linelist %>% 
-  mutate(adolescent = ______________________________)
+  _________________________________________-
 ```
 
 ```{r include = FALSE}

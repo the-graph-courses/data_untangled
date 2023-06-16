@@ -179,8 +179,16 @@ q_weight_to_g <-
 
 ```{r, include = FALSE}
 # Check your answer:
-.CHECK_q_weight_to_g()
-.HINT_q_weight_to_g()
+.CHECK_Q_weight_to_g()
+.HINT_Q_weight_to_g()
+
+
+# To obtain the solution, run the line below!
+.SOLUTION_Q_weight_to_g()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
 ```
 :::
 
@@ -231,8 +239,8 @@ So to see actually see the new column, you can use `View()` to view the entire d
 
 ```{r, include = FALSE}
 # Check your answer:
-.CHECK_q_sarcopenia_resp_id()
-.HINT_q_sarcopenia_resp_id()
+.CHECK_Q_sarcopenia_resp_id()
+.HINT_Q_sarcopenia_resp_id()
 ```
 :::
 
@@ -309,8 +317,8 @@ q_women_low_grip_strength <-
 
 ```{r, include = FALSE}
 # Check your answer:
-.CHECK_q_women_low_grip_strength()
-.HINT_q_women_low_grip_strength()
+.CHECK_Q_women_low_grip_strength()
+.HINT_Q_women_low_grip_strength()
 ```
 
 What percentage of women surveyed have a low grip strength according to the definition above? Enter your answer as a number without quotes (e.g. 43.3 or 12.2).
@@ -321,8 +329,8 @@ q_prop_women_low_grip_strength <- YOUR_ANSWER_HERE
 
 ```{r, include = FALSE}
 # Check your answer:
-.CHECK_q_prop_women_low_grip_strength()
-.HINT_q_prop_women_low_grip_strength()
+.CHECK_Q_prop_women_low_grip_strength()
+.HINT_Q_prop_women_low_grip_strength()
 ```
 :::
 
@@ -405,8 +413,8 @@ q_asm_calculation <-
 
 ```{r, include = FALSE}
 # Check your answer:
-.CHECK_q_asm_calculation()
-.HINT_q_asm_calculation()
+.CHECK_Q_asm_calculation()
+.HINT_Q_asm_calculation()
 ```
 :::
 
@@ -456,8 +464,8 @@ q_age_integer <-
 
 ```{r, include = FALSE}
 # Check your answer:
-.CHECK_q_age_integer()
-.HINT_q_age_integer()
+.CHECK_Q_age_integer()
+.HINT_Q_age_integer()
 ```
 :::
 
