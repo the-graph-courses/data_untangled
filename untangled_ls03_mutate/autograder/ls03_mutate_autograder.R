@@ -48,7 +48,7 @@ pacman::p_load(here,
           .fail("It seems you used the formula `weight_kg/1000` instead of `weight_kg * 1000`")
         
         
-        if (isTRUE(all_equal(select(Q_weight_to_g, weight_grams) , 
+        if (isTRUE(all.equal(select(Q_weight_to_g, weight_grams) , 
                              select(correct_answer, weight_grams))))
           .pass()
         
@@ -136,7 +136,7 @@ Q_weight_to_g <-
         if (!"respondent_id" %in% names(Q_sarcopenia_resp_id))
           .fail("Your answer should have a column called 'respondent_id'.")
 
-        if (isTRUE(all_equal(select(Q_sarcopenia_resp_id, respondent_id) ,
+        if (isTRUE(all.equal(select(Q_sarcopenia_resp_id, respondent_id) ,
                              select(correct_answer, respondent_id))))
           .pass()
 
@@ -212,19 +212,19 @@ Q_sarcopenia_resp_id <-
         if (!"grip_strength_rank" %in% names(Q_sarcopenia_grip_strength))
           .fail("Your answer should have a column called 'grip_strength_rank'.")
         
-        if (isTRUE(all_equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
+        if (isTRUE(all.equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
                              select(incorrect_forgot_ties, grip_strength_rank))))
           .fail("Wrong answer. It seems you forgot to specify `ties_method = 'min'`")
         
-        if (isTRUE(all_equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
+        if (isTRUE(all.equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
                              select(incorrect_forgot_descending, grip_strength_rank))))
           .fail("Wrong answer. It seems you forgot to wrap the `grip_strength_kg` variable in `desc()`")
         
-        if (isTRUE(all_equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
+        if (isTRUE(all.equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
                              select(incorrect_forgot_descending_and_ties, grip_strength_rank))))
           .fail("Wrong answer. It seems you forgot to wrap the `grip_strength_kg` variable in `desc()` and you forgot to specify `ties_method = 'min'`")
         
-        if (isTRUE(all_equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
+        if (isTRUE(all.equal(select(Q_sarcopenia_grip_strength, grip_strength_rank) ,
                              select(correct_answer, grip_strength_rank))))
           .pass()
         
@@ -343,15 +343,15 @@ Q_sarcopenia_grip_strength <-
           .fail("Wrong answer. It seems you did not filter for just women in the dataset. 
                 To filter for women, the code `filter(sex_male_1_female_0 == 0)` should be in your pipeline.")
 
-        if (isTRUE(all_equal(select(Q_women_low_grip_strength, low_grip_strength),
+        if (isTRUE(all.equal(select(Q_women_low_grip_strength, low_grip_strength),
                              select(incorrect_less_than_equal_to, low_grip_strength))) |
-            isTRUE(all_equal(select(Q_women_low_grip_strength, low_grip_strength),
+            isTRUE(all.equal(select(Q_women_low_grip_strength, low_grip_strength),
                              select(incorrect_greater_than, low_grip_strength))) |
-            isTRUE(all_equal(select(Q_women_low_grip_strength, low_grip_strength),
+            isTRUE(all.equal(select(Q_women_low_grip_strength, low_grip_strength),
                              select(incorrect_greater_than_equal_to, low_grip_strength))))
           .fail("Wrong answer. It seems you are using the wrong sign comparison operator. You should have `grip_strength_kg < 20`")
 
-        if (isTRUE(all_equal(select(Q_women_low_grip_strength, low_grip_strength) ,
+        if (isTRUE(all.equal(select(Q_women_low_grip_strength, low_grip_strength) ,
                              select(correct_answer, low_grip_strength))))
           .pass()
 
@@ -515,7 +515,7 @@ Q_prop_women_low_grip_strength <-
         if (!"asm" %in% names(Q_asm_calculation))
           .fail("Your answer should have a column called 'asm'.")
         
-        if (isTRUE(all_equal(select(Q_asm_calculation, asm) ,
+        if (isTRUE(all.equal(select(Q_asm_calculation, asm) ,
                              select(correct_answer, asm))))
           .pass()
         
@@ -585,7 +585,7 @@ Q_asm_calculation <-
         if (!"age_integer" %in% names(Q_age_integer))
           .fail("Your answer should have a column called 'age_integer'.")
         
-        if (isTRUE(all_equal(select(Q_age_integer, age_integer) ,
+        if (isTRUE(all.equal(select(Q_age_integer, age_integer) ,
                              select(correct_answer, age_integer))))
           .pass()
         

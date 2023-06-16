@@ -58,7 +58,7 @@ pacman::p_load(praise,
         if (!is.data.frame(Q_grip_strength_arranged))
           .na("Invalid answer. Your answer should be a data frame.")
         
-        if (isTRUE(all_equal(Q_grip_strength_arranged, correct_answer, ignore_row_order = F)))
+        if (isTRUE(all.equal(Q_grip_strength_arranged, correct_answer, ignore_row_order = F)))
           .pass()
         
         else
@@ -110,7 +110,7 @@ Q_grip_strength_arranged <-
         if (!is.data.frame(Q_age_group_height))
           .na("Invalid answer. Your answer should be a data frame.")
         
-        if (isTRUE(all_equal(Q_age_group_height, correct_answer)))
+        if (isTRUE(all.equal(Q_age_group_height, correct_answer)))
           .pass()
         
         else
@@ -163,7 +163,7 @@ Q_age_group_height <-
         if (!is.data.frame(Q_max_skeletal_muscle_index))
           .na("Invalid answer. Your answer should be a data frame.")
         
-        if (isTRUE(all_equal(Q_max_skeletal_muscle_index, correct_answer)))
+        if (isTRUE(all.equal(Q_max_skeletal_muscle_index, correct_answer)))
           .pass()
         
         else
@@ -214,7 +214,7 @@ Q_max_skeletal_muscle_index <-
         if (!is.data.frame(Q_rank_grip_strength))
           .na("Invalid answer. Your answer should be a data frame.")
         
-        if (isTRUE(all_equal(Q_rank_grip_strength, correct_answer)))
+        if (isTRUE(all.equal(Q_rank_grip_strength, correct_answer)))
           .pass()
         
         else

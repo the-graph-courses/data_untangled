@@ -56,7 +56,7 @@ pacman::p_load(here,
           .fail("Your answer should have a column called 'age_group'.")
         
         
-        if (isTRUE(all_equal(select(Q_age_group, age_group) , 
+        if (isTRUE(all.equal(select(Q_age_group, age_group) , 
                              select(correct_answer, age_group))))
           .pass()
         
@@ -169,7 +169,7 @@ Q_age_group_percentage <-
           .fail("Your answer should have a column called 'age_group'.")
         
         
-        if (isTRUE(all_equal(select(Q_age_group_nas, age_group) , 
+        if (isTRUE(all.equal(select(Q_age_group_nas, age_group) , 
                              select(correct_answer, age_group))))
           .pass()
         
@@ -224,7 +224,7 @@ Q_age_group_nas <-
           .fail("Your answer should have a column called 'gender'.")
         
         
-        if (isTRUE(all_equal(select(Q_gender_recode, gender) , 
+        if (isTRUE(all.equal(select(Q_gender_recode, gender) , 
                              select(correct_answer, gender))))
           .pass()
         
@@ -279,7 +279,7 @@ Q_gender_recode <-
           .fail("Your answer should have a column called 'outcome'.")
         
         
-        if (isTRUE(all_equal(select(Q_recode_recovery, outcome) , 
+        if (isTRUE(all.equal(select(Q_recode_recovery, outcome) , 
                              select(correct_answer, outcome))))
           .pass()
         
@@ -339,11 +339,11 @@ Q_recode_recovery <-
         if (!"adolescent" %in% names(Q_adolescent_grouping))
           .fail("Your answer should have a column called 'adolescent'.")
         
-           if (isTRUE(all_equal(select(Q_adolescent_grouping, adolescent) , 
+           if (isTRUE(all.equal(select(Q_adolescent_grouping, adolescent) , 
                                  select(mistake1, adolescent))))
           .fail("Your condition should be `age >= 10 & age < 20`")
         
-        if (isTRUE(all_equal(select(Q_adolescent_grouping, adolescent) , 
+        if (isTRUE(all.equal(select(Q_adolescent_grouping, adolescent) , 
                              select(correct_answer, adolescent))))
           .pass()
         
@@ -396,7 +396,7 @@ Q_adolescent_grouping <-
           .fail("Your answer should have a column called 'recruit'.")
         
         
-        if (isTRUE(all_equal(select(Q_age_province_grouping, recruit) , 
+        if (isTRUE(all.equal(select(Q_age_province_grouping, recruit) , 
                              select(correct_answer, recruit))))
           .pass()
         
@@ -460,7 +460,7 @@ Q_age_province_grouping <-
           .fail("Your answer should have a column called 'follow_up_priority'.")
         
         
-        if (isTRUE(all_equal(select(Q_priority_groups, follow_up_priority) , 
+        if (isTRUE(all.equal(select(Q_priority_groups, follow_up_priority) , 
                              select(mistake1, follow_up_priority))))
           .fail(paste0("Wrong. It seems you put the gender condition first. This means it takes precedence over the age condition.", 
                        "That is, with what you have coded, female children won't get 'highest priority', only male children!",
@@ -468,7 +468,7 @@ Q_age_province_grouping <-
                        "So this condition needs to come first in your case_when() statement."))
         
         
-        if (isTRUE(all_equal(select(Q_priority_groups, follow_up_priority) , 
+        if (isTRUE(all.equal(select(Q_priority_groups, follow_up_priority) , 
                              select(correct_answer, follow_up_priority))))
           .pass()
         
@@ -520,7 +520,7 @@ Q_priority_groups <-
           .fail("Your answer should have a column called 'age_group'.")
         
         
-        if (isTRUE(all_equal(select(Q_age_group_if_else, age_group) , 
+        if (isTRUE(all.equal(select(Q_age_group_if_else, age_group) , 
                              select(correct_answer, age_group))))
           .pass()
         

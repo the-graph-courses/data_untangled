@@ -103,7 +103,7 @@ pacman::p_load(praise,
           .fail("Your answer should have a column called 'sd_weight_kg'.")
         
         
-        if (isTRUE(all_equal(Q_weight_summary, correct_answer)))
+        if (isTRUE(all.equal(Q_weight_summary, correct_answer)))
           .pass()
         
         else
@@ -159,7 +159,7 @@ Q_weight_summary <-
         if (!"max_height_cm" %in% names(Q_height_summary))
           .fail("Your answer should have a column called 'max_height_cm'.")
         
-        if (isTRUE(all_equal(Q_height_summary, correct_answer)))
+        if (isTRUE(all.equal(Q_height_summary, correct_answer)))
           .pass()
         
         else
@@ -211,7 +211,7 @@ Q_height_summary <-
         if (!"weight_mean" %in% names(Q_weight_by_smoking_status))
           .fail("Your answer should have a column called 'weight_mean'.")
         
-        if (isTRUE(all_equal(Q_weight_by_smoking_status, correct_answer)))
+        if (isTRUE(all.equal(Q_weight_by_smoking_status, correct_answer)))
           .pass()
         
         else
@@ -266,7 +266,7 @@ Q_weight_by_smoking_status <-
         if (!"min_height_cm" %in% names(Q_min_max_height_by_sex))
           .fail("Your answer should have a column called 'min_height_cm'.")
         
-        if (isTRUE(all_equal(Q_min_max_height_by_sex, correct_answer)))
+        if (isTRUE(all.equal(Q_min_max_height_by_sex, correct_answer)))
           .pass()
         
         else
@@ -326,11 +326,11 @@ Q_min_max_height_by_sex <-
         if (!"total_bedridden_days" %in% names(Q_sum_bedridden_days))
           .fail("Your answer should have a column called 'total_bedridden_days'.")
         
-        if (isTRUE(all_equal(Q_sum_bedridden_days, forgot_na)))
+        if (isTRUE(all.equal(Q_sum_bedridden_days, forgot_na)))
           .fail("Wrong. You may have forgotten to exclude NAs, with `na.rm = T`")
         
         
-        if (isTRUE(all_equal(Q_sum_bedridden_days, correct_answer)))
+        if (isTRUE(all.equal(Q_sum_bedridden_days, correct_answer)))
           .pass()
         
         else
@@ -382,7 +382,7 @@ Q_sum_bedridden_days <-
         if (!"mean_weight_kg" %in% names(Q_weight_by_sex_treatments))
           .fail("Your answer should have a column called 'mean_weight_kg'.")
         
-        if (isTRUE(all_equal(Q_weight_by_sex_treatments, correct_answer)))
+        if (isTRUE(all.equal(Q_weight_by_sex_treatments, correct_answer)))
           .pass()
         
         else
@@ -441,11 +441,11 @@ Q_weight_by_sex_treatments <-
         if (!"mean_n_bedridden_days" %in% names(Q_bedridden_by_age_sex_iggresult))
           .fail("Your answer should have a column called 'mean_n_bedridden_days'.")
         
-        if (isTRUE(all_equal(Q_bedridden_by_age_sex_iggresult, forgot_nas)))
+        if (isTRUE(all.equal(Q_bedridden_by_age_sex_iggresult, forgot_nas)))
           .fail("It seems you forgot to remove the NAs!")
         
         
-        if (isTRUE(all_equal(Q_bedridden_by_age_sex_iggresult, correct_answer)))
+        if (isTRUE(all.equal(Q_bedridden_by_age_sex_iggresult, correct_answer)))
           .pass()
         
         else
@@ -498,7 +498,7 @@ Q_bedridden_by_age_sex_iggresult <-
         if (!"mean_n_days_miss_work" %in% names(Q_occupation_summary))
           .fail("Your answer should have a column called 'mean_n_days_miss_work'.")
         
-        if (isTRUE(all_equal(Q_occupation_summary, correct_answer)))
+        if (isTRUE(all.equal(Q_occupation_summary, correct_answer)))
           .pass()
         
         else
@@ -552,7 +552,7 @@ Q_occupation_summary <-
         if (!"sum_adults" %in% names(Q_symptoms_adults))
           .fail("Your answer should have a column called 'sum_adults'.")
 
-        if (isTRUE(all_equal(Q_symptoms_adults, correct_answer)))
+        if (isTRUE(all.equal(Q_symptoms_adults, correct_answer)))
           .pass()
 
         else
@@ -599,7 +599,7 @@ Q_symptoms_adults <-
         if (!"n" %in% names(Q_count_iggresults_stratified_by_sex_agecategories))
           .fail("Your answer should have a column called 'n'.")
         
-        if (isTRUE(all_equal(Q_count_iggresults_stratified_by_sex_agecategories, correct_answer)))
+        if (isTRUE(all.equal(Q_count_iggresults_stratified_by_sex_agecategories, correct_answer)))
           .pass()
         
         else
@@ -648,7 +648,7 @@ Q_count_iggresults_stratified_by_sex_agecategories <-
         if (!"n" %in% names(Q_count_bedridden_age_categories))
           .fail("Your answer should have a column called 'n'.")
         
-        if (isTRUE(all_equal(Q_count_bedridden_age_categories, correct_answer)))
+        if (isTRUE(all.equal(Q_count_bedridden_age_categories, correct_answer)))
           .pass()
         
         else
@@ -701,7 +701,7 @@ Q_count_bedridden_age_categories <-
         if (!"median_age" %in% names(Q_median_age_by_neighborhood_agecategory_sex))
           .fail("Your answer should have a column called 'median_age'.")
         
-        if (isTRUE(all_equal(Q_median_age_by_neighborhood_agecategory_sex, correct_answer)))
+        if (isTRUE(all.equal(Q_median_age_by_neighborhood_agecategory_sex, correct_answer)))
           .pass()
         
         else
