@@ -20,11 +20,11 @@ pacman::p_load(here,
 .scores <- rep(-1, times = 6)   # Put total number of questions as `times` argument
 
 .NUM_Q_weight_to_g <- 1
-#.NUM_Q_sarcopenia_grip_strength <- 2
-.NUM_Q_women_low_grip_strength <- 2
-.NUM_Q_prop_women_low_grip_strength <- 3
-.NUM_Q_asm_calculation <- 4
-.NUM_Q_age_integer <- 5
+.NUM_Q_sarcopenia_resp_id <- 2
+.NUM_Q_women_low_grip_strength <- 3
+.NUM_Q_prop_women_low_grip_strength <- 4
+.NUM_Q_asm_calculation <- 5
+.NUM_Q_age_integer <- 6
 
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## ~  Q_weight_to_g ----
@@ -119,52 +119,52 @@ Q_weight_to_g <-
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ## ~  Q_sarcopenia_resp_id ----
 # ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# 
-# 
-# .CHECK_Q_sarcopenia_resp_id <-
-#   function() {
-# 
-#     .problem_number <<- .NUM_Q_sarcopenia_resp_id
-#     correct_answer <- .sarcopenia %>% mutate(respondent_id = row_number())
-# 
-#     .autograder <<-
-#       function(){
-#         if(!exists("Q_sarcopenia_resp_id"))
-#           .na("You have not yet defined the answer object, `Q_sarcopenia_resp_id`.")
-#         if (!is.data.frame(Q_sarcopenia_resp_id))
-#           .na("Invalid answer. Your answer should be a data frame.")
-#         if (!"respondent_id" %in% names(Q_sarcopenia_resp_id))
-#           .fail("Your answer should have a column called 'respondent_id'.")
-# 
-#         if (isTRUE(all_equal(select(Q_sarcopenia_resp_id, respondent_id) ,
-#                              select(correct_answer, respondent_id))))
-#           .pass()
-# 
-#         else
-#           .fail()
-#       }
-#     .run_autograder()
-#   }
-# 
-# .HINT_Q_sarcopenia_resp_id <- function(){
-#   '
-# HINT
-# Your answer should look like this:
-# 
-# Q_sarcopenia_resp_id <-
-#   sarcopenia %>%
-#   mutate(respondent_id = FORMULA_HERE)' -> out
-#   cat(out)
-# }
-# 
-# .SOLUTION_Q_sarcopenia_resp_id  <- function(){
-#   '
-# SOLUTION
-# Q_sarcopenia_resp_id <-
-#   sarcopenia %>%
-#   mutate(respondent_id = 1:n())' -> out
-#   cat(out)
-# }
+
+
+.CHECK_Q_sarcopenia_resp_id <-
+  function() {
+
+    .problem_number <<- .NUM_Q_sarcopenia_resp_id
+    correct_answer <- .sarcopenia %>% mutate(respondent_id = row_number())
+
+    .autograder <<-
+      function(){
+        if(!exists("Q_sarcopenia_resp_id"))
+          .na("You have not yet defined the answer object, `Q_sarcopenia_resp_id`.")
+        if (!is.data.frame(Q_sarcopenia_resp_id))
+          .na("Invalid answer. Your answer should be a data frame.")
+        if (!"respondent_id" %in% names(Q_sarcopenia_resp_id))
+          .fail("Your answer should have a column called 'respondent_id'.")
+
+        if (isTRUE(all_equal(select(Q_sarcopenia_resp_id, respondent_id) ,
+                             select(correct_answer, respondent_id))))
+          .pass()
+
+        else
+          .fail()
+      }
+    .run_autograder()
+  }
+
+.HINT_Q_sarcopenia_resp_id <- function(){
+  '
+HINT
+Your answer should look like this:
+
+Q_sarcopenia_resp_id <-
+  sarcopenia %>%
+  mutate(respondent_id = FORMULA_HERE)' -> out
+  cat(out)
+}
+
+.SOLUTION_Q_sarcopenia_resp_id  <- function(){
+  '
+SOLUTION
+Q_sarcopenia_resp_id <-
+  sarcopenia %>%
+  mutate(respondent_id = 1:n())' -> out
+  cat(out)
+}
 
 
 # Tests
