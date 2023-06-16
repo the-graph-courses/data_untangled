@@ -361,7 +361,7 @@ Using the `flu_linelist` data, modify the existing column `outcome` by replacing
 # Complete the code with your answer:
 Q_recode_recovery <- 
   flu_linelist %>% 
-  mutate(age_group = ______________________________)
+  ____________________________
 ```
 
 ```{r include = FALSE}
@@ -761,7 +761,7 @@ Q_age_group_if_else <-
 
 ```{r include = FALSE}
 # Check your answer
-.CHECK_Q_age_group()
-.HINT_Q_age_group()
+.CHECK_Q_age_group_if_else()
+.HINT_Q_age_group_if_else()
 ```
 :::
