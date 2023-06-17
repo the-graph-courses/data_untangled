@@ -332,7 +332,7 @@ Use `group_by()`, `summarize()`, and the `sum()` function to calculate the total
 
 Your output should be a data frame with two columns named as shown below:
 
-| neighborhood | total_bedridden_days |
+| sex          | total_bedridden_days |
 |--------------|----------------------|
 | Female       |                      |
 | Male         |                      |
@@ -416,7 +416,7 @@ Q_weight_by_sex_treatments <-
 
 ::: practice
 
-Using the `yao` data frame, group your data by age category (`age_category_3`), gender (`sex`), and IgG results (`igg_results`) using `group_by`. Then, using `summarize()` and the relevant summary function, calculate the mean number of bedridden days (`n_bedridden_days`) for each group.
+Using the `yao` data frame, group your data by age category (`age_category_3`), gender (`sex`), and IgG results (`igg_result`) using `group_by`. Then, using `summarize()` and the relevant summary function, calculate the mean number of bedridden days (`n_bedridden_days`) for each group.
 
 Your output should be a data frame with three columns named as shown below:
 
