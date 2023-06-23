@@ -418,13 +418,6 @@ Q_population_max <-
 ```{r, include = FALSE}
 .CHECK_Q_population_max()
 .HINT_Q_population_max()
-
-
-# Solution: temporarily putting it here
-population %>% 
-  group_by(country) %>% 
-  filter(population == max(population)) %>% 
-  ungroup()
 ```
 :::
 

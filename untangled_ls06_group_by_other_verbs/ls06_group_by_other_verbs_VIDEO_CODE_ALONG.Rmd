@@ -153,7 +153,7 @@ yao_sex_weight %>%
 :::
 
 ::: practice
-With an `arrange()` call, sort the `sarcopenia` data first by sex and then by grip strength. (If done correctly, the first row should be of a woman with a grip strength of 1.3 kg). To make the arrangement clear, you should first `select()` the sex and grip strength variables.
+With an `arrange()` call, sort the `sarcopenia` data first by sex and then by grip strength. (If done correctly, the first row should be of a woman with a grip strength of 1.3 kg). To make the arrangement clear, you should first `select()` the sex and grip strength variables (in that order).
 
 ```{r eval = FALSE}
 # Complete the code with your answer:
@@ -179,7 +179,7 @@ Q_grip_strength_arranged <-
 :::
 
 ::: practice
-The `sarcopenia` dataset contains a column, `age_group`, which stores age groups as a string (the age groups are "Sixties", "Seventies" and "Eighties"). Convert this variable to a factor with the levels in the right order (first "Sixties" then "Seventies" and so on). (Hint: Look back on the `case_when()` lesson if you do not see how to relevel a factor.)
+The `sarcopenia` dataset contains a column, `age_group`, which stores age groups as a string (the age groups are "Sixties", "Seventies" and "Eighties"). Convert this variable to a factor with the levels in the right order (first "Sixties" then "Seventies" then "Eighties"). (Hint: Look back on the `case_when()` lesson if you do not see how to relevel a factor.)
 
 Then, with a nested `arrange()` call, arrange the data first by the newly-created `age_group` factor variable (younger individuals first) and then by `height_meters`, with shorter individuals first.
 
@@ -242,7 +242,7 @@ yao %>%
   arrange(_________________________)
 ```
 
--   But we see notice a weird arrangement of the age groups!
+-   But we notice a weird arrangement of the age groups!
 
 -   Those aged 5 to 14 should come *first* in the arrangement.
 
