@@ -11,6 +11,17 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r, eval = F, include = F}
+Hi GRAPH Courses student!
+  
+This is a CODE ALONG document where you can type code as you follow the lesson video. 
+
+We encourage you to do this; typing code with the teacher is the best way to learn the right syntax. 
+
+If you are not sure how to use our code-along documents, please watch this video: https://vimeo.com/767363677
+```
+
+
 ```{r, echo = F, message = F, warning = F}
 # Load packages 
 if(!require(pacman)) install.packages("pacman")
@@ -24,7 +35,7 @@ registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
 knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
 
 ## autograders
-suppressMessages(source(here::here("autograder/ls02_filter_autograder.R")))
+suppressMessages(source(here::here("autograder/ls08_advanced_pivoting_autograder.R")))
 ```
 
 # Intro
@@ -118,14 +129,22 @@ Pivot the data into a long format to get the following structure:
 |       |      |     |     |
 
 ```{r, eval = FALSE}
+# Complete the code with your answer
 Q_adult_long <- 
   adult_stats %>%
   pivot_longer(_________)
 ```
 
 ```{r, eval = FALSE, include = FALSE}
-.CHECK_Q_adult_long()
+.CHECK_Q_adult_long() # Check your answer by running this function
 .HINT_Q_adult_long()
+
+# To obtain the solution, run the line below
+.SOLUTION_Q_adult_long()
+# Each question has a solution function similar to this.
+# Where HINT is replaced with SOLUTION in the function name.
+# But you will need to type out the function name on your own.
+# This is to discourage you from looking at the solution before answering the question.
 ```
 :::
 
