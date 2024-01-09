@@ -1,0 +1,417 @@
+---
+title: 'Filtering rows'
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    css: !expr here::here("global/style/style.css")
+    highlight: kate
+---
+
+```{r, eval = F, include = F}
+Hi GRAPH Courses student!
+  
+This is a CODE ALONG document where you can type code as you follow the lesson video. 
+
+We encourage you to do this; typing code with the teacher is the best way to learn the right syntax. 
+
+If you are not sure how to use our code-along documents, please watch this video: https://vimeo.com/767363677
+```
+
+
+```{r, echo = F, message = F, warning = F}
+# SETUP CHUNK. Remember to run this whole chunk before continuing with the lesson.
+
+# Load packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(rlang, tidyverse, knitr, here)
+
+# Source functions 
+source(here("global/functions/misc_functions.R"))
+
+# knitr settings
+knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
+
+## autograders
+mute(here("autograder/ls02_filter_autograder.R"))
+```
+
+# Data wrangling: filtering rows
+
+------------------------------------------------------------------------
+
+## Learning objectives
+
+1.  You will use `dplyr::filter()` to keep or drop rows from a dataframe.
+
+2.  You will filter rows by specifying conditions on numbers or strings using relational operators like greater than (`>`), less than (`<`), equal to (`==`), and not equal to (`!=`).
+
+3.  You will filter rows by combining conditions using logical operators like the ampersand (`&`) and the vertical bar (`|`).
+
+4.  You will filter rows by negating conditions using the exclamation mark (`!`) logical operator.
+
+5.  You will filter rows with missing values using the `is.na()` function.
+
+------------------------------------------------------------------------
+
+## The Yaounde COVID-19 dataset
+
+We continue to use the data from the COVID-19 serological survey from Yaounde.
+
+```{r, message = F}
+yaounde <- read_csv(here::here('data/yaounde_data.csv'))
+## a smaller subset of variables
+yao <- yaounde %>% 
+  select(age, sex, weight_kg, highest_education, neighborhood, 
+         occupation, is_smoker, is_pregnant, 
+         igg_result, igm_result)
+yao
+```
+
+## Introducing `filter()`
+
+We use `filter()` to keep rows that satisfy a set of conditions.
+
+Let's take a look at a simple example.
+
+If we want to keep just the male records, we run:
+
+```{r}
+yao ____________________ # Filter for sex equal to "Male"
+```
+
+Note the use of the double equal sign `==` rather than the single equal sign `=`.
+
+We can chain `filter()` with `nrow()` to get the number of rows fulfilling a condition.
+
+```{r, render = normal_print}
+## how many respondents were male?
+yao %>% 
+  _______________________ %>% 
+  _________________
+```
+
+::: key-point
+The double equal sign, `==`, tests for equality,
+
+while the single equals sign, `=`, is used for specifying values to arguments inside functions.
+:::
+
+::: practice
+Filter the `yao` data frame to respondents who were pregnant during the survey.
+
+```{r, eval = F, echo = FALSE}
+# For this first practice question we'll provide the answer.
+# Run this chunk, then run the CHECK and HINT functions in the code chunks further down
+Q_is_pregnant<- yao %>% filter(is_pregnant == "Yes")
+Q_is_pregnant
+```
+
+
+```{r, eval = F, echo = FALSE}
+.CHECK_Q_is_pregnant()
+.HINT_Q_is_pregnant()
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Now, to obtain the solution, run the line below!
+.SOLUTION_Q_is_pregnant()
+# Each question has a solution function similar to this.
+# (Where HINT is replaced with SOLUTION in the function name.)
+# But you will need to type out the function name on your own.
+# (This is to discourage you from looking at the solution before answering the question.)
+```
+
+How many respondents were female? (Use `filter()` and `nrow()`)
+
+```{r, eval = F, echo = FALSE}
+Q_female_nrow <- yao ______________________
+Q_female_nrow
+```
+
+
+```{r, eval = F, echo = FALSE}
+.CHECK_Q_female_nrow()
+.HINT_Q_female_nrow()
+```
+:::
+
+## Relational operators
+
+The `==` operator introduced above is an example of a "relational" operator
+
+Here is a list of some of these operators.
+
+|              |                                     |
+|:-------------|:------------------------------------|
+| **Operator** | **is TRUE if**                      |
+| A \< B       | A is **less than** B                |
+| A \<= B      | A is **less than or equal** to B    |
+| A \> B       | A is **greater than** B             |
+| A \>= B      | A is **greater than or equal to** B |
+| A == B       | A is **equal** to B                 |
+| A != B       | A is **not equal** to B             |
+| A %in% B     | A **is an element of** B            |
+
+Take your time to pause the video and look over them.
+
+You can also save the resource to come back to it when you code.
+
+![Fig: AND and OR operators visualized.](images/venn_diagram_and_or.png){width="450"}
+
+Let's see how to use these within `filter()`:
+
+```{r}
+yao %>% filter(____________) ## keep rows where `sex` is not "Male"
+yao %>% filter(____________) ## keep respondents under 6
+yao %>% filter(____________) ## keep respondents aged at least 70
+
+## keep respondents whose highest education is "Primary" or "Secondary"
+yao %>% filter(___________________________________)
+```
+
+::: practice
+From `yao`, keep only respondents who were children (under 18).
+
+```{r, eval = F, echo = FALSE}
+Q_under_18 <- yao _______________________
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
+.CHECK_Q_under_18()
+.HINT_Q_under_18()
+```
+
+With `%in%`, keep only respondents who live in the "Tsinga" or "Messa" neighborhoods.
+
+```{r, eval = F, echo = FALSE}
+Q_tsinga_messa <- yao _______________________
+Q_tsinga_messa
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
+.CHECK_Q_tsinga_messa()
+.HINT_Q_tsinga_messa()
+```
+:::
+
+## Combining conditions with `&` and `|`
+
+A single `filter()` statement can encompass multiple conditions.
+
+The conditions are separated by commas:
+
+```{r}
+## keep respondents who are pregnant and are ex-smokers
+yao %>% filter(_____________________________________) ## only one row
+```
+
+When multiple conditions are separated by a comma, they are implicitly combined with an **and** (`&`).
+
+Good practice is to replace the comma with `&` to make this more explicit.
+
+```{r}
+## same result as before, but `&` is more explicit
+yao %>% filter(_____________________________________)
+```
+
+::: side-note
+Don't confuse:
+
+-   the "," in listing several conditions in filter `filter(A,B)` i.e. filter based on condition A and (`&`) condition B
+
+-   the "," in lists `c(A,B)` which is listing different components of the list (and has nothing to do with the `&` operator)
+:::
+
+If we want to combine conditions with an **or**, we use the vertical bar symbol, `|`.
+
+```{r}
+## respondents who are pregnant OR who are ex-smokers
+yao %>% filter(___________________________________________)
+```
+
+::: practice
+
+Filter `yao` to only keep men who tested IgG positive.
+
+```{r, eval = F, echo = FALSE}
+Q_male_positive <- yao %>% ____________________
+Q_male_positive
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
+.CHECK_Q_male_positive()
+.HINT_Q_male_positive()
+```
+
+Filter `yao` to keep both children (under 18) and anyone whose highest education is primary school.
+
+```{r, eval = F, echo = FALSE}
+Q_child_primary <- yao %>% ____________________
+Q_child_primary
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
+.CHECK_Q_child_primary()
+.HINT_Q_child_primary()
+```
+:::
+
+## Negating conditions with `!`
+
+To negate conditions, we wrap them in `!()`.
+
+Below, we drop respondents:
+
+-   who are children (less than 18 years)
+
+OR
+
+-   who weigh less than 30kg:
+
+```{r}
+## drop respondents < 18 years OR < 30 kg
+yao %>% filter(_________________________)
+```
+
+If you combine `!` with `%in%` then it is like writing the operator **NOT in**:
+
+```{r}
+## drop respondents whose highest education is NOT "Primary" or "Secondary"
+yao %>% filter(!(highest_education %in% c("Primary", "Secondary")))
+
+```
+
+::: key-point
+It is easier to read `filter()` statements as **keep** statements,
+
+to avoid confusion over whether we are filtering **in** or filtering **out**!
+
+So the code below would read: "**keep** respondents who are under 18 or who weigh less than 30kg".
+
+```{r, eval = F}
+yao %>% filter(age < 18 | weight_kg < 30)
+```
+
+And when we wrap conditions in `!()`, we can then read `filter()` statements as **drop** statements.
+
+So the code below would read: "**drop** respondents who are under 18 or who weigh less than 30kg".
+
+```{r, eval = F}
+yao %>% filter(!(age < 18 | weight_kg < 30))
+```
+:::
+
+::: practice
+From `yao`, drop respondents who live in the Tsinga or Messa neighborhoods.
+
+```{r, eval = F, echo = FALSE}
+Q_not_tsinga_messa <- yao ____________
+Q_not_tsinga_messa
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
+.CHECK_Q_not_tsinga_messa()
+.HINT_Q_not_tsinga_messa()
+```
+:::
+
+## `NA` values
+
+The relational operators introduced so far do not work with `NA`.
+
+Let's make a data subset to illustrate this.
+
+```{r}
+yao_mini <- yao %>% 
+  select(sex, is_pregnant) %>% 
+  slice(1,11,50,2) ## custom row order
+
+yao_mini
+```
+
+In `yao_mini`, the last respondent has an `NA` for the `is_pregnant` column, because he is male.
+
+Trying to select this row using `== NA` will not work.
+
+```{r}
+yao_mini %>% filter(is_pregnant == NA) ## does not work
+yao_mini %>% filter(is_pregnant == "NA") ## does not work
+```
+
+`NA` is a non-existent value.
+
+So R cannot evaluate whether it is "equal to" or "not equal to" anything.
+
+The special function `is.na()` is therefore necessary:
+
+```{r}
+## keep rows where `is_pregnant` is NA
+yao_mini %>% filter(____________________) 
+```
+
+This function can be negated with `!`:
+
+```{r}
+## drop rows where `is_pregnant` is NA
+yao_mini %>% filter(____________________)
+```
+
+This is super useful to remove any `NA` values from your variables. More on this in the future.
+
+::: side-note
+For tibbles, RStudio will highlight `NA` values bright red to distinguish them from other values:
+
+![A common error with `NA`](images/tibble_with_na.png){width="200"}
+:::
+
+::: side-note
+`NA` values can be identified but any other encoding such as `"NA"` or `"NaN"`, which are encoded as strings, will be imperceptible to the functions (they are strings, like any others).
+:::
+
+::: practice
+From the `yao` dataset, keep all the respondents who had missing records for the report of their smoking status.
+
+```{r, eval = F, echo = FALSE}
+Q_na_smoker <- yao %>% _____________________
+Q_na_smoker
+```
+
+
+```{r, eval = F, echo = FALSE}
+# Check your answer:
+.CHECK_Q_na_smoker()
+.HINT_Q_na_smoker()
+```
+:::
+
+
+## Contributors {.unlisted .unnumbered}
+
+The following team members contributed to this lesson:
+
+`r tgc_contributors_list(ids = c("lolovanco", "avallecam", "kendavidn"))`
+
+## References {.unlisted .unnumbered}
+
+Some material in this lesson was adapted from the following sources:
+
+-   Horst, A. (2021). *Dplyr-learnr*. <https://github.com/allisonhorst/dplyr-learnr> (Original work published 2020)
+
+-   *Subset rows using column values---Filter*. (n.d.). Retrieved 12 January 2022, from <https://dplyr.tidyverse.org/reference/filter.html>
+
+Artwork was adapted from:
+
+-   Horst, A. (2021). *R & stats illustrations by Allison Horst*. <https://github.com/allisonhorst/stats-illustrations> (Original work published 2018)
