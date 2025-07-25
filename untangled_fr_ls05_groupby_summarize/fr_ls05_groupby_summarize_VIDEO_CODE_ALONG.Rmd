@@ -146,6 +146,8 @@ Votre sortie doit être un jeu de données avec trois colonnes nommées comme in
 |---------------|-----------------|-------------|
 |               |                 |             |
 
+*Note : Les solutions de tous les exercices pratiques se trouvent à la fin de ce document.*
+
 ```{r, eval = FALSE}
 
   yao %>%
