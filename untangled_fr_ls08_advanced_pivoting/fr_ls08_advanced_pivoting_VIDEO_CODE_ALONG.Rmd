@@ -1,0 +1,750 @@
+---
+title: 'Notes de cours | Pivot avancé'
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    css: !expr here::here("global/style/style.css")
+    highlight: kate
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r, eval = F, include = F}
+Salut étudiant de GRAPH Courses !
+
+Ceci est un document CODE ALONG où vous pouvez taper le code pendant que vous suivez la vidéo de la leçon.
+
+Nous vous encourageons à le faire; taper le code avec l'enseignant est le meilleur moyen d'apprendre la bonne syntaxe.
+```
+
+```{r setup, include = FALSE, warning = FALSE}
+registerS3method("reactable_5_rows", "data.frame", reactable_5_rows)
+knitr::opts_chunk$set(class.source = "tgc-code-block", render = reactable_5_rows)
+
+# Charger les packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(rlang, tidyverse, knitr, here)
+
+# Sourcer les fonctions de la leçon 
+source(here::here("global/functions/misc_functions.R"))
+
+
+```
+
+# Introduction
+
+Vous connaissez les opérations de pivot de base des jeux de données du format long au format large et vice versa. Cependant, comme c'est souvent le cas, les manipulations de base ne sont pas suffisantes pour le traitement des données que vous devez faire. Voyons maintenant le niveau suivant. Allons-y !
+
+# Objectifs d'apprentissage
+
+1.  Maîtriser le pivot complexe du format large au format long et du format long au format large
+
+2.  Savoir utiliser les séparateurs comme outil de pivot
+
+# Packages
+
+```{r warning = F, message = F}
+# Charger les packages 
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, outbreaks, janitor, rio, here, knitr)
+```
+
+# Jeux de données
+
+Nous présenterons ces jeux de données au fur et à mesure, mais voici un aperçu :
+
+-   Données d'enquête d'une étude menée en Inde sur les dépenses des patients pour le traitement de la tuberculose
+
+-   Données d'une étude sur les biomarqueurs des entéropathogènes en Zambie
+
+-   Une enquête alimentaire au Vietnam
+
+# Du format large au format long
+
+Parfois, vous avez plusieurs types de données au format large dans le même jeu de données. Considérez cet exemple factice de la taille et du poids des enfants sur deux ans :
+
+```{r}
+enfant_stats <- 
+  tibble::tribble(
+    ~enfant, ~annee1_taille, ~annee2_taille, ~annee1_poids, ~annee2_poids,
+       "A",         "80cm",         "85cm",          "5kg",         "10kg",
+       "B",         "85cm",         "90cm",          "7kg",         "12kg",
+       "C",         "90cm",        "100cm",          "6kg",         "14kg"
+    )
+
+enfant_stats
+```
+
+Si vous pivotez toutes les colonnes des mesures, vous obtiendrez des données trop longues :
+
+```{r}
+enfant_stats %>% 
+  pivot_longer(2:5)
+```
+
+Ce n’est (généralement) pas ce que nous recherchons, car maintenant vous avez deux données différentes dans la même colonne- le poids et la taille.
+
+Pour obtenir le bon format, vous devez utiliser l'argument `names_sep` et l'identifiant ".value" :
+
+```{r}
+enfant_stats %>% 
+  pivot_longer(2:5, 
+               ______________________________,
+               ______________________________)
+```
+
+Maintenant, nous avons une ligne pour chaque combinaison enfant-période, un format long correct !
+
+Ce que fait le code ci-dessus peut ne pas être clair, mais vous devriez déjà pouvoir répondre à l'exercice ci-dessous en reproduisant la syntaxe de l'exemple précédant. Après cet exercice , nous expliquerons l'argument `names_sep` et l'identifiant ".value" plus en détail.
+
+::: practice
+Considérez cet autre ensemble de données factice :
+
+```{r}
+adulte_stats <- 
+  tibble::tribble(
+    ~adulte,  ~annee1_IMC,  ~annee2_IMC,  ~annee1_VIH,  ~annee2_VIH,
+       "A",          25,          30,  "Positive",  "Positive",
+       "B",          34,          28,  "Negative",  "Positive",
+       "C",          19,          17,  "Negative",  "Negative"
+  )
+
+
+adulte_stats
+```
+
+Pivotez les données en un format long pour obtenir la structure suivante :
+
+| adulte | annee | IMC | VIH |
+|--------|-------|-----|-----|
+|        |       |     |     |
+|        |       |     |     |
+|        |       |     |     |
+
+```{r, eval = FALSE}
+Q_adulte_long <- 
+  adulte_stats %>%
+  pivot_longer(_________)
+```
+
+```{r}
+# Vérifiez votre travail en comparant avec les solutions à la fin de ce document.
+```
+:::
+
+::: side-note
+L'exemple ci-dessus `enfant_stats` a des nombres stockés en tant que caractères [...]
+
+Comme vous l'avez vu dans la leçon précédente, vous pouvez facilement extraire les nombres à partir du jeux de données de sortie au format long en utilisant la fonction `parse_number()` de readr :
+
+```{r}
+enfant_stats_long <- 
+  enfant_stats %>% 
+  pivot_longer(2:5, 
+               names_sep = "_",
+               names_to = c("periode", ".value"))
+
+enfant_stats_long
+```
+
+```{r}
+enfant_stats_long %>% 
+  mutate(taille = parse_number(taille), 
+         poids = parse_number(poids))
+```
+:::
+
+## Comprendre `names_sep` et ".value"
+
+Maintenant, décomposons l'appel `pivot_longer()` que nous avons vu ci-dessus :
+
+```{r}
+enfant_stats
+
+enfant_stats %>% 
+  pivot_longer(2:5, 
+               names_sep = "_",
+               names_to = c("periode", ".value"))
+```
+
+Remarquez que les noms de colonnes dans le dataframe `enfant_stats` d'origine (`annee1_taille`, `annee2_taille` etc.) sont composés de trois parties :
+
+-   la période référencée : par exemple "annee1"
+
+-   un séparateur de soulignement, "\_";
+
+-   et le type de valeur enregistrée "taille" ou "poids"
+
+Nous pouvons faire un tableau avec ces parties :
+
+| nom_colonne     | periode | separateur | ".value" |
+|-----------------|---------|------------|----------|
+| `annee1_taille` | annee1  | \_         | taille   |
+| `annee2_taille` | annee2  | \_         | taille   |
+| `annee1_poids`  | annee1  | \_         | poids    |
+| `annee2_poids`  | annee2  | \_         | poids    |
+
+Sur la base de ce tableau, il devrait maintenant être plus facile de comprendre les arguments `names_sep` et `names_to` que nous avons fournis à `pivot_longer()` :
+
+### `names_sep = "_"` :
+
+C'est le séparateur entre l'indicateur de période (année) et les valeurs (taille et poids) enregistrées.
+
+Si nous utilisons un séparateur différent, l'argument va aussi changer. Par exemple, si le séparateur est un espace vide, " ", vous aurez `names_sep = " "`, comme on le voit dans l'exemple ci-dessous :
+
+```{r}
+enfant_stats_espace_sep <- 
+  tibble::tribble(
+    ~enfant, ~`ann1 taille`, ~`ann2 taille`, ~`ann1 poids`, ~`ann2 poids`,
+       "A",        "80cm",        "85cm",         "5kg",        "10kg",
+       "B",        "85cm",        "90cm",         "7kg",        "12kg",
+       "C",        "90cm",       "100cm",         "6kg",        "14kg"
+    )
+
+enfant_stats_espace_sep %>% 
+  pivot_longer(2:5, 
+               names_sep = " ", 
+               names_to = c("periode", ".value"))
+```
+
+### `names_to = c("periode", ".value")`
+
+Ensuite, l'argument `names_to` indique comment les données doivent être restructurées. Nous avons passé un vecteur de deux chaînes de caractères, "periode" et ".value" à cet argument. Voyons le rôle de chaque élément :
+
+**La chaîne "periode"** indique que nous voulons placer les données de chaque année (ou période) dans une ligne séparée. Notez qu'il n'y a rien de spécial dans le mot "periode" utilisé ici ; nous pourrions changer cela par n'importe quelle autre chaîne. Donc, au lieu de "periode", vous auriez pu écrire "temps" ou "annee_de_mesure" ou autre chose :
+
+```{r}
+enfant_stats %>% 
+  pivot_longer(2:5, 
+               names_sep = "_",
+               names_to = c("annee_de_mesure", ".value"))
+```
+
+Maintenant, **le placeholder ".value"** est un indicateur spécial, qui indique à `pivot_longer()` de créer une colonne séparée pour chaque valeur distincte qui apparaît après le séparateur. Dans notre exemple, ces valeurs sont "taille" et "poids".
+
+La chaîne ".value" ne peut pas être remplacée arbitrairement. Par exemple, ceci ne fonctionnera pas :
+
+```{r}
+enfant_stats %>% 
+  pivot_longer(2:5, 
+               names_sep = "_", 
+               names_to = c("periode", "valeurs"))
+```
+
+------------------------------------------------------------------------
+
+Autrement dit, le placeholder ".value" indique à `pivot_longer()` que nous voulons séparer les valeurs "taille" et "poids" dans deux colonnes séparées, car nous avons deux types de valeurs après le séparateur "\_" dans les noms de colonnes.
+
+Cela signifie que si vous avez un jeu de données au format large avec trois types de valeurs, vous obtiendrez trois colonnes séparées, une pour chaque type de valeur. Par exemple, considérez le jeu de données fictif ci-dessous qui montre les enregistrements d'enfants, à deux moments, pour les variables suivantes :
+
+-   âge en mois,
+-   pourcentage de graisse corporelle
+-   IMC
+
+```{r}
+enfant_stats_trois_valeurs <- 
+  tibble::tribble(
+  ~enfant,  ~t1_age,  ~t2_age, ~t1_graisse, ~t2_graisse, ~t1_imc, ~t2_imc,
+     "a",  "5 mois",  "8 mois",      "13%",       "15%",      14,      15,
+     "b",  "7 mois",  "9 mois",      "15%",       "17%",      16,      18
+  )
+enfant_stats_trois_valeurs
+```
+
+Ici, dans les noms de colonnes, il y a trois types de valeurs qui apparaissent après le séparateur "\_" : `age`, `graisse` et `imc`; la chaîne ".value" indique à `pivot_longer()` de créer une nouvelle colonne pour chaque type de valeur :
+
+```{r}
+enfant_stats_trois_valeurs %>% 
+  pivot_longer(________________________, 
+               ________________________,
+               ________________________
+               )
+```
+
+::: practice
+Un pédiatre enregistre les informations suivantes pour un ensemble d'enfants sur deux ans :
+
+-   périmètre cranien ;
+-   circonférence du cou ; et
+-   tour de hanches
+
+le tout en centimètres.
+
+Voici le tableau de sortie :
+
+```{r}
+croissance_stats <- 
+  tibble::tribble(
+    ~enfant,~ann1_tete,~ann2_tete,~ann1_cou,~ann2_cou,~ann1_hanche,~ann2_hanche,
+       "a",         45,        48,       23,       24,          51,          52,
+       "b",         48,        50,       24,       26,          52,          52,
+       "c",         50,        52,       24,       27,          53,          54
+    )
+
+croissance_stats
+```
+
+Pivotez les données en un format long pour obtenir la structure suivante :
+
+| enfant | annee | tete | cou | hanche |
+|--------|-------|------|-----|--------|
+|        |       |      |     |        |
+|        |       |      |     |        |
+|        |       |      |     |        |
+
+```{r, eval = FALSE}
+Q_croissance_stats_long <- 
+  croissance_stats %>%
+  pivot_longer(_________)
+```
+
+```{r}
+# Vérifiez votre travail en comparant avec les solutions à la fin de ce document.
+```
+:::
+
+## Type de valeur *avant* le séparateur
+
+Dans tous les exemples que nous avons utilisés jusqu'à présent, les noms de colonnes étaient construits de telle sorte que le type de valeur venait après le séparateur. Rappelez-vous notre tableau :
+
+| nom_colonne     | periode | separateur | ".value" |
+|-----------------|---------|------------|----------|
+| `annee1_taille` | annee1  | \_         | taille   |
+| `annee2_taille` | annee2  | \_         | taille   |
+| `annee1_poids`  | annee1  | \_         | poids    |
+| `annee2_poids`  | annee2  | \_         | poids    |
+
+Mais bien sûr, les noms de colonnes pourraient être construits différemment, avec les types de valeurs venant avant le séparateur, comme dans cet exemple :
+
+```{r}
+enfant_stats2 <- 
+  tibble::tribble(
+    ~enfant, ~taille_annee1, ~taille_annee2, ~poids_annee1, ~poids_annee2,
+        "A",        "80cm",          "85cm",         "5kg",        "10kg",
+        "B",        "85cm",          "90cm",         "7kg",        "12kg",
+        "C",        "90cm",         "100cm",         "6kg",        "14kg"
+    )
+
+enfant_stats2
+```
+
+Ici, les types de valeurs (taille et poids) viennent avant le "\_" séparateur.
+
+Comment notre commande `pivot_longer()` peut-elle s'adapter à cela ? C'est simple ! Il suffit d'inverser l'ordre du vecteur donné à l'argument `names_to` :
+
+Donc, au lieu de `names_to = c("temps", ".value")`, vous aurez `names_to = c(".value", "temps")` :
+
+```{r}
+enfant_stats2 %>% 
+  pivot_longer(2:5, 
+               names_sep = "_",
+               names_to = ________________)
+```
+
+Et voilà !
+
+::: practice
+Considérez le [jeu de données suivant de la Zambie](https://zenodo.org/record/4571669) sur les entéropathogènes et leurs biomarqueurs.
+
+```{r}
+enteropathogenes_zambie_large<- read_csv(here("data/fr_enteropathogenes_zambie_large.csv"))
+
+enteropathogenes_zambie_large
+```
+
+Ce jeu de données se compose des colonnes suivantes :
+
+-   LPS_1 et LPS_2 : niveau des lipopolysaccharides, mesuré par Pyrochrome LAL, en EU/mL
+
+-   LBP_1 et LBP_2 : niveau des protéines de liaison au LPS, en pg/mL
+
+-   IFABP_1 et IFAPB_2 : niveau des protéines de liaison aux acides gras de type intestinal, en pg/mL
+
+Pivotez le jeu de données pour qu'il ressemble à la structure suivante :
+
+| ID  | numero_echantillon | LPS | LBP | IFABP |
+|-----|--------------------|-----|-----|-------|
+|     |                    |     |     |       |
+|     |                    |     |     |       |
+|     |                    |     |     |       |
+
+```{r, eval = FALSE}
+Q_enteropathogenes_zambie_large <- 
+  enteropathogenes_zambie_large %>% 
+  pivot_longer(____________)
+```
+
+```{r}
+# Vérifiez votre travail en comparant avec les solutions à la fin de ce document.
+```
+:::
+
+## Un exemple qui n'est pas une série temporelle
+
+Jusqu'à présent, nous avons utilisé des ensembles de données personne-période (séries temporelles) pour illustrer l'idée de pivots complexes avec plusieurs types de valeurs.
+
+Mais comme nous l'avons mentionné, tous les jeux de données nécessitant une restructuration ne sont pas forcément des données de séries temporelles. Voyons un exemple rapide qui n'est pas une série temporelle.
+
+Vous pourriez mesurer la taille (cm) et le poids (kg) d'une série de couples parentaux dans un tableau comme celui-ci :
+
+```{r}
+famille_stats <- 
+  tibble::tribble(
+  ~couple, ~pere_taille, ~pere_poids, ~mere_taille, ~mere_poids,
+      "a",          180,          80,          160,          70,
+      "b",          185,          90,          150,          76,
+      "c",          182,          93,          143,          78
+  )
+famille_stats
+```
+
+Ici, nous avons deux types de valeurs différents (poids et taille) pour chaque personne du couple.
+
+Pour pivoter à une ligne par personne, nous aurons encore besoin des arguments `names_sep` et `names_to` :
+
+```{r}
+famille_stats %>% 
+  pivot_longer(2:5, 
+               names_sep  = _____,
+               names_to = c(__________))
+```
+
+Le séparateur est un trait de soulignement, "\_", donc nous avons utilisé `names_sep = "_"` et comme les types de valeurs viennent après le séparateur, l'identifiant ".value" a été placé en deuxième dans l'argument `names_to`.
+
+## Echapper le séparateur de point
+
+Un cas spécial que vous pourriez rencontrer est un ensemble de données où le séparateur est un point.
+
+```{r}
+enfant_stats_point_sep <- 
+  tibble::tribble(
+   ~enfant, ~annee1.taille, ~annee2.taille, ~annee1.poids, ~annee2.poids,
+       "A",         "80cm",         "85cm",         "5kg",        "10kg",
+       "B",         "85cm",         "90cm",         "7kg",        "12kg",
+       "C",         "90cm",        "100cm",         "6kg",        "14kg"
+    )
+```
+
+Ici, nous devons utilisé la chaîne "\\." pour indiquer un point "." parce que le "." est un caractère spécial dans R qui dans certains cas doit être [échappé](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html#escaping){target="_blank"}.
+
+```{r}
+enfant_stats_point_sep %>% 
+  pivot_longer(2:5, 
+               names_to = __________,
+               names_sep = __________)
+```
+
+::: practice
+Considérez à nouveau les données adulte_stats que vous avez vues ci-dessus. Maintenant, les noms des colonnes ont été légèrement modifiés.
+
+```{r}
+adulte_stats_point_sep <- 
+  tibble::tribble(
+    ~adulte,  ~`IMC.annee1`,  ~`IMC.annee2`,  ~`VIH.annee1`,  ~`VIH.annee2`,
+       "A",            25,            30,    "Positive",   "Positive",
+       "B",            34,            28,    "Negative",   "Positive",
+       "C",            19,            17,    "Negative",   "Negative"
+  )
+
+
+adulte_stats_point_sep
+```
+
+Encore une fois, pivotez les données en un format long pour obtenir la structure suivante :
+
+| adulte | annee | IMC | VIH |
+|--------|-------|-----|-----|
+|        |       |     |     |
+|        |       |     |     |
+|        |       |     |     |
+
+```{r, eval = FALSE}
+Q_adulte2_long <- 
+  adulte_stats_point_sep %>%
+  pivot_longer(_________)
+```
+
+```{r}
+# Vérifiez votre travail en comparant avec les solutions à la fin de ce document.
+```
+:::
+
+## Que faire quand vous n'avez pas un séparateur net ?
+
+Parfois, vous n'avez pas de séparateur net.
+
+Considérez ces [données d'une enquête menée en Inde](https://zenodo.org/record/5014153) qui examine les dépenses des patients pour le traitement de la tuberculose :
+
+```{r}
+tb_visites <- read_csv(here("data/fr_india_tb_pathways_and_costs_data.csv")) %>% 
+  clean_names() %>% 
+  select(id, premiere_visite_emplacement, premiere_visite_cout, deuxieme_visite_emplacement, deuxieme_visite_cout, troisieme_visite_emplacement, troisieme_visite_cout)
+
+tb_visites
+```
+
+Il n'y a pas de séparateur net entre les indicateurs de temps (premier, deuxième, troisième) et le type de valeur (cout, emplacement). C'est-à-dire, au lieu de "premierevisite_emplacement", nous avons plutôt "premiere_visite_emplacement", donc le trait de soulignement est utilisé pour deux buts. Pour cette raison, si vous essayez notre stratégie de pivot habituelle, vous obtiendrez un message d'erreur :
+
+```{r eval=F}
+tb_visites %>% 
+  pivot_longer(2:7, 
+               names_to = c("numero_visite", ".value"), 
+               names_sep = "_")
+```
+
+```         
+Error in `pivot_longer()`:
+! Can't combine `premiere_visite_emplacement` <character> and `premiere_visite_cout` <double>.
+Run `rlang::last_trace()` to see where the error occurred.
+```
+
+La façon la plus directe de restructurer ce jeu de données avec succès serait d'utiliser un "regex" spécial (manipulation de chaînes de caractères), mais il est probable que vous n'ayez pas encore appris cela !
+
+Alors pour l'instant, la solution que nous recommandons est de renommer manuellement vos colonnes pour insérer un séparateur clair, "\_\_" :
+
+```{r}
+tb_visites_renomme <- 
+  tb_visites %>% 
+  rename(premiere__visite_emplacement = premiere_visite_emplacement, 
+         premiere__visite_cout = premiere_visite_cout, 
+         deuxieme__visite_emplacement = deuxieme_visite_emplacement, 
+         deuxieme__visite_cout = deuxieme_visite_cout, 
+         troisieme__visite_emplacement = troisieme_visite_emplacement, 
+         troisieme__visite_cout = troisieme_visite_cout)
+
+tb_visites_renomme
+```
+
+Maintenant, nous pouvons essayer le pivot :
+
+```{r}
+tb_visites_long <-
+  tb_visites_renomme %>% 
+  pivot_longer(2:7, 
+               names_to = c("numero_visite", ".value"), 
+               names_sep = "__")
+tb_visites_long
+```
+
+Maintenant, nettoyons le jeu de données :
+
+```{r}
+tb_visites_long %>% 
+  # supprimer les observations manquantes
+  filter(!visite_emplacement == "") %>% 
+  # donner un nom significatif aux valeurs de numero_visite
+  mutate(numero_visite = case_when(numero_visite == "premiere" ~ 1, 
+                                   numero_visite == "deuxieme" ~ 2, 
+                                   numero_visite == "troisieme" ~ 3)) %>% 
+  # s'assurer que visite_cout est numérique
+  mutate(visite_cout = as.numeric(visite_cout))
+```
+
+Ici, nous avons d'abord supprimé les observations où nous n'avons pas d'information sur l'emplacement de la visite (c'est-à-dire que nous filtrons les lignes où la variable d'emplacement de la visite est définie à `""`). Nous convertissons ensuite en valeurs numériques la variable du numéro de la visite, où les chaînes `"premiere"` à `"troisieme"` sont converties en valeurs numériques `1` à `3`. Enfin, nous nous assurons que la variable du coût de la visite est numérique en utilisant `mutate()` et la fonction d'aide `as.numeric()`.
+
+::: practice
+Nous allons utiliser [les données d'une enquête alimentaire au Vietnam](https://www.wur.nl/en/project/Retail-Diversity-for-Dietary-Diversity-RD4DD.htm). Des femmes de Hanoi ont été interrogées sur leurs achats alimentaires, et les données collectées ont servi à créer un profil nutritionnel de chaque femme. Ici, nous utiliserons un sous-ensemble de ces données de 61 ménages qui sont venus pour 2 visites, enregistrant :
+
+-   `enerc_kcal_s_1` : l'apport énergétique de l'ingrédient/nourriture (Kcal) lors de la première visite (`_2` pour la deuxième visite)
+
+-   `sec_s_1` : l'apport sec de l'ingrédient/nourriture (g) lors de la première visite (`_2` pour la deuxième visite)
+
+-   `eau_s_1` : l'apport en eau de l'ingrédient/nourriture (g) lors de la première visite (`_2` pour la deuxième visite)
+
+-   `graisse_s_1` : l'apport en lipides de l'ingrédient/nourriture (g) lors de la première visite (`_2` pour la deuxième visite)
+
+```{r}
+diversite_alimentaire_vietnam_large <- read_csv(here("data/fr_diet_diversity_vietnam_wide.csv"))
+
+diversite_alimentaire_vietnam_large
+```
+
+Vous devrez d'abord vérifier si vous avez un opérateur net et renommer vos colonnes si nécessaire. Ensuite, rassemblez les données enregistrées sur les deux visite dans une colonne par type d'apport (énergétique, lipides, eau et poids sec). En d'autres termes, pivotez le jeu de données en un format long de cette forme :
+
+| menage_id | visite | enerc_kcal_s | sec_s | eau_s | graisse_s |
+|-----------|--------|--------------|-------|-------|-----------|
+|           |        |              |       |       |           |
+|           |        |              |       |       |           |
+
+```{r, eval = FALSE}
+Q_diversite_alimentaire_vietnam_large <-
+  diversite_alimentaire_vietnam_large %>%
+  pivot_longer(_________)
+```
+
+```{r}
+# Vérifiez votre travail en comparant avec les solutions à la fin de ce document.
+```
+:::
+
+# Du format long au format large
+
+Nous venons de voir comment effectuer certaines opérations complexes du format large au format long, qui, comme nous l'avons vu dans la leçon précédente, sont essentielles pour tracer et manipuler les données. Passons maintenant à la transformation inverse.
+
+Il peut être utile de passer du format long au format large pour transformer et filtrer les données ou encore pour traiter des valeurs manquantes (NA). Dans ce format, vos mesures / données collectées deviennent les colonnes du jeu de données.
+
+Cette fois-ci, nous allons utiliser le jeux de données originel sur les entéropathogènes en Zambie. En effet, ce que vous manipuliez jusqu'à présent était un jeu de données **préparé pour vous**, en format large. **Le jeu de données originel est au format long** et nous allons maintenant voir la préparation des données que j'ai faite au préalable, en coulisses. Vous êtes presque en train de devenir l'enseignant de cette leçon ;)
+
+```{r}
+enteropathogenes_zambie_long <- read_csv(here("data/fr_enteropathogenes_zambie_long.csv"))
+enteropathogenes_zambie_long
+```
+
+Voici comment nous le convertissons du format long au format large :
+
+```{r}
+enteropathogenes_zambie_large <-
+  enteropathogenes_zambie_long %>%
+  pivot_wider(
+    names_from = group,
+    values_from = c(LPS, LBP, IFABP)
+  )
+
+enteropathogenes_zambie_large
+```
+
+Vous pouvez voir que les valeurs de la variable `group` (1 ou 2) sont ajoutées aux noms des valeurs (LPS, LBP, IFABP) pour créer les nouvelles colonnes représentant différents groupes de données : par exemple, `LPS_1` et `LPS_2`.
+
+Nous considérons que c'est une option "avancée" du pivot car nous pivotons plusieurs variables en même temps, mais comme vous pouvez le voir, la syntaxe est assez simple. Nous utilisons les mêmes arguments `names_from` et `values_from` qu’avec les pivots plus simples que nous avons vu dans la leçon précédente.
+
+------------------------------------------------------------------------
+
+Voyons un autre exemple, en utilisant les données de l'enquête alimentaire du Vietnam que vous avez manipulées précédemment :
+
+```{r}
+diversite_alimentaire_vietnam_long <- read_csv(here("data/fr_diet_diversity_vietnam_long.csv"))
+
+diversite_alimentaire_vietnam_long
+```
+
+Ici, nous allons utiliser la variable `numero_visite` pour créer une nouvelle variable pour les différents apports enregistrés lors des deux visites :
+
+```{r}
+diversite_alimentaire_vietnam_large <-
+  diversite_alimentaire_vietnam_long %>%
+  pivot_wider(
+    names_from = numero_visite, 
+    values_from = c(enerc_kcal_s, sec_s, eau_s, graisse_s)
+  )
+
+diversite_alimentaire_vietnam_large
+```
+
+Vous pouvez voir que les valeurs de la variable `numero_visite` (1 ou 2) sont ajoutées aux noms des valeurs (`enerc_kcal_s`, `sec_s`, `graisse_s`, `eau_s`) pour créer les nouvelles colonnes représentant différents groupes de données : par exemple, `eau_s_1` et `eau_s_2`. Nous avons pivoté en format large toutes ces variables en même temps. Maintenant, chaque mesure de l'apport par visite est représentée comme une seule variable (c'est-à-dire une colonne) dans le jeu de données.
+
+Avec ce format, il est facile de faire la somme de l'apport énergétique par ménage par exemple :
+
+```{r}
+diversite_alimentaire_vietnam_large %>%
+  select(menage_id, enerc_kcal_s_1, enerc_kcal_s_2) %>%
+  mutate(energie_totale_kcal = enerc_kcal_s_1 + enerc_kcal_s_2) %>%
+  arrange(menage_id)
+```
+
+Cependant, vous pourriez obtenir quelque chose de similaire avec le format long :
+
+```{r}
+diversite_alimentaire_vietnam_long %>%
+  group_by(menage_id) %>%
+  summarize(energie_totale = sum(enerc_kcal_s)) 
+```
+
+::: practice
+Prenez le jeu de données `tb_visites_long` que nous avons manipulé plus haut et pivotez-le à nouveau au format large.
+
+```{r, eval = FALSE}
+Q_tb_visites_large <- 
+  tb_visites_long %>%
+      pivot_wider(names_from = numero_visite,
+                  values_from = c(visite_emplacement, visite_cout))
+```
+
+```{r}
+# Vérifiez votre travail en comparant avec les solutions à la fin de ce document.
+```
+:::
+
+# Bilan ! {.unnumbered}
+
+Vos compétences en manipulation de données viennent d'être renforcées avec le pivot avancé. Cette compétence s'avérera souvent essentielle lors de la manipulation des données du monde réel. Je ne doute pas que vous la mettrez bientôt en pratique. Elle est également essentielle, comme nous l'avons vu, pour la conception des graphiques. J'espère donc que le pivot vous sera utile non seulement pour votre manipulation de données, mais aussi pour pour la conception des graphiques.
+
+# Contributeurs {.unlisted .unnumbered}
+
+Les membres suivants de l'équipe ont contribué à cette leçon :
+
+`r tgc_contributors_list(ids = c("kendavidn", "lolovanco", "camille", "imane"))`
+
+# Solutions {.unlisted .unnumbered}
+
+Voici les solutions aux exercices pratiques de cette leçon :
+
+## Solution : Q_adulte_long
+
+```{r, eval = FALSE}
+Q_adulte_long <- 
+  adulte_stats %>%
+  pivot_longer(cols = 2:5,
+               names_sep = "_",
+               names_to = c("annee", ".value"))
+```
+
+## Solution : Q_croissance_stats_long
+
+```{r, eval = FALSE}
+Q_croissance_stats_long <- 
+  croissance_stats %>%
+  pivot_longer(cols = 2:7,
+               names_to = c("annee", ".value"),
+               names_sep = "_")
+```
+
+## Solution : Q_enteropathogenes_zambie_large
+
+```{r, eval = FALSE}
+Q_enteropathogenes_zambie_large <- 
+  enteropathogenes_zambie_large %>% 
+  pivot_longer(!ID, 
+               names_to = c(".value", "numero_echantillon"), 
+               names_sep = "_")
+```
+
+## Solution : Q_adulte2_long
+
+```{r, eval = FALSE}
+Q_adulte2_long <- 
+  adulte_stats_point_sep %>%
+  pivot_longer(cols = 2:5,
+               names_sep = "\\.",
+               names_to = c(".value", "annee"))
+```
+
+## Solution : Q_diversite_alimentaire_vietnam_large
+
+```{r, eval = FALSE}
+Q_diversite_alimentaire_vietnam_large <-
+  diversite_alimentaire_vietnam_large %>%
+  rename(
+    enerc_kcal_s__1 = enerc_kcal_s_1,
+    enerc_kcal_s__2 = enerc_kcal_s_2,
+    sec_s__1 = sec_s_1,
+    sec_s__2 = sec_s_2,
+    eau_s__1 = eau_s_1,
+    eau_s__2 = eau_s_2,
+    graisse_s__1 = graisse_s_1,
+    graisse_s__2 = graisse_s_2
+  ) %>%  
+  pivot_longer(2:9, names_sep = "__", names_to = c(".value", "visite"))
+```
+
+## Solution : Q_tb_visites_large
+
+```{r, eval = FALSE}
+Q_tb_visites_large <- 
+  tb_visites_long %>%
+  pivot_wider(names_from = numero_visite,
+              values_from = c(visite_emplacement, visite_cout))
+```
+
+# Références {.unlisted .unnumbered}

@@ -135,7 +135,7 @@ Le principal avantage de cette structure de jeu de données est de faciliter la 
 
 Nous examinerons ces résumés groupés dans la section suivante. Pour l'instant, essayez de répondre aux questions de pratique ci-dessous.
 
-::: pratice
+::: practice
 **Pratique 1**
 
 Utilisez `summarize()` et les fonctions récapitulatives pertinentes pour obtenir la moyenne, la médiane et l'écart type des poids des répondants à partir de la variable `poids_kg` du jeu de données `yao`.

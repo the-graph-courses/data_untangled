@@ -1,0 +1,547 @@
+---
+title: 'CODE ALONG | Pivoter des données'
+output:
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    css: !expr here::here("global/style/style.css")
+    highlight: kate
+---
+
+```{r, eval = F, include = F}
+Salut étudiant de GRAPH Courses !
+
+Ceci est un document CODE ALONG où vous pouvez taper le code pendant que vous suivez la vidéo de la leçon.
+
+Nous vous encourageons à le faire ; taper le code avec l’enseignant est le meilleur moyen d’apprendre la bonne syntaxe.
+```
+
+```{r, echo = F, message = F, warning = F}
+# Charger les packages
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(rlang, tidyverse, knitr, here)
+
+## fonctions
+source(here::here("global/functions/misc_functions.R"))
+
+## rendu par défaut
+knitr::opts_chunk$set(warning = F, message = F, class.source = "tgc-code-block", error = T)
+
+
+```
+
+# Objectifs d'apprentissage
+
+-   Vous comprendrez ce que sont le format de données large et le format de données long.
+
+-   Vous saurez comment pivoter des données longues en données larges en utilisant `pivot_long()`
+
+-   Vous saurez comment pivoter des données larges en données longues en utilisant `pivot_wider()`
+
+-   Vous comprendrez pourquoi le format de données long est plus facile pour le tracé et la manipulation dans R.
+
+# Packages
+
+```{r warning = F, message = F}
+# Charger les packages
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, outbreaks, janitor, rio, here, knitr)
+```
+
+------------------------------------------------------------------------
+
+# Que signifient large et long ?
+
+-   Comprenez par des exemples
+
+-   Exemple 1 : données de tension artérielle de trois patients pendant trois jours.
+
+Format LARGE :
+
+![Fig: ensemble de données large pour une série temporelle de patients.](images/fr_wide_patients.png){width="500"}
+
+Format LONG :
+
+![Fig: ensemble de données long pour une série temporelle de patients.](images/fr_long_patients.png){width="200"}
+
+------------------------------------------------------------------------
+
+- Exemple 2 : les unités d'observation sont des pays
+
+Format LONG :
+
+![Fig: ensemble de données au format long où l'unité d'observation unique est un pays.](images/fr_long_country.png){width="200"}
+
+Format LARGE
+
+![Fig: l'ensemble de données au format large équivalent](images/fr_wide_country.png){width="300"}
+
+------------------------------------------------------------------------
+
+- Exemples ci-dessus = séries de données temporelles
+
+- Exemple 3 : le nombre de patients dans différentes unités de trois hôpitaux
+
+Format LARGE :
+
+![Fig: ensemble de données au format large, où chaque hôpital est une unité d'observation](images/fr_wide_wards.jpg)
+
+Format LONG :
+
+![Fig: l'ensemble de données au format long équivalent](images/fr_long_wards.jpg)
+
+------------------------------------------------------------------------
+
+::: vocab
+"unités d'observation" = "unités statistiques" = entités primaires décrites par les colonnes/variables
+
+Par exemple :
+
+- un patient
+
+- un pays
+
+- un hôpital
+:::
+
+------------------------------------------------------------------------
+
+PRATIQUEZ !
+
+::: practice
+Considérez l'ensemble de données fictif créé ci-dessous :
+
+```{r}
+temperatures <- 
+  data.frame(
+    pays = c("Suède", "Danemark", "Norvège"),
+    tempmoy.1994 = 1:3,
+    tempmoy.1995 = 3:5,
+    tempmoy.1996 = 5:7)
+temperatures
+```
+
+Ces données sont-elles dans un format large ou long ?
+
+```{r, eval = FALSE}
+# Entrez la chaîne "large" ou la chaîne "long"
+Q_type_donnees <- "_____"
+```
+
+**Réponse disponible dans la section Solutions à la fin du document.**
+:::
+
+------------------------------------------------------------------------
+
+# Quand devez-vous utiliser des données en format large ou long ?
+
+- Cela dépend de ce que vous voulez faire !
+
+- **format large** = idéal pour ***afficher** les données* = facile de comparer visuellement les valeurs
+
+- Format long** = idéal pour les tâches d'analyse des données = comme le regroupement et le traçage.
+
+- savoir **passer** d'un format à l'autre
+
+- passer du format large au format long = **pivoter**
+
+------------------------------------------------------------------------
+
+# Pivoter de large à long
+
+-   Données de [Gapminder](https://www.gapminder.org) sur le **nombre de décès d'enfants en bas âge** dans certains pays au fil des ans.
+
+::: side-note
+[Gapminder](https://www.gapminder.org) est une bonne source de jeux de données riches et pertinents pour la santé. Nous vous encourageons à explorer leurs collections.
+:::
+
+```{r message = F}
+deces_enfants_large <- read_csv(here("data/fr_gapminder_infant_deaths.csv"))
+deces_enfants_large
+```
+
+------------------------------------------------------------------------
+
+- unité d'observation = 1 pays = 1 ligne
+
+- mesures répétées réparties sur plusieurs colonnes
+
+- un format large
+
+------------------------------------------------------------------------
+
+- convertir en un format long = `pivot_longer`.
+
+- `cols` argument = quelles colonnes nous voulons pivoter
+
+```{r}
+deces_enfants_large %>% 
+  # nous pivotons plus longtemps les colonnes x2010 à x2015
+  pivot_longer(cols = x2010:x2015)
+```
+
+------------------------------------------------------------------------
+
+- chaque pays = 5 lignes = une ligne par année
+
+- les années se trouvent dans la variable `names` (noms)
+
+- les valeurs du nombre de décès sont dans la variable `values`
+
+- les valeurs des décès infantiles étaient auparavant sous forme de matrice (2 dimensions ; 2D)
+
+- maintenant en format vectoriel (1 dimension ; 1D).
+
+------------------------------------------------------------------------
+
+- les noms par défaut des variables, `names` et `values` = insatisfaisant
+
+- ne décrivent pas ce que les variables contiennent
+
+- noms de colonnes personnalisés avec `names_to` & `values_to`
+
+```{r}
+deces_enfants_large %>% 
+  pivot_longer(cols= x2010:x2015,
+               names_to = "annee", 
+               values_to = "nombre_deces")
+```
+
+------------------------------------------------------------------------
+
+::: pro-tip
+Format long = plus informatif que le format large original.
+
+Pourquoi ?
+
+Dans le format large, on ne sait pas du tout ce que représente la matrice 2D du nombre de décès.
+
+Dans le format long, la variable a un nom.
+:::
+
+------------------------------------------------------------------------
+
+- Supprimez le `x` devant chaque année.
+
+```{r}
+deces_enfants_large %>% 
+  pivot_longer(cols = x2010:x2015,
+               names_to = "année", 
+               values_to = "nombre_deces") %>% 
+  # nous utilisons parse_number à l'intérieur de mutate
+  mutate(année = parse_number(année))
+```
+
+------------------------------------------------------------------------
+
+Enregistrons maintenant ces données :
+
+```{r}
+deces_enfants_long <- 
+  deces_enfants_large %>% 
+  pivot_longer(cols = x2010:x2015,
+               names_to = "annee", 
+               values_to = "nombre_deces")
+```
+
+------------------------------------------------------------------------
+
+PRATIQUEZ !
+
+::: practice
+Pour cette question de pratique, vous utiliserez le jeu de données `fr_euro_births_wide` provenant d'[Eurostat](https://ec.europa.eu/eurostat/databrowser/view/tps00204/default/table). Il montre le nombre annuel de naissances dans 50 pays européens :
+
+```{r message = F}
+naissances_euro_large <- 
+  read_csv(here("data/fr_euro_births_wide.csv"))
+head(naissances_euro_large)
+```
+
+Les données sont dans un format large. Convertissez-le en un jeu de données au format long qui a les noms de colonnes suivants : "pays", "annee" et "nombre_de_naissances"
+
+```{r, eval = FALSE}
+Q_euro_naissance_long <- naissances_euro_large %>% # complétez le code avec votre réponse
+```
+:::
+
+------------------------------------------------------------------------
+
+# Pivoter de long à large
+
+- pivoter dans l'autre sens, de long à large ?
+
+- Examinons d'abord où vous êtes susceptible de rencontrer des données longues par rapport à des données larges :
+
+    - Les données larges ont tendance à provenir de sources externes
+
+    - Les données longues sont susceptibles d'être créées par vous-même lors de la manipulation des données.
+
+------------------------------------------------------------------------
+
+-   Voyons un exemple maintenant.
+
+- Base de données de dossiers de patients lors d'une épidémie d'Ebola en Sierra Leone en 2014
+
+- Nous extrayons ces données du paquet {outbreaks} et effectuons quelques manipulations de simplification.
+
+```{r}
+ebola <- 
+  outbreaks::ebola_sierraleone_2014 %>% 
+  select(district, date_of_onset) %>% 
+  mutate(annee_de_debut = year(date_of_onset)) %>% 
+  drop_na()
+
+ebola
+```
+
+Maintenant, considérez la résumé groupé suivant du jeu de données `ebola`, qui compte le nombre de patients enregistrés dans chaque district chaque année :
+
+```{r}
+cas_par_district_par_annee <- 
+  ebola %>% 
+  group_by(district) %>% 
+  count(annee_de_debut) %>% 
+  ungroup()
+
+cas_par_district_par_annee
+```
+
+- Il s'agit d'un ensemble de données typiquement "long" ! Chaque unité d'observation (chaque district) occupe plusieurs lignes, avec une ligne pour chaque mesure (chaque année).
+
+- Voyons maintenant comment convertir des données aussi longues en un format large avec `pivot_wider()`.
+
+- Dans cette fonction, il y a deux arguments importants :
+
+    - `values_from` et `names_from`
+
+```{r}
+cas_par_district_par_annee %>% 
+  pivot_wider(values_from = n, 
+              names_from = annee_de_debut)
+```
+
+::: side-note
+Vous voudrez peut-être aussi faire des *années* votre unité d'observation/statistique principale, avec chaque année occupant une ligne. Cela peut être réalisé de manière similaire à l'exemple ci-dessus, mais la variable `district` sera fournie en argument à `names_from`, au lieu de `annee_de_debut`.
+
+```{r}
+cas_par_district_par_annee %>% 
+  pivot_wider(values_from = n, 
+              names_from = district)
+```
+
+Ici, les unités d'observation uniques (nos lignes) sont maintenant les années (2014, 2015).
+:::
+
+------------------------------------------------------------------------
+
+PRATIQUEZ !
+
+::: practice
+L'ensemble de données `population` du package `tidyr` montre les populations de 219 pays au fil du temps.
+
+Pivoter ces données en un format large. Votre réponse devrait comprendre 20 colonnes et 219 lignes.
+
+```{r, eval = FALSE}
+Q_population_large <- 
+  tidyr::population %>% # CODE ICI
+```
+:::
+
+------------------------------------------------------------------------
+
+# Pourquoi les données au format long sont-elles meilleures pour l'analyse?
+
+- Les données longues sont les meilleures pour la majorité des tâches d'analyse de données
+
+## Filtrage des données groupées
+
+- Exemple utilisant l'ensemble de données sur les décès de nourrissons. Imaginons que nous voulions répondre à la question suivante :
+
+    - **Pour chaque pays, quelle année a connu le plus grand nombre de décès d'enfants?**
+
+Voici comment nous pourrions le faire avec le format long des données :
+
+```{r}
+deces_enfants_long %>% 
+  group_by(pays) %>% 
+  filter(nombre_deces == max(nombre_deces))
+```
+
+Facile, n'est-ce pas ? Nous pouvons facilement voir, par exemple, que l'Afghanistan a eu son plus haut taux de mortalité infantile en 2010, et les Émirats arabes unis en 2011.
+
+------------------------------------------------------------------------
+
+- Réponse à la même question avec des données étendues :
+
+- Vous pouvez essayer une approche comme celle-ci avec `rowise()` :
+
+```{r}
+deces_enfants_large %>% 
+  rowwise() %>% 
+  mutate(max_decompte = max(x2010, x2011, x2012, x2013, x2014, x2015, na.rm = TRUE))
+```
+
+Cela fonctionne presque - nous avons, pour chaque pays, le nombre maximum de décès d'enfants rapportés - mais nous ne savons toujours pas à quelle année est attachée cette valeur dans `max_decompte`. Nous devrions prendre cette valeur et l'indexer à sa colonne d'année respective d'une manière ou d'une autre... quelle corvée ! Il y a des solutions pour trouver cela mais toutes sont très pénibles. Pourquoi rendre votre vie compliquée quand vous pouvez simplement pivoter vers le format long et utiliser la beauté de `group_by()` et `filter()` ?
+
+::: side-note
+Ici, nous avons utilisé une fonction spéciale de {dplyr} : `rowwise()`. `rowwise()` permet d'appliquer d'autres opérations *par ligne*. Il est équivalent à la création d'un groupe pour chaque ligne (`group_by(row_number())`).
+
+Sans `rowwise()`, vous obtiendriez ceci :
+
+```{r}
+deces_enfants_large %>% 
+  mutate(max_decompte = max(x2010, x2011, x2012, x2013, x2014, x2015))
+```
+
+Le compte maximum sur TOUTES les lignes de l'ensemble de données.
+:::
+
+------------------------------------------------------------------------
+
+PRATIQUEZ !
+
+::: practice
+Pour cette question de pratique, vous effectuerez un filtre groupé sur le jeu de données `population` en format long du package `tidyr`. Utilisez `group_by()` et `filter()` pour obtenir un ensemble de données qui montre la population maximale enregistrée pour chaque pays, et l'année où cette population maximale a été enregistrée.
+
+```{r, eval = FALSE}
+Q_population_max <- 
+  population %>% # CODE ICI
+```
+:::
+
+------------------------------------------------------------------------
+
+## Résumer les données regroupées
+
+- Les résumés groupés sont également difficiles à réaliser sur des données étendues. 
+
+- Exemple : En utilisant à nouveau le jeu de données `infant_deaths_long`, si vous voulez poser la question suivante : 
+
+- **Pour chaque pays, quel est le nombre moyen de décès de nourrissons et l'écart type (variation) des décès ?**
+
+- Avec des données longues, c'est simple :
+
+```{r}
+deces_enfants_long %>% 
+  group_by(pays) %>% 
+  summarize(moyen_deces = mean(nombre_deces), 
+            sd_deces = sd(nombre_deces))
+```
+
+Avec des données au format large, par contre, trouver la moyenne est moins intuitif...
+
+```{r}
+deces_enfants_large %>% 
+  rowwise() %>% 
+  mutate(moyen_deces = sum(x2010, x2011, x2012, 
+                           x2013, x2014, x2015, na.rm = T)/6) 
+```
+
+Et trouver l'écart-type serait très difficile. (Nous ne pouvons penser à aucune façon d'y parvenir, en fait.)
+
+------------------------------------------------------------------------
+
+PRATIQUEZ !
+
+::: practice
+Pour cette question de pratique, vous travaillerez à nouveau avec le jeu de données `population` en format long du package `tidyr`.
+
+Utilisez `group_by()` et `summarize()` pour obtenir, pour chaque pays, la population maximale signalée, la population minimale signalée, et la population moyenne signalée sur les années disponibles dans les données. Vos données devraient avoir quatre colonnes, "country", "max_population", "min_population" et "moyen_population".
+
+```{r, eval = FALSE}
+Q_population_resumer <- 
+  population %>% # CODE ICI
+```
+:::
+
+------------------------------------------------------------------------
+
+## Conception des graphiques
+
+Enfin, l'une des tâches d'analyse de données qui est LE PLUS entravée par les formats larges est la conception de graphiques. Vous n'avez peut-être pas encore de connaissance préalable de {ggplot} et de comment concevoir des graphiques, nous verrons donc les figures sans approfondir le code. Ce que vous devez retenir est : de nombreux graphiques avec ggplot sont également possibles uniquement avec des données au format long.
+
+Considérez à nouveau les données sur les décès de nourrissons `deces_enfants_long`. Nous allons représenter le nombre de décès pour la Belgique par année :
+
+```{r render = knit_print}
+deces_enfants_long %>% 
+  filter(pays == "Belgium") %>% 
+  ggplot() + 
+  geom_col(aes(x = annee, y = nombre_deces))
+```
+
+La conception du graphique fonctionne parce que nous pouvons donner la variable `annee` pour l'axe des x. Dans le format long, `annee` est une variable à part entière. Dans le format large, il n'y aurait pas une telle variable à passer à l'axe des x.
+
+------------------------------------------------------------------------
+
+Un autre graphique qui ne serait pas possible sans un format long :
+
+```{r render = knit_print}
+deces_enfants_long %>% 
+  head(30) %>% 
+  ggplot(aes(x = annee, y = nombre_deces, group = pays, color = pays)) + 
+  geom_line() + 
+  geom_point()
+```
+
+Encore une fois, la raison est la même, nous devons indiquer au graphique ce qu'il faut utiliser comme axe des x et des y et il est nécessaire d'avoir ces variables dans leurs propres colonnes (comme organisé dans le format long).
+
+# Le pivot peut être difficile
+
+Nous avons principalement examiné ici des exemples très simples de pivot, mais dans la pratique, le pivot peut être très difficile à réaliser avec précision. C'est parce que les données avec lesquelles vous travaillez peuvent ne pas avoir toutes les informations nécessaires pour un pivot réussi, ou les données peuvent contenir des erreurs qui vous empêchent de pivoter correctement.
+
+Lorsque vous rencontrez de tels cas, nous vous recommandons de consulter la [documentation officielle](https://tidyr.tidyverse.org/articles/pivot.html) du pivot de l'équipe `tidyr`, car elle est assez riche en exemples. Vous pourriez également poster vos questions sur le pivot sur des forums comme Stack Overflow.
+
+# Solutions {.unnumbered}
+
+## Question 1: Type de données
+
+```{r}
+Q_type_donnees <- "large"
+```
+
+**Explication:** Chaque unité observationnelle (chaque pays) occupe une seule ligne.
+
+## Question 2: Pivoter les naissances européennes
+
+```{r, eval = FALSE}
+Q_euro_naissance_long <- 
+  naissances_euro_large %>%
+  pivot_longer(2:8, 
+               names_to = "annee", 
+               values_to = "nombre_de_naissances")
+```
+
+## Question 3: Population en format large
+
+```{r, eval = FALSE}
+Q_population_large <- 
+  tidyr::population %>% 
+  pivot_wider(names_from = year,
+              values_from = population)
+```
+
+## Question 4: Population maximale par pays
+
+```{r, eval = FALSE}
+Q_population_max <- 
+  population %>% 
+  group_by(country) %>% 
+  filter(population == max(population)) %>% 
+  ungroup()
+```
+
+## Question 5: Résumé de population
+
+```{r, eval = FALSE}
+Q_population_resumer <- 
+  population %>% 
+  group_by(country) %>% 
+  summarise(max_population = max(population), 
+            min_population = min(population), 
+            moyen_population = mean(population))
+```
+
+# Conclusion ! {.unnumbered}
+
+Vous avez maintenant exploré différents jeux de données et comment ils sont soit en format long, soit en format large. En fin de compte, il s'agit simplement de la façon dont vous présentez l'information. Parfois, un format sera plus pratique, et d'autres fois un autre pourrait être le meilleur. Maintenant, vous n'êtes plus limité par le format de vos données : ça ne vous plaît pas ? changez-le !
