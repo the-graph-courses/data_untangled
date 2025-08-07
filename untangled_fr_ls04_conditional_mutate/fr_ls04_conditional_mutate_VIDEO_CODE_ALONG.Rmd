@@ -214,7 +214,7 @@ Quel pourcentage d'individus dans le jeu de données sont âgés de moins de 60 
 ```{r eval = FALSE}
 # Entrez votre réponse sous forme d'un nombre ENTIER sans guillemets :
 
-Q_age_groupe_pourcentage(____________________________________)
+Q_age_groupe_pourcentage <-
 ```
 
 
